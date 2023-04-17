@@ -18,3 +18,27 @@ output "tags_set" {
 Custom outputs
 -------------------------------------
 */
+output "event_rule_id" {
+  value       = [for r in aws_cloudwatch_event_rule.this : r.id]
+  description = "The ID of the CloudWatch Event Rule."
+}
+
+output "event_rule_arn" {
+  value       = [for r in aws_cloudwatch_event_rule.this : r.arn]
+  description = "The ARN of the CloudWatch Event Rule."
+}
+
+output "event_rule_name" {
+  value       = [for r in aws_cloudwatch_event_rule.this : r.name]
+  description = "The name of the CloudWatch Event Rule."
+}
+
+output "event_rule_description" {
+  value       = [for r in aws_cloudwatch_event_rule.this : r.description]
+  description = "The description of the CloudWatch Event Rule."
+}
+
+output "event_rule_event_pattern" {
+  value       = [for r in aws_cloudwatch_event_rule.this : r.event_pattern]
+  description = "The event pattern of the CloudWatch Event Rule."
+}

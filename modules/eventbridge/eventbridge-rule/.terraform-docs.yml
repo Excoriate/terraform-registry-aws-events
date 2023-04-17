@@ -3,28 +3,34 @@ formatter: markdown table
 
 header-from: main.tf
 content: |-
-    # ☁️ ECS Task definition module.
+    # ☁️ Event bridge rule
     ## Description
     {{ .Header }}
-    This module creates an ECS task definition with the specified name.
-    * 🚀 **ECS task definition**: ECS task definition with the specified name.
-    * 🚀 **ECS task definition revision**: ECS task definition revision with the specified name.
-
-    This module pretends to be used as a safer way to create ECS task definitions, by using the `terraform` way to create them, and parsing the resulting object as a valid .json
-    that can be used in an ECS service.
-    The ecs task definitions that can be created, can also manage two particular attributes that are usually configured outside of
-    terraform, these are:
-    * `containerDefinitions` : This attributes list particular settings of the container that will be created, such as the image, the port mappings, the environment variables, etc.
-    For more information, please refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html).
-    if the option `manage_task_outside_of_terraform` is set in the input variable `var.task_config`, then the container definitions will be managed outside of terraform,
-    and the module will only create the task definition, but ignore any further changes to the container definitions.
+    This module creates an event bridge rule, with the following capabilities:
+    * 🚀 **Event bridge rule**: Event bridge rule with the specified name.
+    * 🚀 **Event pattern**: Event pattern to filter the events that will trigger the rule.
 
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
 
     ```hcl
-    {{ include "../../examples/ecs-task/basic/main.tf" }}
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/main.tf" }}
+    ```
+
+    Simple example of a basic implementation.
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures.tfvars" }}
+    ```
+
+    Example where multiple event rules are created at once.
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures-multiple.tfvars" }}
+    ```
+
+    Example where an event pattern is passed.
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures-event-patterns.tfvars" }}
     ```
 
     For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
