@@ -39,10 +39,11 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 
 ### Capabilities
 
-| Module                | Status   | Description                                                     |
-|-----------------------|----------|-----------------------------------------------------------------|
-| `aws-eventbridge-rul` | Stable ✅ | Create an event rule, that can work with several destinations.. |
-| `aws-lambda-function` | Stable ✅ | Create a lambda function, for different use-case.               |
+| Module                        | Status   | Description                                                                                                           |
+|-------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| `aws-eventbridge-rule`        | Stable ✅ | Create an event rule, that can work with several destinations..                                                       |
+| `aws-eventbridge-permissions` | Stable ✅ | Opinionated module to create custom (and usually required) permissions for an eventbridge resource, normally `rules`. |
+| `aws-lambda-function`         | Stable ✅ | Create a lambda function, for different use-case.                                                                     |
 
 
 
