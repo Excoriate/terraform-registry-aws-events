@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.1...v0.1.2) (2023-04-18)
+
+
+### Features
+
+* add eventbridge permissions module ([8ef4f3d](https://github.com/Excoriate/terraform-registry-aws-events/commit/8ef4f3d300f26ae087dae5662056e38cc5d6f17c))
+
 ## [0.1.1](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.0...v0.1.1) (2023-04-17)
 
 
