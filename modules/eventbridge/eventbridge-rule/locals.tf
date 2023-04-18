@@ -14,11 +14,14 @@ locals {
   // 1. Parent event rule
   rule_cfg_normalised = !local.is_rule_enabled ? [] : [
     for rule in var.rule_config : {
-      name                = lower(trimspace(rule.name))
-      description         = rule["description"] == null ? "" : trimspace(rule["description"])
-      is_enabled          = rule["is_enabled"] == null ? true : rule["is_enabled"]
-      event_bus_name      = rule["event_bus_name"] == null ? "default" : trimspace(rule["event_bus_name"])
-      schedule_expression = rule["schedule_expression"] == null ? "" : trimspace(rule["schedule_expression"])
+      name                       = lower(trimspace(rule.name))
+      description                = rule["description"] == null ? "" : trimspace(rule["description"])
+      is_enabled                 = rule["is_enabled"] == null ? true : rule["is_enabled"]
+      event_bus_name             = rule["event_bus_name"] == null ? "default" : trimspace(rule["event_bus_name"])
+      schedule_expression        = rule["schedule_expression"] == null ? "" : trimspace(rule["schedule_expression"])
+      role_arn                   = rule["role_arn"] == null ? "" : trimspace(rule["role_arn"])
+      disable_default_role       = rule["disable_default_role"] == null ? false : rule["disable_default_role"] == true
+      is_default_role_to_be_used = rule["disable_default_role"] == true ? false : rule["role_arn"] == null ? true : rule["role_arn"] == "" ? true : false
     }
   ]
 

@@ -33,18 +33,3 @@ output "event_rule_event_pattern" {
   value       = module.main_module.event_rule_event_pattern
   description = "The event pattern of the CloudWatch Event Rule."
 }
-
-output "event_rule_iam_role_id" {
-  value       = module.main_module.event_rule_iam_role_id
-  description = "The IAM role ARN of the CloudWatch Event Rule."
-}
-
-output "event_rule_iam_role_arn" {
-  value       = module.main_module.event_rule_iam_role_arn
-  description = "The IAM role ARN of the CloudWatch Event Rule."
-}
-
-output "event_rule_iam_role_name" {
-  value       = module.main_module.event_rule_iam_role_name
-  description = "The IAM role name of the CloudWatch Event Rule."
-}

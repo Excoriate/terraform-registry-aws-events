@@ -42,3 +42,18 @@ output "event_rule_event_pattern" {
   value       = [for r in aws_cloudwatch_event_rule.this : r.event_pattern]
   description = "The event pattern of the CloudWatch Event Rule."
 }
+
+output "event_rule_iam_role_id" {
+  value       = [for a in aws_iam_role.this : a.id]
+  description = "The IAM role ARN of the CloudWatch Event Rule."
+}
+
+output "event_rule_iam_role_arn" {
+  value       = [for a in aws_iam_role.this : a.arn]
+  description = "The IAM role ARN of the CloudWatch Event Rule."
+}
+
+output "event_rule_iam_role_name" {
+  value       = [for a in aws_iam_role.this : a.name]
+  description = "The IAM role name of the CloudWatch Event Rule."
+}

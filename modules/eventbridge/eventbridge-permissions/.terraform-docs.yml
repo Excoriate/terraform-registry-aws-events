@@ -1,0 +1,65 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # ☁️ Event bridge rule
+    ## Description
+    {{ .Header }}
+    This module creates an event bridge rule, with the following capabilities:
+    * 🚀 **Event bridge rule**: Event bridge rule with the specified name.
+    * 🚀 **Event pattern**: Event pattern to filter the events that will trigger the rule.
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/main.tf" }}
+    ```
+
+    Simple example of a basic implementation.
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures.tfvars" }}
+    ```
+
+    Example where multiple event rules are created at once.
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures-multiple.tfvars" }}
+    ```
+
+    Example where an event pattern is passed.
+    ```hcl
+    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures-event-patterns.tfvars" }}
+    ```
+
+    For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
+    ```hcl
+    {{ include "outputs.tf" }}
+    ```
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true
