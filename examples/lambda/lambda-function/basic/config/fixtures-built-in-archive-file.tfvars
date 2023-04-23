@@ -6,14 +6,16 @@ lambda_config = [
     name          = "lambda-func-test"
     function_name = "simple-basic-function"
     handler       = "handler.handler"
-    filename      = "lambda.zip"
+    runtime       = "nodejs18.x"
+    timeout       = 20
   }
 ]
 
 lambda_observability_config = [
   {
-    name         = "lambda-func-test"
-    logs_enabled = true
+    name            = "lambda-func-test"
+    logs_enabled    = true
+    tracing_enabled = true
   }
 ]
 
@@ -27,8 +29,15 @@ lambda_host_config = [
   {
     name = "lambda-func-test"
     environment_variables = {
-      "ENV_VAR"  = "value"
-      "ENV_VAR2" = "value2"
+      "ENV_VAR" = "from-archive"
     }
+  }
+]
+
+lambda_archive_config = [
+  {
+    name         = "lambda-func-test"
+    source_file  = "handler.js"
+    package_name = "deployed_from_archive_terraform.zip"
   }
 ]

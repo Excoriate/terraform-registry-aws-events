@@ -36,3 +36,58 @@ resource "aws_iam_role" "this" {
 
   tags = var.tags
 }
+
+/*
+  * -------------------------------
+  * Eventbridge
+  * -------------------------------
+*/
+resource "aws_lambda_permission" "eventbridge" {
+  for_each      = local.eventbridge_cfg
+  statement_id  = format("AllowExecutionFromEventBridge-%s", each.key)
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.this[each.key].function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = each.value["source_arn"]
+  qualifier     = each.value["qualifier"]
+}
+
+/*
+  * -------------------------------
+  * AWS Secrets manager
+  * -------------------------------
+*/
+resource "aws_lambda_permission" "secretsmanager" {
+  for_each      = local.secretsmanager_cfg
+  statement_id  = format("AllowExecutionFromSecretsManager-%s", each.key)
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.this[each.key].function_name
+  principal     = "secretsmanager.amazonaws.com"
+  source_arn    = each.value["source_arn"]
+  qualifier     = each.value["qualifier"]
+}
+
+/*
+  * -------------------------------
+  * Deployment bucket
+  * -------------------------------
+*/
+data "aws_iam_policy_document" "deployment_bucket" {
+  for_each = { for k, v in local.s3_deploy_cfg : k => v if v["enable_deployment_from_bucket"] }
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload"
+    ]
+    resources = [
+      lookup(data.aws_s3_bucket.this[each.key], "arn", null),
+      "${lookup(data.aws_s3_bucket.this[each.key], "arn", null)}/*"
+    ]
+  }
+}
