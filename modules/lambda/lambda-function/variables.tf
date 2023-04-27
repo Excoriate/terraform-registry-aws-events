@@ -39,6 +39,16 @@ variable "lambda_config" {
     package_type                             = optional(string, "Zip")
     timeout                                  = optional(number, 3)
     enable_update_function_on_archive_change = optional(bool, false)
+    // Describe the types of lambda deployments that are supported by this module.
+    deployment_type = optional(object({
+      from_file                            = optional(bool, false)
+      from_docker                          = optional(bool, false)
+      from_archive                         = optional(bool, false)
+      from_s3_existing_file                = optional(bool, false)
+      from_s3_new_file                     = optional(bool, false)
+      from_s3_managed_bucket_existing_file = optional(bool, false)
+      from_s3_managed_bucket_new_file      = optional(bool, false)
+    }), null)
   }))
   default     = null
   description = <<EOF
@@ -49,12 +59,12 @@ The currently supported attributes are:
 
 variable "lambda_archive_config" {
   type = list(object({
-    name          = string
-    function_name = optional(string, null)
-    source_dir    = optional(string, null)
-    source_file   = optional(string, null)
-    package_name  = optional(string, "lambda.zip")
-    exclude_files = optional(list(string), [])
+    name           = string
+    function_name  = optional(string, null)
+    source_dir     = optional(string, null)
+    source_file    = optional(string, null)
+    package_name   = optional(string, "lambda.zip")
+    excluded_files = optional(list(string), [])
   }))
   default     = null
   description = <<EOF
@@ -77,14 +87,15 @@ variable "lambda_image_config" {
 EOF
 }
 
-variable "lambda_s3_deployment_config" {
+variable "lambda_s3_from_bucket_config" {
   type = list(object({
-    name                          = string
-    function_name                 = optional(string, null)
-    s3_bucket                     = string
-    s3_key                        = string
-    s3_object_version             = optional(string, null)
-    enable_deployment_from_bucket = optional(bool, false)
+    name            = string
+    s3_bucket       = string
+    source_zip_file = optional(string, null)
+    source_config = optional(object({
+      source_file = optional(string, null)
+      source_dir  = optional(string, null)
+    }), null)
   }))
   default     = null
   description = <<EOF

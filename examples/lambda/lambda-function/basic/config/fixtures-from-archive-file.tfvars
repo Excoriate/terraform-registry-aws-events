@@ -8,6 +8,9 @@ lambda_config = [
     handler       = "handler.handler"
     runtime       = "nodejs18.x"
     timeout       = 20
+    deployment_type = {
+      from_archive = true
+    }
   }
 ]
 

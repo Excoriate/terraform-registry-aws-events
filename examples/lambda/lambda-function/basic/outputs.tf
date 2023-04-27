@@ -9,3 +9,7 @@ output "is_enabled" {
 Custom outputs
 -------------------------------------
 */
+output "lambda_config_resolved" {
+  value       = module.main_module.lambda_config_resolved
+  description = "The resolved lambda configuration."
+}

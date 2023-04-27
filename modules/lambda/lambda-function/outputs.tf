@@ -18,3 +18,10 @@ output "tags_set" {
 Custom outputs
 -------------------------------------
 */
+output "lambda_config_resolved" {
+  value = {
+    lambda_cfg  = local.lambda_cfg
+    archive_cfg = local.archive_cfg
+  }
+  description = "The resolved lambda configuration."
+}

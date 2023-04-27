@@ -4,7 +4,6 @@ locals {
   is_lambda_permissions_config_enabled   = !local.is_module_enabled ? false : var.lambda_permissions_config == null ? false : length(var.lambda_permissions_config) > 0
   is_lambda_archive_config_enabled       = !local.is_module_enabled ? false : var.lambda_archive_config == null ? false : length(var.lambda_archive_config) > 0
   is_lambda_image_config_enabled         = !local.is_module_enabled ? false : var.lambda_image_config == null ? false : length(var.lambda_image_config) > 0
-  is_lambda_s3_deployment_config_enabled = !local.is_module_enabled ? false : var.lambda_s3_deployment_config == null ? false : length(var.lambda_s3_deployment_config) > 0
   is_lambda_custom_policy_arns_enabled   = !local.is_module_enabled ? false : var.lambda_custom_policies_config == null ? false : length(var.lambda_custom_policies_config) > 0
   is_lambda_eventbridge_enabled          = !local.is_module_enabled ? false : var.lambda_enable_eventbridge == null ? false : length(var.lambda_enable_eventbridge) > 0
   is_lambda_secrets_manager_enabled      = !local.is_module_enabled ? false : var.lambda_enable_secrets_manager == null ? false : length(var.lambda_enable_secrets_manager) > 0
@@ -12,6 +11,7 @@ locals {
   is_lambda_network_config_enabled       = !local.is_module_enabled ? false : var.lambda_network_config == null ? false : length(var.lambda_network_config) > 0
   is_lambda_observability_config_enabled = !local.is_module_enabled ? false : var.lambda_observability_config == null ? false : length(var.lambda_observability_config) > 0
   is_lambda_alias_config_enabled         = !local.is_module_enabled ? false : var.lambda_alias_config == null ? false : length(var.lambda_alias_config) > 0
+  is_s3_from_bucket_config_enabled       = !local.is_module_enabled ? false : var.lambda_s3_from_bucket_config == null ? false : length(var.lambda_s3_from_bucket_config) > 0
 
   /*
     * -------------------------------
@@ -35,9 +35,14 @@ locals {
       publish                                  = l["publish"] == null ? false : l["publish"]
       timeout                                  = l["timeout"] == null ? 3 : l["timeout"]
       enable_update_function_on_archive_change = l["enable_update_function_on_archive_change"] == null ? false : l["enable_update_function_on_archive_change"]
-
-      #      // Special options.
-      #      is_provisioned_concurrency_enabled                 = l["provision_concurrency"] != null
+      // Options that describe the deployment types:
+      enabled_from_file                            = l["deployment_type"] == null ? true : lookup(l["deployment_type"], "from_file", false) == true
+      enabled_from_archive                         = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_archive", false) == true
+      enabled_from_docker                          = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_docker", false) == true
+      enabled_from_s3_existing_file                = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_file", false) == true
+      enabled_from_s3_new_file                     = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_new_file", false) == true
+      enabled_from_s3_managed_bucket_existing_file = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_managed_bucket_existing_file", false) == true
+      enabled_from_s3_managed_bucket_new_file      = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_managed_bucket_new_file", false) == true
     }
   ]
 
@@ -74,12 +79,12 @@ locals {
   */
   archive = !local.is_lambda_archive_config_enabled ? [] : [
     for a in var.lambda_archive_config : {
-      name          = trimspace(lower(a.name))
-      function_name = a["function_name"] == null ? trimspace(a.name) : a["function_name"]
-      source_dir    = a["source_dir"] == null ? null : trimspace(a["source_dir"])
-      source_file   = a["source_file"] == null ? null : trimspace(a["source_file"])
-      package_name  = trimspace(a["package_name"])
-      exclude_files = a["exclude_files"] == null ? [] : [for file in a["exclude_files"] : trimspace(file)]
+      name           = trimspace(lower(a.name))
+      function_name  = a["function_name"] == null ? trimspace(a.name) : a["function_name"]
+      source_dir     = a["source_dir"] == null ? null : trimspace(a["source_dir"])
+      source_file    = a["source_file"] == null ? null : trimspace(a["source_file"])
+      package_name   = trimspace(a["package_name"])
+      excluded_files = a["excluded_files"] == null ? [] : [for file in a["excluded_files"] : trimspace(file)]
     }
   ]
 
@@ -92,18 +97,22 @@ locals {
     * Lambda S3 (deployment) configuration
     * -------------------------------
   */
-  s3_deploy = !local.is_lambda_s3_deployment_config_enabled ? [] : [
-    for s in var.lambda_s3_deployment_config : {
-      name                          = trimspace(lower(s.name))
-      function_name                 = s["function_name"] == null ? trimspace(s.name) : s["function_name"]
-      s3_bucket                     = s["s3_bucket"] == null ? null : trimspace(s["s3_bucket"])
-      s3_key                        = s["s3_key"] == null ? null : trimspace(s["s3_key"])
-      s3_object_version             = s["s3_object_version"] == null ? null : trimspace(s["s3_object_version"])
-      enable_deployment_from_bucket = s["enable_deployment_from_bucket"] == null ? false : s["enable_deployment_from_bucket"]
+  s3_deploy = !local.is_s3_from_bucket_config_enabled ? [] : [
+    for s in var.lambda_s3_from_bucket_config : {
+      name            = trimspace(lower(s.name))
+      s3_bucket       = s["s3_bucket"] == null ? null : trimspace(s["s3_bucket"])
+      source_zip_file = s["source_zip_file"] == null ? null : trimspace(s["source_zip_file"])
+      source_file     = s["source_config"] == null ? null : trimspace(s["source_config"]["source_file"])
+      source_dir      = s["source_config"] == null ? null : trimspace(s["source_config"]["source_dir"])
+
+      // feature flags
+      is_existing_zip_file             = s["source_zip_file"] != null
+      is_zip_to_be_generated_from_file = s["source_config"] == null ? false : lookup(s["source_config"], "source_file", null) != null
+      is_zip_to_be_generated_from_dir  = s["source_config"] == null ? false : lookup(s["source_config"], "source_dir", null) != null && lookup(s["source_config"], "source_file", null) == null
     }
   ]
 
-  s3_deploy_cfg = !local.is_lambda_s3_deployment_config_enabled ? {} : {
+  s3_deploy_cfg = !local.is_s3_from_bucket_config_enabled ? {} : {
     for s in local.s3_deploy : s["name"] => s
   }
 

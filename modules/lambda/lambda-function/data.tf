@@ -1,4 +1,4 @@
-data "archive_file" "source_file" {
+data "archive_file" "from_archive_source_file" {
   for_each         = { for k, v in local.archive_cfg : k => v if v["source_file"] != null }
   type             = "zip"
   source_file      = each.value["source_file"]
@@ -15,18 +15,19 @@ data "archive_file" "source_file" {
       condition     = contains([".zip"], substr(each.value["package_name"], -4, 4))
       error_message = "The file ${each.value["package_name"]} does not exist or is not a file"
     }
+
+    precondition {
+      condition     = each.value["excluded_files"] == null
+      error_message = "The option 'excluded_files' is not allowed for the source_file option"
+    }
   }
 }
 
-data "archive_file" "source_dir" {
+data "archive_file" "from_archive_source_dir" {
   for_each         = { for k, v in local.archive_cfg : k => v if v["source_dir"] != null }
   type             = "zip"
   source_dir       = each.value["source_dir"]
   output_file_mode = "0666"
   output_path      = each.value["package_name"]
-}
-
-data "aws_s3_bucket" "this" {
-  for_each = local.s3_deploy_cfg
-  bucket   = each.value["s3_bucket"]
+  excludes         = each.value["excluded_files"]
 }

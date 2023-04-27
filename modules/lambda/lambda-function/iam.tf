@@ -46,7 +46,7 @@ resource "aws_lambda_permission" "eventbridge" {
   for_each      = local.eventbridge_cfg
   statement_id  = format("AllowExecutionFromEventBridge-%s", each.key)
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.this[each.key].function_name
+  function_name = aws_lambda_function.default[each.key].function_name
   principal     = "events.amazonaws.com"
   source_arn    = each.value["source_arn"]
   qualifier     = each.value["qualifier"]
@@ -61,7 +61,7 @@ resource "aws_lambda_permission" "secretsmanager" {
   for_each      = local.secretsmanager_cfg
   statement_id  = format("AllowExecutionFromSecretsManager-%s", each.key)
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.this[each.key].function_name
+  function_name = aws_lambda_function.default[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
   source_arn    = each.value["source_arn"]
   qualifier     = each.value["qualifier"]
@@ -73,7 +73,7 @@ resource "aws_lambda_permission" "secretsmanager" {
   * -------------------------------
 */
 data "aws_iam_policy_document" "deployment_bucket" {
-  for_each = { for k, v in local.s3_deploy_cfg : k => v if v["enable_deployment_from_bucket"] }
+  for_each = local.s3_deploy_cfg
   statement {
     effect = "Allow"
     actions = [
