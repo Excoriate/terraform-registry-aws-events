@@ -76,6 +76,7 @@ variable "lambda_image_config" {
     name          = string
     function_name = optional(string, null)
     image_uri     = string
+    ecr_arn       = optional(string, null)
     image_config = optional(list(object({
       command           = optional(list(string), [])
       entry_point       = optional(list(string), [])

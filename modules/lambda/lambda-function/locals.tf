@@ -3,7 +3,7 @@ locals {
   is_module_enabled                      = !var.is_enabled ? false : var.lambda_config == null ? false : length(var.lambda_config) > 0
   is_lambda_permissions_config_enabled   = !local.is_module_enabled ? false : var.lambda_permissions_config == null ? false : length(var.lambda_permissions_config) > 0
   is_lambda_archive_config_enabled       = !local.is_module_enabled ? false : var.lambda_archive_config == null ? false : length(var.lambda_archive_config) > 0
-  is_lambda_image_config_enabled         = !local.is_module_enabled ? false : var.lambda_image_config == null ? false : length(var.lambda_image_config) > 0
+  is_lambda_docker_config_enabled        = !local.is_module_enabled ? false : var.lambda_image_config == null ? false : length(var.lambda_image_config) > 0
   is_lambda_custom_policy_arns_enabled   = !local.is_module_enabled ? false : var.lambda_custom_policies_config == null ? false : length(var.lambda_custom_policies_config) > 0
   is_lambda_eventbridge_enabled          = !local.is_module_enabled ? false : var.lambda_enable_eventbridge == null ? false : length(var.lambda_enable_eventbridge) > 0
   is_lambda_secrets_manager_enabled      = !local.is_module_enabled ? false : var.lambda_enable_secrets_manager == null ? false : length(var.lambda_enable_secrets_manager) > 0
@@ -20,13 +20,14 @@ locals {
   */
   lambda = !local.is_module_enabled ? [] : [
     for l in var.lambda_config : {
-      name                           = trimspace(lower(l.name))
-      function_name                  = l["function_name"] == null ? trimspace(l.name) : l["function_name"]
-      description                    = l["description"] == null ? format("Lambda function for %s", trimspace(l.name)) : l["description"]
-      memory_size                    = l["memory_size"] == null ? 128 : l["memory_size"]
-      filename                       = l["filename"] == null ? null : trimspace(l["filename"])
-      architectures                  = l["architectures"] == null ? ["x86_64"] : l["architectures"]
-      handler                        = l.handler
+      name          = trimspace(lower(l.name))
+      function_name = l["function_name"] == null ? trimspace(l.name) : l["function_name"]
+      description   = l["description"] == null ? format("Lambda function for %s", trimspace(l.name)) : l["description"]
+      memory_size   = l["memory_size"] == null ? 128 : l["memory_size"]
+      filename      = l["filename"] == null ? null : trimspace(l["filename"])
+      architectures = l["architectures"] == null ? ["x86_64"] : l["architectures"]
+      // Since the handler is mandatory, but it's incompatible with the 'Image' package type, it's handled at the normalizer.
+      handler                        = l["deployment_type"] == null ? l.handler : lookup(l["deployment_type"], "from_docker", false) ? null : l.handler
       reserved_concurrent_executions = l["reserved_concurrent_executions"]
       #      provision_concurrency             = l["provision_concurrency"]
       runtime                                  = l["runtime"] == null ? null : trimspace(l["runtime"])
@@ -122,11 +123,12 @@ locals {
     * Lambda image configuration
     * -------------------------------
   */
-  lambda_image = !local.is_lambda_image_config_enabled ? [] : [
+  lambda_docker = !local.is_lambda_docker_config_enabled ? [] : [
     for i in var.lambda_image_config : {
       name          = trimspace(lower(i.name))
       function_name = i["function_name"] == null ? trimspace(i.name) : i["function_name"]
       image_uri     = i["image_uri"]
+      ecr_arn       = i["ecr_arn"] == null ? null : trimspace(i["ecr_arn"])
       image_config = i["image_config"] == null ? [] : [
         for c in i["image_config"] : {
           command           = c["command"] == null ? [] : c["command"]
@@ -137,8 +139,8 @@ locals {
     }
   ]
 
-  lambda_image_cfg = !local.is_lambda_image_config_enabled ? {} : {
-    for i in local.lambda_image : i["name"] => i
+  lambda_docker_cfg = !local.is_lambda_docker_config_enabled ? {} : {
+    for i in local.lambda_docker : i["name"] => i
   }
 
   /*

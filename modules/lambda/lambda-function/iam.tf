@@ -91,3 +91,36 @@ data "aws_iam_policy_document" "deployment_bucket" {
     ]
   }
 }
+
+/*
+  * -------------------------------
+  * Permissions to deploy the lambda
+  * from ECR, when the lambda from-docker
+  * option is set.
+  * -------------------------------
+*/
+data "aws_iam_policy_document" "deploy_from_ecr" {
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_docker"] == true && lookup(local.lambda_docker_cfg, k, null) != null }
+
+  statement {
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+    ]
+
+    resources = lookup(local.lambda_docker_cfg[each.key], "ecr_arn", null) == null ? ["*"] : [lookup(local.lambda_docker_cfg[each.key], "ecr_arn")]
+  }
+}
+
+resource "aws_iam_policy" "deploy_from_ecr" {
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_docker"] == true && lookup(local.lambda_docker_cfg, k, null) != null }
+  name     = format("deploy_from_ecr-%s", each.key)
+  policy   = data.aws_iam_policy_document.deploy_from_ecr[each.key].json
+}
+
+resource "aws_iam_role_policy_attachment" "deploy_from_ecr" {
+  for_each   = { for k, v in local.lambda_cfg : k => v if v["enabled_from_docker"] == true && lookup(local.lambda_docker_cfg, k, null) != null }
+  role       = aws_iam_role.this[each.key].name
+  policy_arn = aws_iam_policy.deploy_from_ecr[each.key].arn
+}
