@@ -52,3 +52,4 @@
 # Automatically generated. Do not modify. Check DevDex/scripts/aws/set-aws-creds.sh for more details...
 .env.sandbox.aws
 .DS_Store
+*.zip
