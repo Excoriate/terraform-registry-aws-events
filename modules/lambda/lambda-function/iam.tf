@@ -73,7 +73,7 @@ resource "aws_lambda_permission" "secretsmanager" {
   * -------------------------------
 */
 data "aws_iam_policy_document" "deployment_bucket" {
-  for_each = local.s3_deploy_cfg
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] }
   statement {
     effect = "Allow"
     actions = [

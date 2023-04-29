@@ -31,3 +31,13 @@ data "archive_file" "from_archive_source_dir" {
   output_path      = each.value["package_name"]
   excludes         = each.value["excluded_files"]
 }
+
+/*
+* -----------------------------------
+* S3 related datasources
+* -----------------------------------
+*/
+data "aws_s3_bucket" "this" {
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] }
+  bucket   = lookup(local.s3_from_existing_cfg[each.key], "s3_bucket")
+}

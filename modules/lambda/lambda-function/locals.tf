@@ -11,7 +11,8 @@ locals {
   is_lambda_network_config_enabled       = !local.is_module_enabled ? false : var.lambda_network_config == null ? false : length(var.lambda_network_config) > 0
   is_lambda_observability_config_enabled = !local.is_module_enabled ? false : var.lambda_observability_config == null ? false : length(var.lambda_observability_config) > 0
   is_lambda_alias_config_enabled         = !local.is_module_enabled ? false : var.lambda_alias_config == null ? false : length(var.lambda_alias_config) > 0
-  is_s3_from_bucket_config_enabled       = !local.is_module_enabled ? false : var.lambda_s3_from_bucket_config == null ? false : length(var.lambda_s3_from_bucket_config) > 0
+  // Specific feature flags for S3-related capabilities.
+  is_s3_from_existing_config_enabled = !local.is_module_enabled ? false : var.lambda_s3_from_existing_config == null ? false : length(var.lambda_s3_from_existing_config) > 0
 
   /*
     * -------------------------------
@@ -95,28 +96,26 @@ locals {
 
   /*
     * -------------------------------
-    * Lambda S3 (deployment) configuration
+    * Lambda S3 (deployment) from existing
+    * bucket, and zip file.
     * -------------------------------
   */
-  s3_deploy = !local.is_s3_from_bucket_config_enabled ? [] : [
-    for s in var.lambda_s3_from_bucket_config : {
-      name            = trimspace(lower(s.name))
-      s3_bucket       = s["s3_bucket"] == null ? null : trimspace(s["s3_bucket"])
-      source_zip_file = s["source_zip_file"] == null ? null : trimspace(s["source_zip_file"])
-      source_file     = s["source_config"] == null ? null : trimspace(s["source_config"]["source_file"])
-      source_dir      = s["source_config"] == null ? null : trimspace(s["source_config"]["source_dir"])
+  s3_from_existing = !local.is_s3_from_existing_config_enabled ? [] : [
+    for s in var.lambda_s3_from_existing_config : {
+      name              = trimspace(lower(s.name))
+      function_name     = s["function_name"] == null ? trimspace(s.name) : s["function_name"]
+      s3_bucket         = trimspace(s["s3_bucket"])
+      s3_key            = trimspace(s["s3_key"])
+      s3_object_version = s["s3_object_version"] == null ? null : trimspace(s["s3_object_version"])
 
       // feature flags
-      is_existing_zip_file             = s["source_zip_file"] != null
-      is_zip_to_be_generated_from_file = s["source_config"] == null ? false : lookup(s["source_config"], "source_file", null) != null
-      is_zip_to_be_generated_from_dir  = s["source_config"] == null ? false : lookup(s["source_config"], "source_dir", null) != null && lookup(s["source_config"], "source_file", null) == null
+      ignore_version_changes_enabled = s["ignore_version_changes"] == null ? false : s["ignore_version_changes"]
     }
   ]
 
-  s3_deploy_cfg = !local.is_s3_from_bucket_config_enabled ? {} : {
-    for s in local.s3_deploy : s["name"] => s
+  s3_from_existing_cfg = !local.is_s3_from_existing_config_enabled ? {} : {
+    for s in local.s3_from_existing : s["name"] => s
   }
-
 
   /*
     * -------------------------------
