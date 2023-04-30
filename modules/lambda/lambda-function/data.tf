@@ -37,7 +37,34 @@ data "archive_file" "from_archive_source_dir" {
 * S3 related datasources
 * -----------------------------------
 */
-data "aws_s3_bucket" "this" {
+data "aws_s3_bucket" "s3_existing_mode_existing_file" {
   for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] }
   bucket   = lookup(local.s3_from_existing_cfg[each.key], "s3_bucket")
+}
+
+data "aws_s3_bucket" "s3_existing_mode_new_file" {
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] }
+  bucket   = lookup(local.s3_from_existing_new_file_cfg[each.key], "s3_bucket")
+}
+
+data "local_file" "existing_zip" {
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "use_zip_file", false) }
+  filename = lookup(local.s3_from_existing_new_file_cfg[each.key], "source_zip_file")
+}
+
+data "archive_file" "compress_from_file" {
+  for_each         = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_file", false) }
+  type             = "zip"
+  output_file_mode = "0666"
+  output_path      = "generated-zip-from-file-${each.key}.zip"
+  source_file      = lookup(local.s3_from_existing_new_file_cfg[each.key], "compress_from_file")
+}
+
+data "archive_file" "compress_from_dir" {
+  for_each         = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_dir", false) }
+  type             = "zip"
+  output_file_mode = "0666"
+  output_path      = "generated-zip-from-dir-${each.key}.zip"
+  excludes         = lookup(local.s3_from_existing_new_file_cfg[each.key], "excluded_files", null)
+  source_dir       = lookup(local.s3_from_existing_new_file_cfg[each.key], "compress_from_dir")
 }

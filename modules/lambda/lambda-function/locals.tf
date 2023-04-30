@@ -12,7 +12,8 @@ locals {
   is_lambda_observability_config_enabled = !local.is_module_enabled ? false : var.lambda_observability_config == null ? false : length(var.lambda_observability_config) > 0
   is_lambda_alias_config_enabled         = !local.is_module_enabled ? false : var.lambda_alias_config == null ? false : length(var.lambda_alias_config) > 0
   // Specific feature flags for S3-related capabilities.
-  is_s3_from_existing_config_enabled = !local.is_module_enabled ? false : var.lambda_s3_from_existing_config == null ? false : length(var.lambda_s3_from_existing_config) > 0
+  is_s3_from_existing_config_enabled          = !local.is_module_enabled ? false : var.lambda_s3_from_existing_config == null ? false : length(var.lambda_s3_from_existing_config) > 0
+  is_s3_from_existing_new_file_config_enabled = !local.is_module_enabled ? false : var.lambda_s3_from_existing_new_file_config == null ? false : length(var.lambda_s3_from_existing_new_file_config) > 0
 
   /*
     * -------------------------------
@@ -42,7 +43,7 @@ locals {
       enabled_from_archive                         = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_archive", false) == true
       enabled_from_docker                          = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_docker", false) == true
       enabled_from_s3_existing_file                = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_file", false) == true
-      enabled_from_s3_new_file                     = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_new_file", false) == true
+      enabled_from_s3_existing_new_file            = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_new_file", false) == true
       enabled_from_s3_managed_bucket_existing_file = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_managed_bucket_existing_file", false) == true
       enabled_from_s3_managed_bucket_new_file      = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_managed_bucket_new_file", false) == true
     }
@@ -115,6 +116,34 @@ locals {
 
   s3_from_existing_cfg = !local.is_s3_from_existing_config_enabled ? {} : {
     for s in local.s3_from_existing : s["name"] => s
+  }
+
+  /*
+    * -------------------------------
+    * Lambda S3 (deployment) from existing
+    * bucket, with a managed (uncompress/compressed) file
+    * -------------------------------
+  */
+  s3_from_existing_new_file = !local.is_s3_from_existing_new_file_config_enabled ? [] : [
+    for s in var.lambda_s3_from_existing_new_file_config : {
+      name               = trimspace(lower(s.name))
+      function_name      = s["function_name"] == null ? trimspace(s.name) : s["function_name"]
+      s3_bucket          = trimspace(s.s3_bucket)
+      source_zip_file    = s["source_zip_file"] == null ? null : trimspace(s["source_zip_file"])
+      compress_from_file = s["compress_from_file"] == null ? null : trimspace(s["compress_from_file"])
+      compress_from_dir  = s["compress_from_dir"] == null ? null : trimspace(s["compress_from_dir"])
+      excluded_files     = s["excluded_files"] == null ? [] : [for file in s["excluded_files"] : trimspace(file)]
+
+      // feature flags
+      use_zip_file                   = s["source_zip_file"] != null
+      generate_zip_from_file         = s["source_zip_file"] == null && s["compress_from_file"] != null
+      generate_zip_from_dir          = s["source_zip_file"] == null && s["compress_from_file"] == null && s["compress_from_dir"] != null
+      ignore_version_changes_enabled = s["ignore_version_changes"] == null ? false : s["ignore_version_changes"]
+    }
+  ]
+
+  s3_from_existing_new_file_cfg = !local.is_s3_from_existing_new_file_config_enabled ? {} : {
+    for s in local.s3_from_existing_new_file : s["name"] => s
   }
 
   /*

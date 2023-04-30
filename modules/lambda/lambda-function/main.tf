@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "default" {
-  for_each                       = { for k, v in local.lambda_cfg : k => v if v["enabled_from_file"] && !v["enabled_from_archive"] && !v["enabled_from_docker"] && !v["enabled_from_s3_existing_file"] && !v["enabled_from_s3_new_file"] && !v["enabled_from_s3_managed_bucket_existing_file"] && !v["enabled_from_s3_managed_bucket_new_file"] }
+  for_each                       = { for k, v in local.lambda_cfg : k => v if v["enabled_from_file"] && !v["enabled_from_archive"] && !v["enabled_from_docker"] && !v["enabled_from_s3_existing_file"] && !v["enabled_from_s3_existing_new_file"] && !v["enabled_from_s3_managed_bucket_existing_file"] && !v["enabled_from_s3_managed_bucket_new_file"] }
   function_name                  = each.value["function_name"]
   handler                        = each.value["handler"]
   description                    = each.value["description"]
@@ -99,7 +99,7 @@ resource "aws_lambda_function" "default" {
     }
 
     precondition {
-      condition     = each.value["enabled_from_file"] && !each.value["enabled_from_archive"] && !each.value["enabled_from_docker"] && !each.value["enabled_from_s3_existing_file"] && !each.value["enabled_from_s3_new_file"] && !each.value["enabled_from_s3_managed_bucket_existing_file"] && !each.value["enabled_from_s3_managed_bucket_new_file"]
+      condition     = each.value["enabled_from_file"] && !each.value["enabled_from_archive"] && !each.value["enabled_from_docker"] && !each.value["enabled_from_s3_existing_file"] && !each.value["enabled_from_s3_existing_new_file"] && !each.value["enabled_from_s3_managed_bucket_existing_file"] && !each.value["enabled_from_s3_managed_bucket_new_file"]
       error_message = "The Lambda function configuration is inconsistent, the 'enabled_from_file' is set to true, but the other options are not set to false."
     }
   }

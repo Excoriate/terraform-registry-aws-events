@@ -72,7 +72,7 @@ resource "aws_lambda_permission" "secretsmanager" {
   * Deployment bucket
   * -------------------------------
 */
-data "aws_iam_policy_document" "deployment_bucket" {
+data "aws_iam_policy_document" "external_deployment_bucket_existing_file" {
   for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] }
   statement {
     effect = "Allow"
@@ -86,11 +86,32 @@ data "aws_iam_policy_document" "deployment_bucket" {
       "s3:AbortMultipartUpload"
     ]
     resources = [
-      lookup(data.aws_s3_bucket.this[each.key], "arn", null),
-      "${lookup(data.aws_s3_bucket.this[each.key], "arn", null)}/*"
+      lookup(data.aws_s3_bucket.s3_existing_mode_existing_file[each.key], "arn", null),
+      "${lookup(data.aws_s3_bucket.s3_existing_mode_existing_file[each.key], "arn", null)}/*"
     ]
   }
 }
+
+data "aws_iam_policy_document" "external_deployment_bucket_new_file" {
+  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] }
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListMultipartUploadParts",
+      "s3:AbortMultipartUpload"
+    ]
+    resources = [
+      lookup(data.aws_s3_bucket.s3_existing_mode_new_file[each.key], "arn", null),
+      "${lookup(data.aws_s3_bucket.s3_existing_mode_new_file[each.key], "arn", null)}/*"
+    ]
+  }
+}
+
 
 /*
   * -------------------------------
