@@ -14,6 +14,7 @@ locals {
   // Specific feature flags for S3-related capabilities.
   is_s3_from_existing_config_enabled          = !local.is_module_enabled ? false : var.lambda_s3_from_existing_config == null ? false : length(var.lambda_s3_from_existing_config) > 0
   is_s3_from_existing_new_file_config_enabled = !local.is_module_enabled ? false : var.lambda_s3_from_existing_new_file_config == null ? false : length(var.lambda_s3_from_existing_new_file_config) > 0
+  is_full_managed_enabled                     = !local.is_module_enabled ? false : var.lambda_full_managed_config == null ? false : length(var.lambda_full_managed_config) > 0
 
   /*
     * -------------------------------
@@ -39,18 +40,44 @@ locals {
       timeout                                  = l["timeout"] == null ? 3 : l["timeout"]
       enable_update_function_on_archive_change = l["enable_update_function_on_archive_change"] == null ? false : l["enable_update_function_on_archive_change"]
       // Options that describe the deployment types:
-      enabled_from_file                            = l["deployment_type"] == null ? true : lookup(l["deployment_type"], "from_file", false) == true
-      enabled_from_archive                         = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_archive", false) == true
-      enabled_from_docker                          = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_docker", false) == true
-      enabled_from_s3_existing_file                = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_file", false) == true
-      enabled_from_s3_existing_new_file            = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_new_file", false) == true
-      enabled_from_s3_managed_bucket_existing_file = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_managed_bucket_existing_file", false) == true
-      enabled_from_s3_managed_bucket_new_file      = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_managed_bucket_new_file", false) == true
+      enabled_from_file                 = l["deployment_type"] == null ? true : lookup(l["deployment_type"], "from_file", false) == true
+      enabled_from_archive              = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_archive", false) == true
+      enabled_from_docker               = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_docker", false) == true
+      enabled_from_s3_existing_file     = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_file", false) == true
+      enabled_from_s3_existing_new_file = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "from_s3_existing_new_file", false) == true
+      enabled_full_managed              = l["deployment_type"] == null ? false : lookup(l["deployment_type"], "full_managed", false) == true
     }
   ]
 
   lambda_cfg = !local.is_module_enabled ? {} : {
     for l in local.lambda : l["name"] => l
+  }
+
+
+  /*
+  * -------------------------------
+  * Full managed configuration
+  * -------------------------------
+  */
+  full_managed = !local.is_full_managed_enabled ? [] : [
+    for f in var.lambda_full_managed_config : {
+      name               = trimspace(lower(f.name))
+      function_name      = f["function_name"] == null ? trimspace(f.name) : f["function_name"]
+      source_zip_file    = f["source_zip_file"] == null ? null : f["source_zip_file"]
+      compress_from_file = f["compress_from_file"] == null ? null : trimspace(f["compress_from_file"])
+      compress_from_dir  = f["compress_from_dir"] == null ? null : trimspace(f["compress_from_dir"])
+      excluded_files     = f["excluded_files"] == null ? [] : [for file in f["excluded_files"] : trimspace(file)]
+
+      // feature flags
+      use_zip_file                   = f["source_zip_file"] != null
+      generate_zip_from_file         = f["source_zip_file"] == null && f["compress_from_file"] != null
+      generate_zip_from_dir          = f["source_zip_file"] == null && f["compress_from_file"] == null && f["compress_from_dir"] != null
+      ignore_version_changes_enabled = f["ignore_version_changes"] == null ? false : f["ignore_version_changes"]
+    }
+  ]
+
+  full_managed_cfg = !local.is_full_managed_enabled ? {} : {
+    for f in local.full_managed : f["name"] => f
   }
 
   /*
