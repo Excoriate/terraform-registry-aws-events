@@ -21,6 +21,7 @@ module "main_module" {
       source_zip_file = data.archive_file.source_zip_file.output_path
     }
   ]
+  lambda_full_managed_config = var.lambda_full_managed_config
 
   depends_on = [aws_s3_bucket.s3]
 }

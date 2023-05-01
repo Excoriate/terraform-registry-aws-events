@@ -21,6 +21,7 @@ module "main_module" {
       compress_from_file = "handler.js"
     }
   ]
+  lambda_full_managed_config = var.lambda_full_managed_config
 
   depends_on = [aws_s3_bucket.s3]
 }

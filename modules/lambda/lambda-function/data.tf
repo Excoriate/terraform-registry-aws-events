@@ -59,7 +59,8 @@ data "archive_file" "compress_from_file" {
   type             = "zip"
   output_file_mode = "0666"
   output_path      = "generated-zip-from-file-${each.key}.zip"
-  source_file      = lookup(local.s3_from_existing_new_file_cfg[each.key], "compress_from_file")
+  #  output_path      = format("%s/generated-zip-from-file-%s.zip", path.module, each.key)
+  source_file = lookup(local.s3_from_existing_new_file_cfg[each.key], "compress_from_file")
 }
 
 data "archive_file" "compress_from_dir" {

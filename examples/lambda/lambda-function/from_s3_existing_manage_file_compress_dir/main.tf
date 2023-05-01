@@ -18,7 +18,7 @@ module "main_module" {
     {
       name              = "lambda-s3-from-existing-manage-compress-dir"
       s3_bucket         = aws_s3_bucket.s3.id
-      compress_from_dir = "./lambda-src"
+      compress_from_dir = format("./%s/mock/lambda-src", path.module)
       excluded_files    = ["main.tf", "outputs.tf", "variables.tf", "versions.tf", "README.md", "providers.tf", "config/fixtures.tfvars", ".terraform.lock.hcl", "terraform.tfstate.backup", "terraform.tfstate", local.generated_zip_file_name]
     }
   ]

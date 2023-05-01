@@ -21,6 +21,8 @@ module "main_module" {
       s3_object_version = aws_s3_object.upload_lambda_package.version_id
     }
   ]
+  lambda_s3_from_existing_new_file_config = var.lambda_s3_from_existing_new_file_config
+  lambda_full_managed_config              = var.lambda_full_managed_config
 
   depends_on = [aws_s3_object.upload_lambda_package, aws_s3_bucket.s3]
 }
