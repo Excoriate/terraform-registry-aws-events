@@ -11,14 +11,16 @@ module "main_module" {
       image_uri = format("%s:latest", local.repository_url)
     }
   ]
-  lambda_permissions_config     = var.lambda_permissions_config
-  lambda_custom_policies_config = var.lambda_custom_policies_config
-  lambda_enable_eventbridge     = var.lambda_enable_eventbridge
-  lambda_enable_secrets_manager = var.lambda_enable_secrets_manager
-  lambda_host_config            = var.lambda_host_config
-  lambda_network_config         = var.lambda_network_config
-  lambda_alias_config           = var.lambda_alias_config
-  lambda_s3_from_bucket_config  = var.lambda_s3_from_bucket_config
+  lambda_permissions_config               = var.lambda_permissions_config
+  lambda_custom_policies_config           = var.lambda_custom_policies_config
+  lambda_enable_eventbridge               = var.lambda_enable_eventbridge
+  lambda_enable_secrets_manager           = var.lambda_enable_secrets_manager
+  lambda_host_config                      = var.lambda_host_config
+  lambda_network_config                   = var.lambda_network_config
+  lambda_alias_config                     = var.lambda_alias_config
+  lambda_s3_from_existing_config          = var.lambda_s3_from_existing_config
+  lambda_s3_from_existing_new_file_config = var.lambda_s3_from_existing_new_file_config
+  lambda_full_managed_config              = var.lambda_full_managed_config
 
   depends_on = [null_resource.docker_push]
 }
