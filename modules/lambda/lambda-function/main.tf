@@ -107,6 +107,8 @@ resource "aws_lambda_function" "default" {
   depends_on = [
     aws_cloudwatch_log_group.this
   ]
+  tags = var.tags
+
 }
 
 # FIXME: Can't sync the publish capability with an expected version (that shouldn't be 'LATEST').

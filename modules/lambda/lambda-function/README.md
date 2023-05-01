@@ -465,12 +465,12 @@ Custom outputs
 */
 output "lambda_config_resolved" {
   value = {
-    lambda_cfg       = local.lambda_cfg
-    archive_cfg      = local.archive_cfg
-    full_managed_cfg = local.full_managed_cfg
-    existing_s3_bucket_cfg = local.s3_from_existing_cfg
+    lambda_cfg                           = local.lambda_cfg
+    archive_cfg                          = local.archive_cfg
+    full_managed_cfg                     = local.full_managed_cfg
+    existing_s3_bucket_cfg               = local.s3_from_existing_cfg
     existing_s3_bucket_with_new_file_cfg = local.s3_from_existing_new_file_cfg
-    docker_cfg = local.lambda_docker_cfg
+    docker_cfg                           = local.lambda_docker_cfg
   }
   description = "The resolved lambda configuration."
 }
@@ -710,28 +710,27 @@ No modules.
 | [aws_s3_object.upload_existing_zip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_s3_object.upload_zip_dir](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_s3_object.upload_zip_file](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
-| [archive_file.compress_from_dir](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
-| [archive_file.compress_from_file](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
-| [archive_file.from_archive_source_dir](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
-| [archive_file.from_archive_source_file](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
-| [archive_file.full_mode_compress_from_dir](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
-| [archive_file.full_mode_compress_from_file](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
+| [archive_file.compress_from_dir](https://registry.terraform.io/providers/hashicorp/archive/2.3.0/docs/data-sources/file) | data source |
+| [archive_file.compress_from_file](https://registry.terraform.io/providers/hashicorp/archive/2.3.0/docs/data-sources/file) | data source |
+| [archive_file.from_archive_source_dir](https://registry.terraform.io/providers/hashicorp/archive/2.3.0/docs/data-sources/file) | data source |
+| [archive_file.from_archive_source_file](https://registry.terraform.io/providers/hashicorp/archive/2.3.0/docs/data-sources/file) | data source |
+| [archive_file.full_mode_compress_from_dir](https://registry.terraform.io/providers/hashicorp/archive/2.3.0/docs/data-sources/file) | data source |
+| [archive_file.full_mode_compress_from_file](https://registry.terraform.io/providers/hashicorp/archive/2.3.0/docs/data-sources/file) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.cloudwatch_logs_group_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.deploy_from_ecr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.external_deployment_bucket_existing_file](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.external_deployment_bucket_new_file](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_s3_bucket.s3_existing_mode_existing_file](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
 | [aws_s3_bucket.s3_existing_mode_new_file](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket) | data source |
-| [local_file.existing_zip](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
-| [local_file.full_mode_existing_zip_file](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
+| [local_file.existing_zip](https://registry.terraform.io/providers/hashicorp/local/2.4.0/docs/data-sources/file) | data source |
+| [local_file.full_mode_existing_zip_file](https://registry.terraform.io/providers/hashicorp/local/2.4.0/docs/data-sources/file) | data source |
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.6 |
+| <a name="requirement_archive"></a> [archive](#requirement\_archive) | 2.3.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.48.0, < 5.0.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | 2.4.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.4.3 |
 
 ## Inputs

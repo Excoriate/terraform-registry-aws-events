@@ -42,6 +42,7 @@ resource "aws_s3_bucket" "managed_deployment_bucket" {
   for_each      = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] }
   force_destroy = true
   bucket        = lower(format("lambda-deployment-bucket-%s", each.key))
+  tags          = var.tags
 }
 
 resource "aws_s3_bucket_versioning" "managed_deployment_bucket" {

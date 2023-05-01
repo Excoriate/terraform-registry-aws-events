@@ -107,4 +107,5 @@ resource "aws_lambda_function" "from_archive" {
   depends_on = [
     aws_cloudwatch_log_group.this
   ]
+  tags = var.tags
 }

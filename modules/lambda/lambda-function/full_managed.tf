@@ -96,4 +96,6 @@ resource "aws_lambda_function" "full_managed" {
   depends_on = [
     aws_cloudwatch_log_group.this, aws_s3_bucket.managed_deployment_bucket
   ]
+  tags = var.tags
+
 }
