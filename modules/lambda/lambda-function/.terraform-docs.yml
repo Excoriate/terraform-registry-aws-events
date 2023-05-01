@@ -3,34 +3,63 @@ formatter: markdown table
 
 header-from: main.tf
 content: |-
-    # ☁️ ECS Task definition module.
+    # ☁️ AWS Lambda Function
     ## Description
     {{ .Header }}
-    This module creates an ECS task definition with the specified name.
-    * 🚀 **ECS task definition**: ECS task definition with the specified name.
-    * 🚀 **ECS task definition revision**: ECS task definition revision with the specified name.
+    This module provides the following capabilities:
+    * 🚀 **Simple Lambda Function**: Create a Lambda function using a pre-existing zip file, a file compressed by the module, or a directory with source code.
+    * 🚀 **S3 Bucket Integration**: Use an existing S3 bucket to store the Lambda package or create a fully managed setup with best-practices for versioning and lifecycle.
+    * 🚀 **Built-in Permissions**: Includes built-in permissions for AWS Secrets Manager (for secret rotation), EventBridge, and other services.
+    * 🚀 **Custom Policies**: Supports attaching custom IAM policies to the Lambda execution role.
+    * 🚀 **built-in role**: Supports using a pre-existing role or creating a new one.
+    * 🚀 **Observability**: Supports CloudWatch Logs, X-Ray, and CloudWatch Metrics.
 
-    This module pretends to be used as a safer way to create ECS task definitions, by using the `terraform` way to create them, and parsing the resulting object as a valid .json
-    that can be used in an ECS service.
-    The ecs task definitions that can be created, can also manage two particular attributes that are usually configured outside of
-    terraform, these are:
-    * `containerDefinitions` : This attributes list particular settings of the container that will be created, such as the image, the port mappings, the environment variables, etc.
-    For more information, please refer to the [AWS documentation](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html).
-    if the option `manage_task_outside_of_terraform` is set in the input variable `var.task_config`, then the container definitions will be managed outside of terraform,
-    and the module will only create the task definition, but ignore any further changes to the container definitions.
 
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
 
     ```hcl
-    {{ include "../../examples/ecs-task/basic/main.tf" }}
+    {{ include "../../../examples/lambda/lambda-function/basic/main.tf" }}
+    ```
+    ## Recipes
+    ### Very basic configuration.
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures.tfvars" }}
+    ```
+    ### Advanced configuration
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-advanced.tfvars" }}
     ```
 
-    For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
+    ### Archive directory
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-dir.tfvars" }}
+    ```
+    Also, it supports a managed archive with excluded files
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-dir-excluded.tfvars" }}
+    ```
+
+    ### Create an archive from a file
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-file.tfvars" }}
+    ```
+
+    ### Use a DockerFile
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/from_docker/main.tf" }}
+    ```
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/from_docker/config/fixtures.tfvars" }}
+    ```
+
+    For other examples, please refer to the [examples](../../../examples) folder.
+
+    For module composition, it's recommended to take a look at the module's `outputs` to understand what's available:
     ```hcl
     {{ include "outputs.tf" }}
-    ```
+
     ---
 
     ## Module's documentation

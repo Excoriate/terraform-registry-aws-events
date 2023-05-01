@@ -51,6 +51,5 @@
 /modules/**/.terraform.lock.hcl
 # Automatically generated. Do not modify. Check DevDex/scripts/aws/set-aws-creds.sh for more details...
 .env.sandbox.aws
-
-
-/DevEx/scripts/config/generator/gen-cli
+.DS_Store
+*.zip
