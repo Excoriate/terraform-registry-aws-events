@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.2...v0.1.3) (2023-05-01)
+
+
+### Other
+
+* remove comments ([c3fa23e](https://github.com/Excoriate/terraform-registry-aws-events/commit/c3fa23e1335f7fac99dc6b17d666e9ab17ec679e))
+
 ## [0.1.2](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.1...v0.1.2) (2023-04-18)
 
 
