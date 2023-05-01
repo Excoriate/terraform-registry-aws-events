@@ -95,16 +95,19 @@ resource "aws_s3_bucket_public_access_block" "managed_deployment_bucket" {
 }
 
 resource "aws_s3_object" "full_mode_upload_zip_file" {
-  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "generate_zip_from_file", false) }
-  source   = data.archive_file.full_mode_compress_from_file[each.key].output_path
-  bucket   = aws_s3_bucket.managed_deployment_bucket[each.key].id
-  key      = format("managed-deployment/function-%s/%s", each.key, data.archive_file.full_mode_compress_from_file[each.key].output_path)
+  #  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "generate_zip_from_file", false) }
+  for_each = length(keys({ for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] })) == 0 ? {} : { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "generate_zip_from_file", false) }
+
+  source = data.archive_file.full_mode_compress_from_file[each.key].output_path
+  bucket = aws_s3_bucket.managed_deployment_bucket[each.key].id
+  key    = format("managed-deployment/function-%s/%s", each.key, data.archive_file.full_mode_compress_from_file[each.key].output_path)
 
   depends_on = [data.archive_file.full_mode_compress_from_file, aws_s3_bucket.managed_deployment_bucket]
 }
 
 resource "aws_s3_object" "full_mode_upload_zip_dir" {
-  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "generate_zip_from_dir", false) }
+  #  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "generate_zip_from_dir", false) }
+  for_each = length(keys({ for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] })) == 0 ? {} : { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "generate_zip_from_dir", false) }
   bucket   = aws_s3_bucket.managed_deployment_bucket[each.key].id
   key      = format("managed-deployment/function-%s/%s", each.key, data.archive_file.full_mode_compress_from_dir[each.key].output_path)
   source   = data.archive_file.full_mode_compress_from_dir[each.key].output_path
@@ -113,7 +116,8 @@ resource "aws_s3_object" "full_mode_upload_zip_dir" {
 }
 
 resource "aws_s3_object" "full_mode_upload_existing_zip" {
-  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "use_zip_file", false) }
+  #  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "use_zip_file", false) }
+  for_each = length(keys({ for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] })) == 0 ? {} : { for k, v in local.lambda_cfg : k => v if v["enabled_full_managed"] && lookup(local.full_managed_cfg[k], "use_zip_file", false) }
   bucket   = aws_s3_bucket.managed_deployment_bucket[each.key].id
   key      = format("managed-deployment/function-%s/%s", each.key, data.local_file.full_mode_existing_zip_file[each.key].filename)
   source   = data.local_file.full_mode_existing_zip_file[each.key].filename

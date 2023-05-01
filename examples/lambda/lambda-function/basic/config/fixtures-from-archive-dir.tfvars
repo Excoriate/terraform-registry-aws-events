@@ -40,7 +40,7 @@ lambda_host_config = [
 lambda_archive_config = [
   {
     name         = "lambda-func-test"
-    source_dir   = "." // Current directory
+    source_dir   = "./mock/archive-dir"
     package_name = "deployed_from_archive_dir_terraform.zip"
   }
 ]

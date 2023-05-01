@@ -17,7 +17,7 @@ data "archive_file" "from_archive_source_file" {
     }
 
     precondition {
-      condition     = each.value["excluded_files"] == null
+      condition     = each.value["excluded_files"] == null || length(each.value["excluded_files"]) == 0
       error_message = "The option 'excluded_files' is not allowed for the source_file option"
     }
   }

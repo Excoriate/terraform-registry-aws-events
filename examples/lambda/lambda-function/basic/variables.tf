@@ -41,13 +41,12 @@ variable "lambda_config" {
     enable_update_function_on_archive_change = optional(bool, false)
     // Describe the types of lambda deployments that are supported by this module.
     deployment_type = optional(object({
-      from_file                            = optional(bool, false)
-      from_docker                          = optional(bool, false)
-      from_archive                         = optional(bool, false)
-      from_s3_existing_file                = optional(bool, false)
-      from_s3_new_file                     = optional(bool, false)
-      from_s3_managed_bucket_existing_file = optional(bool, false)
-      from_s3_managed_bucket_new_file      = optional(bool, false)
+      from_file                 = optional(bool, false)
+      from_docker               = optional(bool, false)
+      from_archive              = optional(bool, false)
+      from_s3_existing_file     = optional(bool, false)
+      from_s3_existing_new_file = optional(bool, false)
+      full_managed              = optional(bool, false)
     }), null)
   }))
   default     = null
@@ -75,8 +74,8 @@ variable "lambda_image_config" {
   type = list(object({
     name          = string
     function_name = optional(string, null)
-    ecr_arn       = optional(string, null)
     image_uri     = string
+    ecr_arn       = optional(string, null)
     image_config = optional(list(object({
       command           = optional(list(string), [])
       entry_point       = optional(list(string), [])
@@ -88,19 +87,49 @@ variable "lambda_image_config" {
 EOF
 }
 
-variable "lambda_s3_from_bucket_config" {
+variable "lambda_s3_from_existing_config" {
   type = list(object({
-    name            = string
-    s3_bucket       = string
-    source_zip_file = optional(string, null)
-    source_config = optional(object({
-      source_file = optional(string, null)
-      source_dir  = optional(string, null)
-    }), null)
+    name                   = string
+    function_name          = optional(string, null)
+    s3_bucket              = string
+    s3_key                 = string
+    s3_object_version      = optional(string, null)
+    ignore_version_changes = optional(bool, false)
   }))
   default     = null
   description = <<EOF
 EOF
+}
+
+variable "lambda_s3_from_existing_new_file_config" {
+  type = list(object({
+    name                   = string
+    function_name          = optional(string, null)
+    s3_bucket              = string
+    source_zip_file        = optional(string, null)
+    compress_from_file     = optional(string, null)
+    compress_from_dir      = optional(string, null)
+    ignore_version_changes = optional(bool, false)
+    excluded_files         = optional(list(string), [])
+  }))
+  description = <<EOF
+EOF
+  default     = null
+}
+
+variable "lambda_full_managed_config" {
+  type = list(object({
+    name                   = string
+    function_name          = optional(string, null)
+    source_zip_file        = optional(string, null)
+    compress_from_file     = optional(string, null)
+    compress_from_dir      = optional(string, null)
+    ignore_version_changes = optional(bool, false)
+    excluded_files         = optional(list(string), [])
+  }))
+  description = <<EOF
+EOF
+  default     = null
 }
 
 variable "lambda_observability_config" {
