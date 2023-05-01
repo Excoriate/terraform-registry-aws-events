@@ -20,8 +20,9 @@ Custom outputs
 */
 output "lambda_config_resolved" {
   value = {
-    lambda_cfg  = local.lambda_cfg
-    archive_cfg = local.archive_cfg
+    lambda_cfg       = local.lambda_cfg
+    archive_cfg      = local.archive_cfg
+    full_managed_cfg = local.full_managed_cfg
   }
   description = "The resolved lambda configuration."
 }

@@ -21,15 +21,8 @@ module "main_module" {
   lambda_s3_from_existing_new_file_config = var.lambda_s3_from_existing_new_file_config
   lambda_full_managed_config = [
     {
-      name            = "lambda-full-managed-existing-zip"
-      source_zip_file = data.archive_file.source_zip_file.output_path
+      name               = "lambda-full-managed-uncompressed-file"
+      compress_from_file = "handler.js"
     }
   ]
-}
-
-data "archive_file" "source_zip_file" {
-  type             = "zip"
-  output_file_mode = "0666"
-  output_path      = format("%s.zip", local.output_package_name)
-  source_file      = "handler.js"
 }

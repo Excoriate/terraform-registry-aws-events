@@ -4,7 +4,8 @@
  * ---------------------------------------
 */
 resource "aws_s3_object" "upload_zip_file" {
-  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_file", false) }
+  #  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_file", false) }
+  for_each = length(keys({ for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] })) == 0 ? {} : { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_file", false) }
   source   = data.archive_file.compress_from_file[each.key].output_path
   bucket   = data.aws_s3_bucket.s3_existing_mode_new_file[each.key].id
   key      = format("deployment-function-%s/%s", each.key, data.archive_file.compress_from_file[each.key].output_path)
@@ -13,7 +14,8 @@ resource "aws_s3_object" "upload_zip_file" {
 }
 
 resource "aws_s3_object" "upload_zip_dir" {
-  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_dir", false) }
+  #  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_dir", false) }
+  for_each = length(keys({ for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] })) == 0 ? {} : { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "generate_zip_from_dir", false) }
   bucket   = data.aws_s3_bucket.s3_existing_mode_new_file[each.key].id
   key      = format("deployment-function-%s/%s", each.key, data.archive_file.compress_from_dir[each.key].output_path)
   source   = data.archive_file.compress_from_dir[each.key].output_path
@@ -22,7 +24,8 @@ resource "aws_s3_object" "upload_zip_dir" {
 }
 
 resource "aws_s3_object" "upload_existing_zip" {
-  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "use_zip_file", false) }
+  #  for_each = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "use_zip_file", false) }
+  for_each = length(keys({ for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] })) == 0 ? {} : { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_new_file"] && lookup(local.s3_from_existing_new_file_cfg[k], "use_zip_file", false) }
   bucket   = data.aws_s3_bucket.s3_existing_mode_new_file[each.key].id
   key      = format("deployment-function-%s/%s", each.key, data.local_file.existing_zip[each.key].filename)
   source   = data.local_file.existing_zip[each.key].filename
@@ -67,13 +70,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "managed_deployment_bucket" {
     status = "Enabled"
 
     noncurrent_version_transition {
-      noncurrent_days          = 30
-      storage_class = "STANDARD_IA"
+      noncurrent_days = 30
+      storage_class   = "STANDARD_IA"
     }
 
     noncurrent_version_transition {
-      noncurrent_days          = 60
-      storage_class = "GLACIER"
+      noncurrent_days = 60
+      storage_class   = "GLACIER"
     }
 
     noncurrent_version_expiration {
