@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.3...v0.1.4) (2023-05-07)
+
+
+### Bug Fixes
+
+* Fix permissions in enabling optional secret manager invoke permissions ([1ff5662](https://github.com/Excoriate/terraform-registry-aws-events/commit/1ff56626ed232babab7c0e1697c3def5f4de4e30))
+
 ## [0.1.3](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.2...v0.1.3) (2023-05-01)
 
 
