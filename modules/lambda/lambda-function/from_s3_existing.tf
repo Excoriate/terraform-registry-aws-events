@@ -86,11 +86,6 @@ resource "aws_lambda_function" "from_s3_existing" {
       condition     = lookup(local.s3_from_existing_cfg[each.key], "s3_bucket", null) != null && lookup(local.s3_from_existing_cfg[each.key], "s3_key", null) != null
       error_message = "The s3_bucket and s3_key properties are required when the deployment method is set to 'enabled_from_s3_existing_file'."
     }
-
-    precondition {
-      condition     = lookup(local.s3_from_existing_cfg[each.key], "ignore_version_changes_enabled", false) ? false : lookup(local.s3_from_existing_cfg[each.key], "s3_object_version", null) != null
-      error_message = "The s3_object_version property is required when the ignore_version_changes_enabled property is set to false."
-    }
   }
 
   depends_on = [
