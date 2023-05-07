@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.5...v0.1.6) (2023-05-07)
+
+
+### Features
+
+* add custom permissions for rotating secrets ([ad50631](https://github.com/Excoriate/terraform-registry-aws-events/commit/ad506318526a127ff3428dfbb601b010eab17def))
+
 ## [0.1.5](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.4...v0.1.5) (2023-05-07)
 
 
