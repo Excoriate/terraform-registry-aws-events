@@ -54,7 +54,7 @@ resource "aws_lambda_permission" "default_eventbridge" {
 
 /*
   * -------------------------------
-  * AWS Secrets manager
+  * AWS Secrets manager (invoker)
   * -------------------------------
 */
 resource "aws_lambda_permission" "default_secrets_manager" {
@@ -63,7 +63,7 @@ resource "aws_lambda_permission" "default_secrets_manager" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.default[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
-  source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
+  source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_invoker_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
   qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
 }
 
@@ -73,7 +73,7 @@ resource "aws_lambda_permission" "s3_existing_secrets_manager" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.from_s3_existing[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
-  source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
+  source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_invoker_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
   qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
 }
 
@@ -116,7 +116,7 @@ resource "aws_iam_role_policy_attachment" "deploy_from_ecr" {
   * -------------------------------
 */
 data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
-  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_permissions"] }
+  for_each = local.secretsmanager_rotator_cfg
 
   statement {
     actions = [
@@ -129,18 +129,26 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
       "secretsmanager:UpdateSecretVersionStage", // Added for rotation
     ]
 
-    resources = lookup(each.value, "lookup_by_secret_name", false) ? [data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn] : [each.value["secret_arn"]]
+    resources = [for arn in data.aws_secretsmanager_secret.lookup_to_rotate : arn.arn]
+  }
+
+  statement {
+    actions = [
+      "secretsmanager:ListSecrets",
+    ]
+
+    resources = ["*"]
   }
 }
 
 resource "aws_iam_policy" "secrets_manager_policy_rotation" {
-  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_permissions"] }
+  for_each = local.secretsmanager_rotator_cfg
   name     = format("secrets_manager_policy_rotation_%s", each.key)
   policy   = data.aws_iam_policy_document.secrets_manager_policy_rotation[each.key].json
 }
 
 resource "aws_iam_role_policy_attachment" "secrets_manager_policy_rotation" {
-  for_each   = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_permissions"] }
+  for_each   = local.secretsmanager_rotator_cfg
   role       = aws_iam_role.this[each.key].name
   policy_arn = aws_iam_policy.secrets_manager_policy_rotation[each.key].arn
 }
@@ -152,7 +160,7 @@ resource "aws_iam_role_policy_attachment" "secrets_manager_policy_rotation" {
   * -------------------------------
 */
 data "aws_iam_policy_document" "secrets_manager_policy_rotation_db" {
-  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_db_permissions"] }
+  for_each = { for k, v in local.secretsmanager_rotator_cfg : k => v if v["enable_rotation_db_permissions"] }
 
   # Secrets Manager permissions
   statement {
@@ -166,7 +174,7 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation_db" {
       "secretsmanager:UpdateSecretVersionStage",
     ]
 
-    resources = lookup(each.value, "lookup_by_secret_name", false) ? [data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn] : [each.value["secret_arn"]]
+    resources = [for arn in data.aws_secretsmanager_secret.lookup_to_rotate : arn.arn]
   }
 
   # RDS permissions
@@ -177,16 +185,25 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation_db" {
 
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "secretsmanager:ListSecrets",
+    ]
+
+    resources = ["*"]
+  }
+
 }
 
 resource "aws_iam_policy" "secrets_manager_policy_rotation_db" {
-  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_db_permissions"] }
+  for_each = { for k, v in local.secretsmanager_rotator_cfg : k => v if v["enable_rotation_db_permissions"] }
   name     = format("secrets_manager_policy_rotation_db_%s", each.key)
   policy   = data.aws_iam_policy_document.secrets_manager_policy_rotation_db[each.key].json
 }
 
 resource "aws_iam_role_policy_attachment" "secrets_manager_policy_rotation_db" {
-  for_each   = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_db_permissions"] }
+  for_each   = { for k, v in local.secretsmanager_rotator_cfg : k => v if v["enable_rotation_db_permissions"] }
   role       = aws_iam_role.this[each.key].name
   policy_arn = aws_iam_policy.secrets_manager_policy_rotation_db[each.key].arn
 }

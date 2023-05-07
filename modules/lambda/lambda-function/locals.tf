@@ -11,6 +11,7 @@ locals {
   is_lambda_network_config_enabled       = !local.is_module_enabled ? false : var.lambda_network_config == null ? false : length(var.lambda_network_config) > 0
   is_lambda_observability_config_enabled = !local.is_module_enabled ? false : var.lambda_observability_config == null ? false : length(var.lambda_observability_config) > 0
   is_lambda_alias_config_enabled         = !local.is_module_enabled ? false : var.lambda_alias_config == null ? false : length(var.lambda_alias_config) > 0
+  is_secrets_manager_rotator_enabled     = !local.is_module_enabled ? false : var.lambda_enable_secrets_manager_rotation == null ? false : length(var.lambda_enable_secrets_manager_rotation) > 0
   // Specific feature flags for S3-related capabilities.
   is_s3_from_existing_config_enabled          = !local.is_module_enabled ? false : var.lambda_s3_from_existing_config == null ? false : length(var.lambda_s3_from_existing_config) > 0
   is_s3_from_existing_new_file_config_enabled = !local.is_module_enabled ? false : var.lambda_s3_from_existing_new_file_config == null ? false : length(var.lambda_s3_from_existing_new_file_config) > 0
@@ -321,12 +322,10 @@ locals {
   */
   secretsmanager = !local.is_lambda_secrets_manager_enabled ? [] : [
     for s in var.lambda_enable_secrets_manager : {
-      name                           = trimspace(lower(s.name))
-      secret_name                    = trimspace(s.secret_name)
-      secret_arn                     = s["secret_arn"] == null ? null : s["secret_arn"]
-      qualifier                      = s["qualifier"] == null ? null : s["qualifier"]
-      enable_rotation_permissions    = s["enable_rotation_permissions"] == null ? false : s["enable_rotation_permissions"]
-      enable_rotation_db_permissions = s["enable_rotation_db_permissions"] == null ? false : s["enable_rotation_db_permissions"]
+      name        = trimspace(lower(s.name))
+      secret_name = trimspace(lower(s.secret_name))
+      secret_arn  = s["secret_arn"] == null ? null : s["secret_arn"]
+      qualifier   = s["qualifier"] == null ? null : s["qualifier"]
 
       // feature flags
       lookup_by_secret_name = s["secret_arn"] == null
@@ -334,6 +333,24 @@ locals {
   ]
 
   secretsmanager_cfg = !local.is_lambda_secrets_manager_enabled ? {} : {
-    for s in local.secretsmanager : s["name"] => s
+    for s in local.secretsmanager : s["secret_name"] => s
   }
+
+  secretsmanager_rotator = !local.is_secrets_manager_rotator_enabled ? [] : [
+    for r in var.lambda_enable_secrets_manager_rotation : {
+      name                           = trimspace(lower(r.name))
+      secrets_to_rotate              = r["secrets_to_rotate"] == null ? [] : [for s in r["secrets_to_rotate"] : trimspace(lower(s))]
+      enable_rotation_db_permissions = r["enable_rotation_db_permissions"] == null ? false : r["enable_rotation_db_permissions"]
+    }
+  ]
+
+  secretsmanager_rotator_cfg = !local.is_secrets_manager_rotator_enabled ? {} : {
+    for r in local.secretsmanager_rotator : r["name"] => r
+  }
+
+  secrets_to_rotate_map = merge([
+    for cfg in local.secretsmanager_rotator_cfg : {
+      for secret_name in cfg["secrets_to_rotate"] : secret_name => cfg["name"]
+    }
+  ]...)
 }
