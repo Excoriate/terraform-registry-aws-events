@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.8...v0.1.9) (2023-05-07)
+
+
+### Bug Fixes
+
+* remove inconsistent precondition ([e99e2a5](https://github.com/Excoriate/terraform-registry-aws-events/commit/e99e2a55758b11aedd0df8bcd2b3a0a520a49774))
+
 ## [0.1.8](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.7...v0.1.8) (2023-05-07)
 
 
