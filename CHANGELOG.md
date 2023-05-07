@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.7...v0.1.8) (2023-05-07)
+
+
+### Refactoring
+
+* Add missing input variables in old recipes ([9f233e3](https://github.com/Excoriate/terraform-registry-aws-events/commit/9f233e33d8b7d1ce74f1fee9f9c4fc00b02a2adc))
+
 ## [0.1.7](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.6...v0.1.7) (2023-05-07)
 
 
