@@ -97,3 +97,14 @@ data "archive_file" "full_mode_compress_from_dir" {
   excludes         = lookup(local.full_managed_cfg[each.key], "excluded_files", null)
   source_dir       = lookup(local.full_managed_cfg[each.key], "compress_from_dir")
 }
+
+
+/*
+* -----------------------------------
+* Secrets manager
+* -----------------------------------
+*/
+data "aws_secretsmanager_secret" "lookup_secret_by_name" {
+  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["lookup_by_secret_name"] }
+  name     = each.value["secret_name"]
+}
