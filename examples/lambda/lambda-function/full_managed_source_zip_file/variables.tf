@@ -280,12 +280,10 @@ EOF
 
 variable "lambda_enable_secrets_manager" {
   type = list(object({
-    name                           = string
-    secret_arn                     = optional(string, null)
-    secret_names                   = list(string)
-    qualifier                      = optional(string, null)
-    enable_rotation_permissions    = optional(bool, false)
-    enable_rotation_db_permissions = optional(bool, false)
+    name        = string
+    secret_arn  = optional(string, null)
+    secret_name = string
+    qualifier   = optional(string, null)
   }))
   default     = null
   description = <<EOF
@@ -294,10 +292,27 @@ The currently supported attributes are:
 - name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'
 isn't passed, it will be used as the function name.
 - secret_arn: The ARN of the secret.
-- secret_names: A list of secret names to be attached to the lambda function.
+- secret_name: The name of the secret.
 - qualifier: The qualifier of the lambda function.
 - enable_rotation_permissions: A boolean flag that can be used to enable/disable the permissions for the rotation of
 the secret.
+- enable_rotation_db_permissions: A boolean flag that can be used to enable/disable the permissions for the rotation of
+EOF
+}
+
+variable "lambda_enable_secrets_manager_rotation" {
+  type = list(object({
+    name                           = string
+    secrets_to_rotate              = list(string)
+    enable_rotation_db_permissions = optional(bool, false)
+  }))
+  default     = null
+  description = <<EOF
+  A list of objects that contains the configuration for AWS Lambda function
+The currently supported attributes are:
+- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'
+isn't passed, it will be used as the function name.
+- secrets_to_rotate: A list of secrets to be rotated.
 - enable_rotation_db_permissions: A boolean flag that can be used to enable/disable the permissions for the rotation of
 EOF
 }

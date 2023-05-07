@@ -135,6 +135,8 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
   statement {
     actions = [
       "secretsmanager:ListSecrets",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:DescribeSecret",
     ]
 
     resources = ["*"]
@@ -189,6 +191,8 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation_db" {
   statement {
     actions = [
       "secretsmanager:ListSecrets",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:DescribeSecret",
     ]
 
     resources = ["*"]
