@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.4...v0.1.5) (2023-05-07)
+
+
+### Features
+
+* Add internal lookup for secrets when secrets manager permissions are set ([#12](https://github.com/Excoriate/terraform-registry-aws-events/issues/12)) ([75d4718](https://github.com/Excoriate/terraform-registry-aws-events/commit/75d471813786f9f792ba5da28c6f7758ee83b050))
+
 ## [0.1.4](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.3...v0.1.4) (2023-05-07)
 
 
