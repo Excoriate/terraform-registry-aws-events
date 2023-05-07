@@ -42,14 +42,14 @@ resource "aws_iam_role" "this" {
   * Eventbridge
   * -------------------------------
 */
-resource "aws_lambda_permission" "eventbridge" {
-  for_each      = local.eventbridge_cfg
+resource "aws_lambda_permission" "default_eventbridge" {
+  for_each      = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] && lookup(local.eventbridge_cfg, k, null) != null }
   statement_id  = format("AllowExecutionFromEventBridge-%s", each.key)
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.default[each.key].function_name
   principal     = "events.amazonaws.com"
-  source_arn    = each.value["source_arn"]
-  qualifier     = each.value["qualifier"]
+  source_arn    = lookup(local.eventbridge_cfg[each.key], "source_arn")
+  qualifier     = lookup(local.eventbridge_cfg[each.key], "qualifier")
 }
 
 /*
@@ -57,15 +57,26 @@ resource "aws_lambda_permission" "eventbridge" {
   * AWS Secrets manager
   * -------------------------------
 */
-resource "aws_lambda_permission" "secretsmanager" {
-  for_each      = local.secretsmanager_cfg
+resource "aws_lambda_permission" "default_secrets_manager" {
+  for_each      = { for k, v in local.lambda_cfg : k => v if v["enabled_from_file"] && lookup(local.secretsmanager_cfg, k, null) != null }
   statement_id  = format("AllowExecutionFromSecretsManager-%s", each.key)
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.default[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
-  source_arn    = each.value["source_arn"]
-  qualifier     = each.value["qualifier"]
+  source_arn    = lookup(local.secretsmanager_cfg[each.key], "secret_arn")
+  qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
 }
+
+resource "aws_lambda_permission" "s3_existing_secrets_manager" {
+  for_each      = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] && lookup(local.secretsmanager_cfg, k, null) != null }
+  statement_id  = format("AllowExecutionFromSecretsManager-%s", each.key)
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.from_s3_existing[each.key].function_name
+  principal     = "secretsmanager.amazonaws.com"
+  source_arn    = lookup(local.secretsmanager_cfg[each.key], "secret_arn")
+  qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
+}
+
 
 /*
   * -------------------------------

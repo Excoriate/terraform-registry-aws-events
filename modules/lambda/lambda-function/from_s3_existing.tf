@@ -88,8 +88,8 @@ resource "aws_lambda_function" "from_s3_existing" {
     }
 
     precondition {
-      condition     = lookup(local.s3_from_existing_cfg[each.key], "ignore_version_changes_enabled", false) ? true : lookup(local.s3_from_existing_cfg[each.key], "s3_object_version", null) != null
-      error_message = "The s3_object_version property is required when the ignore_version_changes_enabled option is set to false or it's not set."
+      condition     = lookup(local.s3_from_existing_cfg[each.key], "ignore_version_changes_enabled", false) ? false : lookup(local.s3_from_existing_cfg[each.key], "s3_object_version", null) != null
+      error_message = "The s3_object_version property is required when the ignore_version_changes_enabled property is set to false."
     }
   }
 

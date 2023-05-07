@@ -9,10 +9,15 @@ module "main_module" {
   lambda_permissions_config     = var.lambda_permissions_config
   lambda_custom_policies_config = var.lambda_custom_policies_config
   lambda_enable_eventbridge     = var.lambda_enable_eventbridge
-  lambda_enable_secrets_manager = var.lambda_enable_secrets_manager
-  lambda_host_config            = var.lambda_host_config
-  lambda_network_config         = var.lambda_network_config
-  lambda_alias_config           = var.lambda_alias_config
+  lambda_enable_secrets_manager = [
+    {
+      name       = "lambda-test-s3-from-existing"
+      secret_arn = aws_secretsmanager_secret.secret.arn
+    }
+  ]
+  lambda_host_config    = var.lambda_host_config
+  lambda_network_config = var.lambda_network_config
+  lambda_alias_config   = var.lambda_alias_config
   lambda_s3_from_existing_config = [
     {
       name              = "lambda-test-s3-from-existing"
@@ -24,7 +29,8 @@ module "main_module" {
   lambda_s3_from_existing_new_file_config = var.lambda_s3_from_existing_new_file_config
   lambda_full_managed_config              = var.lambda_full_managed_config
 
-  depends_on = [aws_s3_object.upload_lambda_package, aws_s3_bucket.s3]
+
+  depends_on = [aws_s3_object.upload_lambda_package, aws_s3_bucket.s3, aws_secretsmanager_secret.secret]
 }
 
 /*
@@ -77,4 +83,9 @@ resource "aws_s3_object" "upload_lambda_package" {
   key    = local.s3_expected_key
 
   depends_on = [data.archive_file.lambda_archive, aws_s3_bucket.s3]
+}
+
+// Create a secret for testing purposes.
+resource "aws_secretsmanager_secret" "secret" {
+  name = "testing/secret/for/lambda/s3-existing"
 }
