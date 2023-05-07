@@ -280,9 +280,12 @@ EOF
 
 variable "lambda_enable_secrets_manager" {
   type = list(object({
-    name       = string
-    secret_arn = string
-    qualifier  = optional(string, null)
+    name                           = string
+    secret_arn                     = optional(string, null)
+    secret_name                    = string
+    qualifier                      = optional(string, null)
+    enable_rotation_permissions    = optional(bool, false)
+    enable_rotation_db_permissions = optional(bool, false)
   }))
   default     = null
   description = <<EOF
@@ -291,7 +294,11 @@ The currently supported attributes are:
 - name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'
 isn't passed, it will be used as the function name.
 - secret_arn: The ARN of the secret.
+- secret_name: The name of the secret.
 - qualifier: The qualifier of the lambda function.
+- enable_rotation_permissions: A boolean flag that can be used to enable/disable the permissions for the rotation of
+the secret.
+- enable_rotation_db_permissions: A boolean flag that can be used to enable/disable the permissions for the rotation of
 EOF
 }
 

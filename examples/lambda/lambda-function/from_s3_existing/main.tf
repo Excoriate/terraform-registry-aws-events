@@ -11,8 +11,10 @@ module "main_module" {
   lambda_enable_eventbridge     = var.lambda_enable_eventbridge
   lambda_enable_secrets_manager = [
     {
-      name        = "lambda-test-s3-from-existing"
-      secret_name = "/dev/secrets-manager-rotator/demo/my-demo-secret"
+      name                           = "lambda-test-s3-from-existing"
+      secret_name                    = "/dev/secrets-manager-rotator/demo/my-demo-secret"
+      enable_rotation_permissions    = true
+      enable_rotation_db_permissions = true
     }
   ]
   lambda_host_config    = var.lambda_host_config
@@ -28,7 +30,6 @@ module "main_module" {
   ]
   lambda_s3_from_existing_new_file_config = var.lambda_s3_from_existing_new_file_config
   lambda_full_managed_config              = var.lambda_full_managed_config
-
 
   depends_on = [aws_s3_object.upload_lambda_package, aws_s3_bucket.s3]
 }

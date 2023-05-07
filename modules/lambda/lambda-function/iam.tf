@@ -80,15 +80,7 @@ resource "aws_lambda_permission" "s3_existing_secrets_manager" {
 
 /*
   * -------------------------------
-  * Deployment bucket
-  * -------------------------------
-*/
-
-/*
-  * -------------------------------
-  * Permissions to deploy the lambda
-  * from ECR, when the lambda from-docker
-  * option is set.
+  * Deployment from ECR
   * -------------------------------
 */
 data "aws_iam_policy_document" "deploy_from_ecr" {
@@ -115,4 +107,86 @@ resource "aws_iam_role_policy_attachment" "deploy_from_ecr" {
   for_each   = { for k, v in local.lambda_cfg : k => v if v["enabled_from_docker"] == true && lookup(local.lambda_docker_cfg, k, null) != null }
   role       = aws_iam_role.this[each.key].name
   policy_arn = aws_iam_policy.deploy_from_ecr[each.key].arn
+}
+
+/*
+  * -------------------------------
+  * Actions on Secrets Manager
+  * 1. Rotate secrets.
+  * -------------------------------
+*/
+data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
+  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_permissions"] }
+
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:ListSecrets",
+      "secretsmanager:RotateSecret",             // Added for rotation
+      "secretsmanager:GetRandomPassword",        // Added for rotation
+      "secretsmanager:UpdateSecretVersionStage", // Added for rotation
+    ]
+
+    resources = lookup(each.value, "lookup_by_secret_name", false) ? [data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn] : [each.value["secret_arn"]]
+  }
+}
+
+resource "aws_iam_policy" "secrets_manager_policy_rotation" {
+  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_permissions"] }
+  name     = format("secrets_manager_policy_rotation_%s", each.key)
+  policy   = data.aws_iam_policy_document.secrets_manager_policy_rotation[each.key].json
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_manager_policy_rotation" {
+  for_each   = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_permissions"] }
+  role       = aws_iam_role.this[each.key].name
+  policy_arn = aws_iam_policy.secrets_manager_policy_rotation[each.key].arn
+}
+
+/*
+  * -------------------------------
+  * Actions on Secrets Manager
+  * 1. Rotate DB secrets.
+  * -------------------------------
+*/
+data "aws_iam_policy_document" "secrets_manager_policy_rotation_db" {
+  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_db_permissions"] }
+
+  # Secrets Manager permissions
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:ListSecrets",
+      "secretsmanager:RotateSecret",
+      "secretsmanager:GetRandomPassword",
+      "secretsmanager:UpdateSecretVersionStage",
+    ]
+
+    resources = lookup(each.value, "lookup_by_secret_name", false) ? [data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn] : [each.value["secret_arn"]]
+  }
+
+  # RDS permissions
+  statement {
+    actions = [
+      "rds:DescribeDBInstances",
+    ]
+
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "secrets_manager_policy_rotation_db" {
+  for_each = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_db_permissions"] }
+  name     = format("secrets_manager_policy_rotation_db_%s", each.key)
+  policy   = data.aws_iam_policy_document.secrets_manager_policy_rotation_db[each.key].json
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_manager_policy_rotation_db" {
+  for_each   = { for k, v in local.secretsmanager_cfg : k => v if v["enable_rotation_db_permissions"] }
+  role       = aws_iam_role.this[each.key].name
+  policy_arn = aws_iam_policy.secrets_manager_policy_rotation_db[each.key].arn
 }

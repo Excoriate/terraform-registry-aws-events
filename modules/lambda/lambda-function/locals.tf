@@ -321,10 +321,12 @@ locals {
   */
   secretsmanager = !local.is_lambda_secrets_manager_enabled ? [] : [
     for s in var.lambda_enable_secrets_manager : {
-      name        = trimspace(lower(s.name))
-      secret_name = trimspace(s.secret_name)
-      secret_arn  = s["secret_arn"] == null ? null : s["secret_arn"]
-      qualifier   = s["qualifier"] == null ? null : s["qualifier"]
+      name                           = trimspace(lower(s.name))
+      secret_name                    = trimspace(s.secret_name)
+      secret_arn                     = s["secret_arn"] == null ? null : s["secret_arn"]
+      qualifier                      = s["qualifier"] == null ? null : s["qualifier"]
+      enable_rotation_permissions    = s["enable_rotation_permissions"] == null ? false : s["enable_rotation_permissions"]
+      enable_rotation_db_permissions = s["enable_rotation_db_permissions"] == null ? false : s["enable_rotation_db_permissions"]
 
       // feature flags
       lookup_by_secret_name = s["secret_arn"] == null
