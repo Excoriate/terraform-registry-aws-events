@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.6...v0.1.7) (2023-05-07)
+
+
+### Features
+
+* Add rotator specific configuration ([#15](https://github.com/Excoriate/terraform-registry-aws-events/issues/15)) ([2328f0c](https://github.com/Excoriate/terraform-registry-aws-events/commit/2328f0c24e16eee5c363f271bcf6473468d488bb))
+
 ## [0.1.6](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.5...v0.1.6) (2023-05-07)
 
 
