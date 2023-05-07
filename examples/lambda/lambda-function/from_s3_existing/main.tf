@@ -11,8 +11,8 @@ module "main_module" {
   lambda_enable_eventbridge     = var.lambda_enable_eventbridge
   lambda_enable_secrets_manager = [
     {
-      name       = "lambda-test-s3-from-existing"
-      secret_arn = aws_secretsmanager_secret.secret.arn
+      name        = "lambda-test-s3-from-existing"
+      secret_name = "/dev/secrets-manager-rotator/demo/my-demo-secret"
     }
   ]
   lambda_host_config    = var.lambda_host_config
@@ -30,7 +30,7 @@ module "main_module" {
   lambda_full_managed_config              = var.lambda_full_managed_config
 
 
-  depends_on = [aws_s3_object.upload_lambda_package, aws_s3_bucket.s3, aws_secretsmanager_secret.secret]
+  depends_on = [aws_s3_object.upload_lambda_package, aws_s3_bucket.s3]
 }
 
 /*
@@ -83,9 +83,4 @@ resource "aws_s3_object" "upload_lambda_package" {
   key    = local.s3_expected_key
 
   depends_on = [data.archive_file.lambda_archive, aws_s3_bucket.s3]
-}
-
-// Create a secret for testing purposes.
-resource "aws_secretsmanager_secret" "secret" {
-  name = "testing/secret/for/lambda/s3-existing"
 }

@@ -63,7 +63,7 @@ resource "aws_lambda_permission" "default_secrets_manager" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.default[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
-  source_arn    = lookup(local.secretsmanager_cfg[each.key], "secret_arn")
+  source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
   qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
 }
 
@@ -73,7 +73,7 @@ resource "aws_lambda_permission" "s3_existing_secrets_manager" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.from_s3_existing[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
-  source_arn    = lookup(local.secretsmanager_cfg[each.key], "secret_arn")
+  source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
   qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
 }
 
