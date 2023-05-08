@@ -211,6 +211,7 @@ EOF
 variable "lambda_observability_config" {
   type = list(object({
     name                   = string
+    function_name          = optional(string, null)
     logs_enabled           = optional(bool, false)
     logs_retention_in_days = optional(number, 0)
     tracing_enabled        = optional(bool, false)
@@ -222,6 +223,7 @@ variable "lambda_observability_config" {
 The currently supported attributes are:
 - name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'
 isn't passed, it will be used as the function name.
+- function_name: The name of the lambda function. If not passed, the 'name' attribute will be used.
 - logs_enabled: A boolean flag that can be used to enable/disable the logging of the lambda function.
 - logs_retention_in_days: The number of days to retain the logs of the lambda function.
 - tracing_enabled: A boolean flag that can be used to enable/disable the tracing of the lambda function.

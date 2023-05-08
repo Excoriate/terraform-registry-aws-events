@@ -7,6 +7,7 @@ data "aws_iam_policy_document" "cloudwatch_logs_group_policy_doc" {
       "logs:DescribeLogStreams",
       "logs:CreateLogStream",
       "logs:DeleteLogStream",
+      "logs:PutLogEvents",
     ]
 
     resources = ["*"]
@@ -14,6 +15,10 @@ data "aws_iam_policy_document" "cloudwatch_logs_group_policy_doc" {
 
   statement {
     actions = [
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:CreateLogStream",
+      "logs:DeleteLogStream",
       "logs:PutLogEvents",
     ]
 
