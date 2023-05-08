@@ -207,7 +207,7 @@ locals {
   observability_normalised = !local.is_lambda_observability_config_enabled ? [] : [
     for config in var.lambda_observability_config : {
       name                   = trimspace(lower(config.name))
-      log_group_name         = format("%s-logs", config.name)
+      log_group_name         = format("/aws/lambda/%s-logs", config.name)
       logs_retention_in_days = config["logs_retention_in_days"] == null ? 0 : config["logs_retention_in_days"]
       tracing_enabled        = config["tracing_enabled"] == null ? false : config["tracing_enabled"]
       tracing_mode           = config["tracing_mode"] == null ? "PassThrough" : config["tracing_mode"]
