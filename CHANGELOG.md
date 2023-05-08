@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.9...v0.1.10) (2023-05-08)
+
+
+### Bug Fixes
+
+* add allowed prefix for cloudwatch log group ([fc74b19](https://github.com/Excoriate/terraform-registry-aws-events/commit/fc74b19d73ff185bfeb1030ab6f4afc6afa06e3f))
+
 ## [0.1.9](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.8...v0.1.9) (2023-05-07)
 
 
