@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.10...v0.1.11) (2023-05-08)
+
+
+### Bug Fixes
+
+* remove logs from suffix in cloudwatch loggroup naming ([#20](https://github.com/Excoriate/terraform-registry-aws-events/issues/20)) ([35edd3f](https://github.com/Excoriate/terraform-registry-aws-events/commit/35edd3fa0b12951f487b42ec7d01eb1ca87398a8))
+
 ## [0.1.10](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.9...v0.1.10) (2023-05-08)
 
 
