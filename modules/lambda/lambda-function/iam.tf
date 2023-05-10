@@ -58,20 +58,20 @@ resource "aws_lambda_permission" "default_eventbridge" {
   * -------------------------------
 */
 resource "aws_lambda_permission" "default_secrets_manager" {
-  for_each      = { for k, v in local.lambda_cfg : k => v if v["enabled_from_file"] && lookup(local.secretsmanager_cfg, k, null) != null }
-  statement_id  = format("AllowExecutionFromSecretsManager-%s", each.key)
+  for_each      = { for k, v in local.secretsmanager_cfg : k => v if lookup(local.lambda_cfg[v["name"]], "enabled_from_file") }
+  statement_id  = format("AllowExecutionFromSecretsManager-%s", each.value["name"])
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.default[each.key].function_name
+  function_name = aws_lambda_function.default[each.value["name"]].function_name
   principal     = "secretsmanager.amazonaws.com"
   source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_invoker_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
   qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
 }
 
 resource "aws_lambda_permission" "s3_existing_secrets_manager" {
-  for_each      = { for k, v in local.lambda_cfg : k => v if v["enabled_from_s3_existing_file"] && lookup(local.secretsmanager_cfg, k, null) != null }
-  statement_id  = format("AllowExecutionFromSecretsManager-%s", each.key)
+  for_each      = { for k, v in local.secretsmanager_cfg : k => v if lookup(local.lambda_cfg[v["name"]], "enabled_from_s3_existing_file") }
+  statement_id  = format("AllowExecutionFromSecretsManager-%s", each.value["name"])
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.from_s3_existing[each.key].function_name
+  function_name = aws_lambda_function.from_s3_existing[each.value["name"]].function_name
   principal     = "secretsmanager.amazonaws.com"
   source_arn    = lookup(local.secretsmanager_cfg[each.key], "lookup_by_secret_name", false) ? data.aws_secretsmanager_secret.lookup_invoker_secret_by_name[each.key].arn : lookup(local.secretsmanager_cfg[each.key], "secret_arn")
   qualifier     = lookup(local.secretsmanager_cfg[each.key], "qualifier")
@@ -136,7 +136,8 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
     actions = [
       "secretsmanager:ListSecrets",
       "secretsmanager:ListSecretVersionIds",
-      "secretsmanager:DescribeSecret",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:GetRandomPassword",
     ]
 
     resources = ["*"]

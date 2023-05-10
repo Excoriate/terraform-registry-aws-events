@@ -329,7 +329,7 @@ locals {
       qualifier   = s["qualifier"] == null ? null : s["qualifier"]
 
       // feature flags
-      lookup_by_secret_name = s["secret_arn"] == null
+      lookup_by_secret_name = s["secret_arn"] == null && s["secret_name"] != null ? true : false
     }
   ]
 

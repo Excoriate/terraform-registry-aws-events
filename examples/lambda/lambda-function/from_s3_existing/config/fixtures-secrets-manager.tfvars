@@ -25,6 +25,7 @@ lambda_permissions_config = [
   }
 ]
 
+
 lambda_host_config = [
   {
     name = "lambda-test-s3-from-existing"
