@@ -127,6 +127,7 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
       "secretsmanager:RotateSecret",             // Added for rotation
       "secretsmanager:GetRandomPassword",        // Added for rotation
       "secretsmanager:UpdateSecretVersionStage", // Added for rotation
+      "secretsmanager:PutSecretValue",           // Added for creating new secret version
     ]
 
     resources = [for arn in data.aws_secretsmanager_secret.lookup_to_rotate : arn.arn]
@@ -138,6 +139,7 @@ data "aws_iam_policy_document" "secrets_manager_policy_rotation" {
       "secretsmanager:ListSecretVersionIds",
       "secretsmanager:GetSecretValue",
       "secretsmanager:GetRandomPassword",
+      "secretsmanager:PutSecretValue", // Added for creating new secret version
     ]
 
     resources = ["*"]
