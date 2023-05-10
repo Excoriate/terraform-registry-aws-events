@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.11...v0.1.12) (2023-05-10)
+
+
+### Bug Fixes
+
+* fix conditional resource creation of lambda permissions for secrets manager ([858cba6](https://github.com/Excoriate/terraform-registry-aws-events/commit/858cba6d74a4dbe7bd81fa3084f5028414a5b929))
+
 ## [0.1.11](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.10...v0.1.11) (2023-05-08)
 
 
