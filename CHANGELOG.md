@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.12...v0.1.13) (2023-05-10)
+
+
+### Bug Fixes
+
+* Add missing putsecretvalue policy for rotation ([ad9e543](https://github.com/Excoriate/terraform-registry-aws-events/commit/ad9e54367738cf656d5d85c7afc121da5e25f0aa))
+
 ## [0.1.12](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.11...v0.1.12) (2023-05-10)
 
 
