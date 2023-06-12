@@ -35,6 +35,14 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  dynamic "user_pool_add_ons" {
+    for_each = each.value["user_pool_add_ons_security_mode"] == null ? {} : { user_pool_add_ons = { advanced_security_mode = each.value["user_pool_add_ons_security_mode"] } }
+    content {
+      advanced_security_mode = user_pool_add_ons.value["advanced_security_mode"]
+    }
+  }
+
+
   // #################################################
   // Admin create user configuration
   // #################################################

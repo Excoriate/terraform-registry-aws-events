@@ -30,6 +30,7 @@ locals {
         } : {
         case_sensitive = false
       }
+      user_pool_add_ons_security_mode = cfg["user_pool_add_ons_security_mode"]
       // These options are mutually exclusive.
       is_username_attributes_enabled = cfg["username_attributes"] == null ? false : length(cfg["username_attributes"]) > 0
       is_alias_attributes_enabled    = cfg["alias_attributes"] == null ? false : length(cfg["alias_attributes"]) > 0 && cfg["username_attributes"] == null
