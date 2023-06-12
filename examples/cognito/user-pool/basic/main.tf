@@ -11,4 +11,5 @@ module "main_module" {
   admin_create_user_config  = var.admin_create_user_config
   account_recovery_config   = var.account_recovery_config
   device_configuration      = var.device_configuration
+  email_configuration       = var.email_configuration
 }

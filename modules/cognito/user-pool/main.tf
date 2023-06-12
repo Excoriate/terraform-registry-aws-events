@@ -73,4 +73,20 @@ resource "aws_cognito_user_pool" "this" {
       device_only_remembered_on_user_prompt = device_configuration.value["device_only_remembered_on_user_prompt"]
     }
   }
+
+  // #################################################
+  // Email configuration
+  // #################################################
+  dynamic "email_configuration" {
+    for_each = !local.is_email_configuration_enabled ? {} : local.email_configuration_config[each.key] == null ? {} : {
+      email_configuration = local.email_configuration_config[each.key]
+    }
+    content {
+      configuration_set      = email_configuration.value["configuration_set"]
+      email_sending_account  = email_configuration.value["email_sending_account"]
+      from_email_address     = email_configuration.value["from_email_address"]
+      reply_to_email_address = email_configuration.value["reply_to_email_address"]
+      source_arn             = email_configuration.value["source_arn"]
+    }
+  }
 }

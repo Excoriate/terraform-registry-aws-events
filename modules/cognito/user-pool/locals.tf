@@ -9,6 +9,7 @@ locals {
   is_admin_create_user_enabled    = !local.is_module_enabled ? false : var.admin_create_user_config != null
   is_account_recovery_enabled     = !local.is_module_enabled ? false : var.account_recovery_config != null
   is_device_configuration_enabled = !local.is_module_enabled ? false : var.device_configuration != null
+  is_email_configuration_enabled  = !local.is_module_enabled ? false : var.email_configuration != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -96,4 +97,19 @@ locals {
   } }
 
   device_configuration_config = !local.is_device_configuration_enabled ? {} : local.device_configuration_config_normalised
+
+  // [8.] Email configuration.
+  email_configuration = !local.is_email_configuration_enabled ? null : [var.email_configuration]
+  email_configuration_config_normalised = !local.is_email_configuration_enabled ? {} : {
+    for cfg in local.email_configuration : cfg["name"] => {
+      name                   = trimspace(cfg["name"])
+      configuration_set      = cfg["configuration_set"]
+      email_sending_account  = cfg["email_sending_account"]
+      from_email_address     = cfg["from_email_address"]
+      reply_to_email_address = cfg["reply_to_email_address"]
+      source_arn             = cfg["source_arn"]
+  } }
+
+  email_configuration_config = !local.is_email_configuration_enabled ? {} : local.email_configuration_config_normalised
+
 }

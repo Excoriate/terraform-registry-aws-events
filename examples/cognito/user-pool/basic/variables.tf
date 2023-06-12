@@ -131,3 +131,21 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-dev
 EOF
   default     = null
 }
+
+variable "email_configuration" {
+  type = object({
+    name                   = string
+    configuration_set      = optional(string, null)
+    email_sending_account  = optional(string, "COGNITO_DEFAULT")
+    from_email_address     = optional(string, null)
+    reply_to_email_address = optional(string, null)
+    source_arn             = optional(string, null)
+  })
+  description = <<EOF
+  The email configuration to create. These attributes are used in order
+to set the email configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html
+EOF
+  default     = null
+}
