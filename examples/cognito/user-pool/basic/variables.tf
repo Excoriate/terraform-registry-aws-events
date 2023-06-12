@@ -149,3 +149,19 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html
 EOF
   default     = null
 }
+
+variable "sms_configuration"{
+  type = object({
+    name           = string
+    external_id    = optional(string, null)
+    sns_caller_arn = optional(string, null)
+    sns_region     = optional(string, null)
+  })
+  description = <<EOF
+The SMS configuration to create. These attributes are used in order
+to set the SMS configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-sms-configuration.html
+EOF
+  default     = null
+}

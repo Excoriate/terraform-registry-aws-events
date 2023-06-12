@@ -89,4 +89,17 @@ resource "aws_cognito_user_pool" "this" {
       source_arn             = email_configuration.value["source_arn"]
     }
   }
+
+  // #################################################
+  // SMS configuration
+  // #################################################
+  dynamic "sms_configuration" {
+    for_each = !local.is_sms_configuration_enabled ? {} : local.sms_configuration_config[each.key] == null ? {} : { sms_configuration = local.sms_configuration_config[each.key] }
+    content {
+      external_id = sms_configuration.value["external_id"]
+      sns_caller_arn = sms_configuration.value["sns_caller_arn"]
+      sns_region = sms_configuration.value["sns_region"]
+    }
+  }
+
 }

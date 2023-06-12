@@ -10,6 +10,7 @@ locals {
   is_account_recovery_enabled     = !local.is_module_enabled ? false : var.account_recovery_config != null
   is_device_configuration_enabled = !local.is_module_enabled ? false : var.device_configuration != null
   is_email_configuration_enabled  = !local.is_module_enabled ? false : var.email_configuration != null
+  is_sms_configuration_enabled    = !local.is_module_enabled ? false : var.sms_configuration != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -112,4 +113,15 @@ locals {
 
   email_configuration_config = !local.is_email_configuration_enabled ? {} : local.email_configuration_config_normalised
 
+  // [9.] SMS configuration.
+  sms_configuration = !local.is_sms_configuration_enabled ? null : [var.sms_configuration]
+  sms_configuration_config_normalised = !local.is_sms_configuration_enabled ? {} : {
+    for cfg in local.sms_configuration : cfg["name"] => {
+      name                 = trimspace(cfg["name"])
+      external_id          = cfg["external_id"]
+      sns_caller_arn       = cfg["sns_caller_arn"]
+      sns_region          = cfg["sns_region"]
+  } }
+
+  sms_configuration_config = !local.is_sms_configuration_enabled ? {} : local.sms_configuration_config_normalised
 }

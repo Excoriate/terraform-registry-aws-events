@@ -12,4 +12,5 @@ module "main_module" {
   account_recovery_config   = var.account_recovery_config
   device_configuration      = var.device_configuration
   email_configuration       = var.email_configuration
+  sms_configuration = var.sms_configuration
 }
