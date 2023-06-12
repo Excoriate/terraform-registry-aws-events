@@ -11,6 +11,7 @@ locals {
   is_device_configuration_enabled = !local.is_module_enabled ? false : var.device_configuration != null
   is_email_configuration_enabled  = !local.is_module_enabled ? false : var.email_configuration != null
   is_sms_configuration_enabled    = !local.is_module_enabled ? false : var.sms_configuration != null
+  is_password_policy_enabled      = !local.is_module_enabled ? false : var.password_policy_config != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -125,4 +126,19 @@ locals {
   } }
 
   sms_configuration_config = !local.is_sms_configuration_enabled ? {} : local.sms_configuration_config_normalised
+
+  // [10.] Password policy configuration.
+  password_policy = !local.is_password_policy_enabled ? null : [var.password_policy_config]
+  password_policy_config_normalised = !local.is_password_policy_enabled ? {} : {
+    for cfg in local.password_policy : cfg["name"] => {
+      name                             = trimspace(cfg["name"])
+      minimum_length                   = cfg["minimum_length"]
+      require_lowercase                = cfg["require_lowercase"]
+      require_numbers                  = cfg["require_numbers"]
+      require_symbols                  = cfg["require_symbols"]
+      require_uppercase                = cfg["require_uppercase"]
+      temporary_password_validity_days = cfg["temporary_password_validity_days"]
+  } }
+
+  password_policy_config = !local.is_password_policy_enabled ? {} : local.password_policy_config_normalised
 }

@@ -109,4 +109,19 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  // #################################################
+  // Password policy
+  // #################################################
+  dynamic "password_policy" {
+    for_each = !local.is_password_policy_enabled ? {} : local.password_policy_config[each.key] == null ? {} : { password_policy = local.password_policy_config[each.key] }
+    content {
+      minimum_length                   = password_policy.value["minimum_length"]
+      require_numbers                  = password_policy.value["require_numbers"]
+      require_symbols                  = password_policy.value["require_symbols"]
+      temporary_password_validity_days = password_policy.value["temporary_password_validity_days"]
+      require_lowercase                = password_policy.value["require_lowercase"]
+      require_uppercase                = password_policy.value["require_uppercase"]
+    }
+  }
+
 }

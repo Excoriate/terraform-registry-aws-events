@@ -166,3 +166,22 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-sms-configur
 EOF
   default     = null
 }
+
+variable "password_policy_config" {
+  type = object({
+    name                             = string
+    minimum_length                   = optional(number, 8)
+    require_lowercase                = optional(bool, true)
+    require_uppercase                = optional(bool, true)
+    require_numbers                  = optional(bool, true)
+    require_symbols                  = optional(bool, true)
+    temporary_password_validity_days = optional(number, 7)
+  })
+  description = <<EOF
+The password policy configuration to create. These attributes are used in order
+to set the password policy configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-password-policies.html
+EOF
+  default     = null
+}
