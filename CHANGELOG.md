@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.1.14](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.13...v0.1.14) (2023-06-12)
+
+
+### Features
+
+* add account recovery configuration ([ec90f78](https://github.com/Excoriate/terraform-registry-aws-events/commit/ec90f78092a91e0c1f295008837b8e85a2b64798))
+* add admin user config creation option ([de65e01](https://github.com/Excoriate/terraform-registry-aws-events/commit/de65e01db49e7de2fab342f172db969a92e03fd2))
+* add device configuration capability ([830a40d](https://github.com/Excoriate/terraform-registry-aws-events/commit/830a40dd5c7e3fd9d77ba057604b8086e2d776aa))
+* add email configuration support ([28f57a1](https://github.com/Excoriate/terraform-registry-aws-events/commit/28f57a1f2613b142790f2abbc21020f758943cc6))
+* add initial configuration for user pool ([b95afaf](https://github.com/Excoriate/terraform-registry-aws-events/commit/b95afafdc4108f5d52fb2dcfb3b39718d9779a9d))
+* add lambda configuration ([8956dca](https://github.com/Excoriate/terraform-registry-aws-events/commit/8956dcacfb30df2c1f90307b1b4a055c42c42a2a))
+* add schema attributes configuration ([e854694](https://github.com/Excoriate/terraform-registry-aws-events/commit/e854694b95291ed53968071f87d1058ba38da1bf))
+* add software mfa token support ([f75db7a](https://github.com/Excoriate/terraform-registry-aws-events/commit/f75db7a3311fe26230e2da72baace85e6761b210))
+* add support for password policy ([4921cce](https://github.com/Excoriate/terraform-registry-aws-events/commit/4921ccea56a8f73d400a1d45f13d1c59cf530790))
+* add support for SMS ([a6335c6](https://github.com/Excoriate/terraform-registry-aws-events/commit/a6335c6703b71a95989024bc40255dca5c4d2433))
+* add user attribute update settings ([92e527f](https://github.com/Excoriate/terraform-registry-aws-events/commit/92e527f52afda10af9da06a831865c50863e0363))
+* add user pool add ons configuration ([a25848c](https://github.com/Excoriate/terraform-registry-aws-events/commit/a25848cd61df5481070a707c1ad235a6e6e71bc5))
+* add user-pool module ([991ce0c](https://github.com/Excoriate/terraform-registry-aws-events/commit/991ce0cf90099a6109ef5bb663e29c78d3d59aed))
+* add verification template capability ([6fc9ceb](https://github.com/Excoriate/terraform-registry-aws-events/commit/6fc9ceb48a506c9ce10c76a94c2b4416dc767061))
+
 ## [0.1.13](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.12...v0.1.13) (2023-05-10)
 
 
