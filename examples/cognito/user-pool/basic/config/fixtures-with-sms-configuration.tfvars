@@ -7,8 +7,8 @@ user_pool_config = {
 }
 
 sms_configuration = {
-  name = "userpool1"
+  name           = "userpool1"
   sns_caller_arn = "arn:aws:iam::123456789012:role/role1"
-  external_id = "123456789012"
-  sns_region = "us-east-1"
+  external_id    = "123456789012"
+  sns_region     = "us-east-1"
 }

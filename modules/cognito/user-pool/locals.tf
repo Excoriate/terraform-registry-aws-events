@@ -61,8 +61,9 @@ locals {
   mfa_configuration = !local.is_mfa_enabled ? null : [var.mfa_configuration_config]
   mfa_configuration_config_normalised = !local.is_mfa_enabled ? {} : {
     for cfg in local.mfa_configuration : cfg["name"] => {
-      name              = trimspace(cfg["name"])
-      mfa_configuration = cfg["enable_mfa"] ? "ON" : cfg["disable_mfa"] ? "OFF" : cfg["enable_optional_mfa"] ? "OPTIONAL" : "OFF"
+      name                     = trimspace(cfg["name"])
+      mfa_configuration        = cfg["enable_mfa"] ? "ON" : cfg["disable_mfa"] ? "OFF" : cfg["enable_optional_mfa"] ? "OPTIONAL" : "OFF"
+      allow_software_mfa_token = cfg["allow_software_mfa_token"] == null ? false : cfg["allow_software_mfa_token"]
   } }
 
   mfa_configuration_config = !local.is_mfa_enabled ? {} : local.mfa_configuration_config_normalised
@@ -117,10 +118,10 @@ locals {
   sms_configuration = !local.is_sms_configuration_enabled ? null : [var.sms_configuration]
   sms_configuration_config_normalised = !local.is_sms_configuration_enabled ? {} : {
     for cfg in local.sms_configuration : cfg["name"] => {
-      name                 = trimspace(cfg["name"])
-      external_id          = cfg["external_id"]
-      sns_caller_arn       = cfg["sns_caller_arn"]
-      sns_region          = cfg["sns_region"]
+      name           = trimspace(cfg["name"])
+      external_id    = cfg["external_id"]
+      sns_caller_arn = cfg["sns_caller_arn"]
+      sns_region     = cfg["sns_region"]
   } }
 
   sms_configuration_config = !local.is_sms_configuration_enabled ? {} : local.sms_configuration_config_normalised

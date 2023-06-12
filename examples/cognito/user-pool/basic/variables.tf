@@ -70,10 +70,11 @@ EOF
 
 variable "mfa_configuration_config" {
   type = object({
-    name                = string
-    enable_mfa          = optional(bool, false)
-    disable_mfa         = optional(bool, true) // set by default
-    enable_optional_mfa = optional(bool, false)
+    name                     = string
+    enable_mfa               = optional(bool, false)
+    disable_mfa              = optional(bool, true) // set by default
+    enable_optional_mfa      = optional(bool, false)
+    allow_software_mfa_token = optional(bool, false)
   })
   description = <<EOF
   List of MFA configurations to create. The options are:
@@ -150,7 +151,7 @@ EOF
   default     = null
 }
 
-variable "sms_configuration"{
+variable "sms_configuration" {
   type = object({
     name           = string
     external_id    = optional(string, null)

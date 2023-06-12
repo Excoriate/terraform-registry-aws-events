@@ -17,6 +17,13 @@ resource "aws_cognito_user_pool" "this" {
   // MFA configuration
   mfa_configuration = !local.is_mfa_enabled ? null : local.mfa_configuration_config[each.key] == null ? null : lookup(local.mfa_configuration_config[each.key], "mfa_configuration", "OFF")
 
+  dynamic "software_token_mfa_configuration" {
+    for_each = !local.is_mfa_enabled ? {} : local.mfa_configuration_config[each.key] == null ? {} : { software_token_mfa_configuration = local.mfa_configuration_config[each.key] }
+    content {
+      enabled = software_token_mfa_configuration.value["allow_software_mfa_token"]
+    }
+  }
+
   // #################################################
   // Username configuration
   // #################################################
@@ -96,9 +103,9 @@ resource "aws_cognito_user_pool" "this" {
   dynamic "sms_configuration" {
     for_each = !local.is_sms_configuration_enabled ? {} : local.sms_configuration_config[each.key] == null ? {} : { sms_configuration = local.sms_configuration_config[each.key] }
     content {
-      external_id = sms_configuration.value["external_id"]
+      external_id    = sms_configuration.value["external_id"]
       sns_caller_arn = sms_configuration.value["sns_caller_arn"]
-      sns_region = sms_configuration.value["sns_region"]
+      sns_region     = sms_configuration.value["sns_region"]
     }
   }
 
