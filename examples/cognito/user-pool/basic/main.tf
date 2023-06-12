@@ -8,4 +8,5 @@ module "main_module" {
   email_verification_config = var.email_verification_config
   mfa_configuration_config  = var.mfa_configuration_config
   sms_verification_config   = var.sms_verification_config
+  admin_create_user_config  = var.admin_create_user_config
 }

@@ -84,3 +84,20 @@ By default, it's set to 'disable_mfa'.
 EOF
   default     = null
 }
+
+variable "admin_create_user_config" {
+  type = object({
+    name                         = string
+    allow_admin_create_user_only = optional(bool, false)
+    invite_message_template = optional(object({
+      email_message = optional(string, null)
+      email_subject = optional(string, null)
+      sms_message   = optional(string, null)
+    }), null)
+  })
+  description = <<EOF
+  List of admin create user configurations to create. These attributes are used in order
+to set the admin create user message that is sent to the user when they sign up.
+EOF
+  default     = null
+}

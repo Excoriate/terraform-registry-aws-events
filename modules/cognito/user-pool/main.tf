@@ -24,4 +24,19 @@ resource "aws_cognito_user_pool" "this" {
       case_sensitive = cfg.value
     }
   }
+
+  dynamic "admin_create_user_config" {
+    for_each = !local.is_admin_create_user_enabled ? {} : local.admin_create_user_config[each.key] != null ? { admin_create_user_config = local.admin_create_user_config[each.key] } : {}
+    content {
+      allow_admin_create_user_only = admin_create_user_config.value["allow_admin_create_user_only"]
+      dynamic "invite_message_template" {
+        for_each = admin_create_user_config.value["invite_message_template"] != null ? { invite_message_template = admin_create_user_config.value["invite_message_template"] } : {}
+        content {
+          email_message = invite_message_template.value["email_message"]
+          email_subject = invite_message_template.value["email_subject"]
+          sms_message   = invite_message_template.value["sms_message"]
+        }
+      }
+    }
+  }
 }
