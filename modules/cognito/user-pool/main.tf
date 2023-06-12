@@ -162,4 +162,19 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  // #################################################
+  // Verification Message template configuration
+  // #################################################
+  dynamic "verification_message_template" {
+    for_each = !local.is_verification_message_template_enabled ? {} : local.verification_message_template_config[each.key] == null ? {} : { verification_message_template = local.verification_message_template_config[each.key] }
+    content {
+      default_email_option  = verification_message_template.value["default_email_option"]
+      email_message         = verification_message_template.value["email_message"]
+      email_message_by_link = verification_message_template.value["email_message_by_link"]
+      email_subject         = verification_message_template.value["email_subject"]
+      email_subject_by_link = verification_message_template.value["email_subject_by_link"]
+      sms_message           = verification_message_template.value["sms_message"]
+    }
+  }
+
 }

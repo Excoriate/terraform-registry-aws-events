@@ -3,16 +3,17 @@ locals {
   is_module_enabled    = !var.is_enabled ? false : var.user_pool_config != null
 
   // Specific functionalities with feature flags
-  is_email_verification_enabled   = !local.is_module_enabled ? false : var.email_verification_config != null
-  is_sms_verification_enabled     = !local.is_module_enabled ? false : var.sms_verification_config != null
-  is_mfa_enabled                  = !local.is_module_enabled ? false : var.mfa_configuration_config != null
-  is_admin_create_user_enabled    = !local.is_module_enabled ? false : var.admin_create_user_config != null
-  is_account_recovery_enabled     = !local.is_module_enabled ? false : var.account_recovery_config != null
-  is_device_configuration_enabled = !local.is_module_enabled ? false : var.device_configuration != null
-  is_email_configuration_enabled  = !local.is_module_enabled ? false : var.email_configuration != null
-  is_sms_configuration_enabled    = !local.is_module_enabled ? false : var.sms_configuration != null
-  is_password_policy_enabled      = !local.is_module_enabled ? false : var.password_policy_config != null
-  is_schema_attributes_enabled    = !local.is_module_enabled ? false : var.schema_attributes_config != null
+  is_email_verification_enabled            = !local.is_module_enabled ? false : var.email_verification_config != null
+  is_sms_verification_enabled              = !local.is_module_enabled ? false : var.sms_verification_config != null
+  is_mfa_enabled                           = !local.is_module_enabled ? false : var.mfa_configuration_config != null
+  is_admin_create_user_enabled             = !local.is_module_enabled ? false : var.admin_create_user_config != null
+  is_account_recovery_enabled              = !local.is_module_enabled ? false : var.account_recovery_config != null
+  is_device_configuration_enabled          = !local.is_module_enabled ? false : var.device_configuration != null
+  is_email_configuration_enabled           = !local.is_module_enabled ? false : var.email_configuration != null
+  is_sms_configuration_enabled             = !local.is_module_enabled ? false : var.sms_configuration != null
+  is_password_policy_enabled               = !local.is_module_enabled ? false : var.password_policy_config != null
+  is_schema_attributes_enabled             = !local.is_module_enabled ? false : var.schema_attributes_config != null
+  is_verification_message_template_enabled = !local.is_module_enabled ? false : var.verification_message_template_config != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -161,4 +162,20 @@ locals {
   schema_attributes_config = !local.is_schema_attributes_enabled ? {} : {
     for cfg in local.schema_attributes_config_normalised : cfg["attribute_name"] => cfg
   }
+
+  // [12.] Verification message template configuration.
+  verification_message_template = !local.is_verification_message_template_enabled ? null : [var.verification_message_template_config]
+  verification_message_template_config_normalised = !local.is_verification_message_template_enabled ? {} : {
+    for cfg in local.verification_message_template : cfg["name"] => {
+      name                  = trimspace(cfg["name"])
+      default_email_option  = cfg["default_email_option"]
+      email_message         = cfg["email_message"]
+      email_message_by_link = cfg["email_message_by_link"]
+      email_subject         = cfg["email_subject"]
+      email_subject_by_link = cfg["email_subject_by_link"]
+      sms_message           = cfg["sms_message"]
+  } }
+
+  verification_message_template_config = !local.is_verification_message_template_enabled ? {} : local.verification_message_template_config_normalised
+
 }

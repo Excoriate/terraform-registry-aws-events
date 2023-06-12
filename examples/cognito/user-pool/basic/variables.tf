@@ -212,3 +212,22 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-att
 EOF
   default     = null
 }
+
+variable "verification_message_template_config" {
+  type = object({
+    name                  = string
+    default_email_option  = optional(string, null)
+    email_message_by_link = optional(string, null)
+    email_message         = optional(string, null)
+    email_subject         = optional(string, null)
+    email_subject_by_link = optional(string, null)
+    sms_message           = optional(string, null)
+  })
+  description = <<EOF
+The verification message template configuration to create. These attributes are used in order
+to set the verification message template configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html
+EOF
+  default     = null
+}
