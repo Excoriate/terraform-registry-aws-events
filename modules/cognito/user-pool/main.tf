@@ -186,4 +186,38 @@ resource "aws_cognito_user_pool" "this" {
       attributes_require_verification_before_update = user_attribute_update_settings.value
     }
   }
+
+  // #################################################
+  // Lambda configuration
+  // #################################################
+  dynamic "lambda_config" {
+    for_each = !local.is_lambda_configuration_enabled ? {} : local.lambda_config_create[each.key] == null ? {} : { lambda_config = local.lambda_config_create[each.key] }
+    content {
+      create_auth_challenge          = lambda_config.value["create_auth_challenge"]
+      custom_message                 = lambda_config.value["custom_message"]
+      define_auth_challenge          = lambda_config.value["define_auth_challenge"]
+      post_authentication            = lambda_config.value["post_authentication"]
+      post_confirmation              = lambda_config.value["post_confirmation"]
+      pre_authentication             = lambda_config.value["pre_authentication"]
+      pre_sign_up                    = lambda_config.value["pre_sign_up"]
+      verify_auth_challenge_response = lambda_config.value["verify_auth_challenge_response"]
+      dynamic "custom_email_sender" {
+        for_each = lambda_config.value["custom_email_sender"] == null ? {} : { custom_email_sender = lambda_config.value["custom_email_sender"] }
+        content {
+          lambda_arn     = custom_email_sender.value["lambda_arn"]
+          lambda_version = custom_email_sender.value["lambda_version"]
+        }
+      }
+
+      dynamic "custom_sms_sender" {
+        for_each = lambda_config.value["custom_sms_sender"] == null ? {} : { custom_sms_sender = lambda_config.value["custom_sms_sender"] }
+        content {
+          lambda_arn     = custom_sms_sender.value["lambda_arn"]
+          lambda_version = custom_sms_sender.value["lambda_version"]
+        }
+      }
+
+      kms_key_id = lambda_config.value["kms_key_id"]
+    }
+  }
 }

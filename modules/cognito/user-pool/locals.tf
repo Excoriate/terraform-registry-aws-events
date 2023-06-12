@@ -14,6 +14,7 @@ locals {
   is_password_policy_enabled               = !local.is_module_enabled ? false : var.password_policy_config != null
   is_schema_attributes_enabled             = !local.is_module_enabled ? false : var.schema_attributes_config != null
   is_verification_message_template_enabled = !local.is_module_enabled ? false : var.verification_message_template_config != null
+  is_lambda_configuration_enabled          = !local.is_module_enabled ? false : var.lambda_config != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -179,4 +180,25 @@ locals {
 
   verification_message_template_config = !local.is_verification_message_template_enabled ? {} : local.verification_message_template_config_normalised
 
+  // [13.] Lambda configuration
+  lambda_config = !local.is_lambda_configuration_enabled ? null : [var.lambda_config]
+  lambda_config_normalised = !local.is_lambda_configuration_enabled ? {} : {
+    for cfg in local.lambda_config : cfg["name"] => {
+      name                           = trimspace(cfg["name"])
+      custom_message                 = cfg["custom_message"]
+      create_auth_challenge          = cfg["create_auth_challenge"]
+      define_auth_challenge          = cfg["define_auth_challenge"]
+      post_authentication            = cfg["post_authentication"]
+      post_confirmation              = cfg["post_confirmation"]
+      pre_authentication             = cfg["pre_authentication"]
+      pre_sign_up                    = cfg["pre_sign_up"]
+      pre_token_generation           = cfg["pre_token_generation"]
+      user_migration                 = cfg["user_migration"]
+      verify_auth_challenge_response = cfg["verify_auth_challenge_response"]
+      kms_key_id                     = cfg["kms_key_id"]
+      custom_email_sender            = cfg["custom_email_sender"]
+      custom_sms_sender              = cfg["custom_sms_sender"]
+  } }
+
+  lambda_config_create = !local.is_lambda_configuration_enabled ? {} : local.lambda_config_normalised
 }

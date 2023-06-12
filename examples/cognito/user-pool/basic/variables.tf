@@ -232,3 +232,35 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html
 EOF
   default     = null
 }
+
+variable "lambda_config" {
+  type = object({
+    name                           = string
+    create_auth_challenge          = optional(string, null)
+    custom_message                 = optional(string, null)
+    define_auth_challenge          = optional(string, null)
+    post_authentication            = optional(string, null)
+    post_confirmation              = optional(string, null)
+    pre_authentication             = optional(string, null)
+    pre_sign_up                    = optional(string, null)
+    pre_token_generation           = optional(string, null)
+    user_migration                 = optional(string, null)
+    verify_auth_challenge_response = optional(string, null)
+    kms_key_id                     = optional(string, null)
+    custom_email_sender = optional(object({
+      lambda_arn     = optional(string, null)
+      lambda_version = optional(string, null)
+    }), null)
+    custom_sms_sender = optional(object({
+      lambda_arn     = optional(string, null)
+      lambda_version = optional(string, null)
+    }), null)
+  })
+  description = <<EOF
+The lambda configuration to create. These attributes are used in order
+to set the lambda configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda.html
+EOF
+  default     = null
+}

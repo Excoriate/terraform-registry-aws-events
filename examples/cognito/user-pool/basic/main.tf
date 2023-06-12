@@ -16,4 +16,5 @@ module "main_module" {
   password_policy_config               = var.password_policy_config
   schema_attributes_config             = var.schema_attributes_config
   verification_message_template_config = var.verification_message_template_config
+  lambda_config                        = var.lambda_config
 }
