@@ -1,0 +1,88 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # ☁️ Cognito User Pool
+    ## Description
+    {{ .Header }}
+    This module provides the following capabilities:
+    * 🚀 **Simple Lambda Function**: Create a Lambda function using a pre-existing zip file, a file compressed by the module, or a directory with source code.
+    * 🚀 **S3 Bucket Integration**: Use an existing S3 bucket to store the Lambda package or create a fully managed setup with best-practices for versioning and lifecycle.
+    * 🚀 **Built-in Permissions**: Includes built-in permissions for AWS Secrets Manager (for secret rotation), EventBridge, and other services.
+    * 🚀 **Custom Policies**: Supports attaching custom IAM policies to the Lambda execution role.
+    * 🚀 **built-in role**: Supports using a pre-existing role or creating a new one.
+    * 🚀 **Observability**: Supports CloudWatch Logs, X-Ray, and CloudWatch Metrics.
+
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/lambda/lambda-function/basic/main.tf" }}
+    ```
+    ## Recipes
+    ### Very basic configuration.
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures.tfvars" }}
+    ```
+    ### Advanced configuration
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-advanced.tfvars" }}
+    ```
+
+    ### Archive directory
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-dir.tfvars" }}
+    ```
+    Also, it supports a managed archive with excluded files
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-dir-excluded.tfvars" }}
+    ```
+
+    ### Create an archive from a file
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-file.tfvars" }}
+    ```
+
+    ### Use a DockerFile
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/from_docker/main.tf" }}
+    ```
+    ```hcl
+      {{ include "../../../examples/lambda/lambda-function/from_docker/config/fixtures.tfvars" }}
+    ```
+
+    For other examples, please refer to the [examples](../../../examples) folder.
+
+    For module composition, it's recommended to take a look at the module's `outputs` to understand what's available:
+    ```hcl
+    {{ include "outputs.tf" }}
+
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true
