@@ -3,11 +3,12 @@ locals {
   is_module_enabled    = !var.is_enabled ? false : var.user_pool_config != null
 
   // Specific functionalities with feature flags
-  is_email_verification_enabled = !local.is_module_enabled ? false : var.email_verification_config != null
-  is_sms_verification_enabled   = !local.is_module_enabled ? false : var.sms_verification_config != null
-  is_mfa_enabled                = !local.is_module_enabled ? false : var.mfa_configuration_config != null
-  is_admin_create_user_enabled  = !local.is_module_enabled ? false : var.admin_create_user_config != null
-  is_account_recovery_enabled   = !local.is_module_enabled ? false : var.account_recovery_config != null
+  is_email_verification_enabled   = !local.is_module_enabled ? false : var.email_verification_config != null
+  is_sms_verification_enabled     = !local.is_module_enabled ? false : var.sms_verification_config != null
+  is_mfa_enabled                  = !local.is_module_enabled ? false : var.mfa_configuration_config != null
+  is_admin_create_user_enabled    = !local.is_module_enabled ? false : var.admin_create_user_config != null
+  is_account_recovery_enabled     = !local.is_module_enabled ? false : var.account_recovery_config != null
+  is_device_configuration_enabled = !local.is_module_enabled ? false : var.device_configuration != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -84,4 +85,15 @@ locals {
   } }
 
   account_recovery_config = !local.is_account_recovery_enabled ? {} : local.account_recovery_config_normalised
+
+  // [7.] Device configuration.
+  device_configuration = !local.is_device_configuration_enabled ? null : [var.device_configuration]
+  device_configuration_config_normalised = !local.is_device_configuration_enabled ? {} : {
+    for cfg in local.device_configuration : cfg["name"] => {
+      name                                  = trimspace(cfg["name"])
+      device_only_remembered_on_user_prompt = cfg["device_only_remembered_on_user_prompt"]
+      challenge_required_on_new_device      = cfg["challenge_required_on_new_device"]
+  } }
+
+  device_configuration_config = !local.is_device_configuration_enabled ? {} : local.device_configuration_config_normalised
 }

@@ -62,4 +62,15 @@ resource "aws_cognito_user_pool" "this" {
       }
     }
   }
+
+  // #################################################
+  // Device Configuration
+  // #################################################
+  dynamic "device_configuration" {
+    for_each = !local.is_device_configuration_enabled ? {} : local.device_configuration_config[each.key] == null ? {} : { device_configuration = local.device_configuration_config[each.key] }
+    content {
+      challenge_required_on_new_device      = device_configuration.value["challenge_required_on_new_device"]
+      device_only_remembered_on_user_prompt = device_configuration.value["device_only_remembered_on_user_prompt"]
+    }
+  }
 }

@@ -116,3 +116,18 @@ to set the account recovery mechanisms that are available to the user when they 
 EOF
   default     = null
 }
+
+variable "device_configuration" {
+  type = object({
+    name                                  = string
+    device_only_remembered_on_user_prompt = optional(bool, false)
+    challenge_required_on_new_device      = optional(bool, false)
+  })
+  description = <<EOF
+  The device configuration to create. These attributes are used in order
+to set the device configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-devices.html
+EOF
+  default     = null
+}
