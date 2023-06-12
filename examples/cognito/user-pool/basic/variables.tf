@@ -185,3 +185,29 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-password-pol
 EOF
   default     = null
 }
+
+variable "schema_attributes_config" {
+  type = list(object({
+    name                     = string
+    attribute_name           = string
+    attribute_data_type      = string
+    developer_only_attribute = optional(bool, false)
+    mutable                  = optional(bool, true)
+    required                 = optional(bool, false)
+    string_attribute_constraints = optional(object({
+      max_length = optional(string, null)
+      min_length = optional(string, null)
+    }), null)
+    number_attribute_constraints = optional(object({
+      max_value = optional(string, null)
+      min_value = optional(string, null)
+    }), null)
+  }))
+  description = <<EOF
+The schema attributes configuration to create. These attributes are used in order
+to set the schema attributes configuration that is available to the user when they sign up.
+For more information about this specific attribute please refer to the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html
+EOF
+  default     = null
+}

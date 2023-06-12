@@ -12,6 +12,7 @@ locals {
   is_email_configuration_enabled  = !local.is_module_enabled ? false : var.email_configuration != null
   is_sms_configuration_enabled    = !local.is_module_enabled ? false : var.sms_configuration != null
   is_password_policy_enabled      = !local.is_module_enabled ? false : var.password_policy_config != null
+  is_schema_attributes_enabled    = !local.is_module_enabled ? false : var.schema_attributes_config != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -141,4 +142,22 @@ locals {
   } }
 
   password_policy_config = !local.is_password_policy_enabled ? {} : local.password_policy_config_normalised
+
+  // [11.] Schema attributes
+  schema_attributes = !local.is_schema_attributes_enabled ? null : var.schema_attributes_config
+  schema_attributes_config_normalised = !local.is_schema_attributes_enabled ? [] : [
+    for cfg in local.schema_attributes : {
+      name                         = trimspace(cfg["name"])
+      attribute_name               = cfg["attribute_name"]
+      attribute_data_type          = cfg["attribute_data_type"]
+      developer_only_attribute     = cfg["developer_only_attribute"]
+      mutable                      = cfg["mutable"]
+      required                     = cfg["required"]
+      string_attribute_constraints = cfg["string_attribute_constraints"]
+      number_attribute_constraints = cfg["number_attribute_constraints"]
+  }]
+
+  schema_attributes_config = !local.is_schema_attributes_enabled ? {} : {
+    for cfg in local.schema_attributes_config_normalised : cfg["attribute_name"] => cfg
+  }
 }

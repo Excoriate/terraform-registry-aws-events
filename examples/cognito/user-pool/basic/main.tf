@@ -14,4 +14,5 @@ module "main_module" {
   email_configuration       = var.email_configuration
   sms_configuration         = var.sms_configuration
   password_policy_config    = var.password_policy_config
+  schema_attributes_config  = var.schema_attributes_config
 }

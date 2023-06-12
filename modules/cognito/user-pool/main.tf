@@ -124,4 +124,34 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  // #################################################
+  // Schema attributes
+  // #################################################
+  dynamic "schema" {
+    for_each = !local.is_schema_attributes_enabled ? {} : local.schema_attributes_config
+    content {
+      attribute_data_type      = schema.value["attribute_data_type"]
+      developer_only_attribute = schema.value["developer_only_attribute"]
+      mutable                  = schema.value["mutable"]
+      name                     = schema.value["attribute_name"]
+      required                 = schema.value["required"]
+
+      dynamic "number_attribute_constraints" {
+        for_each = schema.value["number_attribute_constraints"] == null ? {} : schema.value["attribute_data_type"] == "String" ? {} : { number_attribute_constraints = schema.value["number_attribute_constraints"] }
+        content {
+          max_value = number_attribute_constraints.value["max_value"]
+          min_value = number_attribute_constraints.value["min_value"]
+        }
+      }
+
+      dynamic "string_attribute_constraints" {
+        for_each = schema.value["string_attribute_constraints"] == null ? {} : schema.value["attribute_data_type"] == "Number" ? {} : { string_attribute_constraints = schema.value["string_attribute_constraints"] }
+        content {
+          max_length = string_attribute_constraints.value["max_length"]
+          min_length = string_attribute_constraints.value["min_length"]
+        }
+      }
+    }
+  }
+
 }
