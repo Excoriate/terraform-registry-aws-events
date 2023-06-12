@@ -9,4 +9,5 @@ module "main_module" {
   mfa_configuration_config  = var.mfa_configuration_config
   sms_verification_config   = var.sms_verification_config
   admin_create_user_config  = var.admin_create_user_config
+  account_recovery_config   = var.account_recovery_config
 }

@@ -7,6 +7,7 @@ locals {
   is_sms_verification_enabled   = !local.is_module_enabled ? false : var.sms_verification_config != null
   is_mfa_enabled                = !local.is_module_enabled ? false : var.mfa_configuration_config != null
   is_admin_create_user_enabled  = !local.is_module_enabled ? false : var.admin_create_user_config != null
+  is_account_recovery_enabled   = !local.is_module_enabled ? false : var.account_recovery_config != null
 
   // Normalization and mapping.
   // [1.] Core user-pool configuration.
@@ -73,4 +74,14 @@ locals {
   } }
 
   admin_create_user_config = !local.is_admin_create_user_enabled ? {} : local.admin_create_user_config_normalised
+
+  // [6.] Account recovery configuration.
+  account_recovery = !local.is_account_recovery_enabled ? null : [var.account_recovery_config]
+  account_recovery_config_normalised = !local.is_account_recovery_enabled ? {} : {
+    for cfg in local.account_recovery : cfg["name"] => {
+      name                = trimspace(cfg["name"])
+      recovery_mechanisms = cfg["recovery_mechanisms"]
+  } }
+
+  account_recovery_config = !local.is_account_recovery_enabled ? {} : local.account_recovery_config_normalised
 }

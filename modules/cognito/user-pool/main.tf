@@ -17,6 +17,9 @@ resource "aws_cognito_user_pool" "this" {
   // MFA configuration
   mfa_configuration = !local.is_mfa_enabled ? null : local.mfa_configuration_config[each.key] == null ? null : lookup(local.mfa_configuration_config[each.key], "mfa_configuration", "OFF")
 
+  // #################################################
+  // Username configuration
+  // #################################################
   dynamic "username_configuration" {
     for_each = each.value["username_configuration"]
     iterator = cfg
@@ -25,6 +28,9 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  // #################################################
+  // Admin create user configuration
+  // #################################################
   dynamic "admin_create_user_config" {
     for_each = !local.is_admin_create_user_enabled ? {} : local.admin_create_user_config[each.key] != null ? { admin_create_user_config = local.admin_create_user_config[each.key] } : {}
     content {
@@ -35,6 +41,23 @@ resource "aws_cognito_user_pool" "this" {
           email_message = invite_message_template.value["email_message"]
           email_subject = invite_message_template.value["email_subject"]
           sms_message   = invite_message_template.value["sms_message"]
+        }
+      }
+    }
+  }
+
+  // #################################################
+  // Account recovery configuration
+  // #################################################
+  dynamic "account_recovery_setting" {
+    for_each = !local.is_account_recovery_enabled ? {} : local.account_recovery_config[each.key] == null ? {} : { account_recovery_setting = local.account_recovery_config[each.key] }
+    content {
+      dynamic "recovery_mechanism" {
+        for_each = account_recovery_setting.value["recovery_mechanisms"] // changed from "recovery_mechanism" to "recovery_mechanisms"
+        iterator = cfg
+        content {
+          name     = cfg.value["name"]
+          priority = cfg.value["priority"]
         }
       }
     }

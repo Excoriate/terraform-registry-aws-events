@@ -101,3 +101,18 @@ to set the admin create user message that is sent to the user when they sign up.
 EOF
   default     = null
 }
+
+variable "account_recovery_config" {
+  type = object({
+    name = string
+    recovery_mechanisms = optional(list(object({
+      name     = string
+      priority = number
+    })), null)
+  })
+  description = <<EOF
+  List of account recovery configurations to create. These attributes are used in order
+to set the account recovery mechanisms that are available to the user when they sign up.
+EOF
+  default     = null
+}
