@@ -44,6 +44,7 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 | `aws-eventbridge-rule`        | Stable ✅ | Create an event rule, that can work with several destinations..                                                       |
 | `aws-eventbridge-permissions` | Stable ✅ | Opinionated module to create custom (and usually required) permissions for an eventbridge resource, normally `rules`. |
 | `aws-lambda-function`         | Stable ✅ | Create a lambda function, for different use-case.                                                                     |
+| `aws-cognito-user-pool`       | Stable ✅ | Create a cognito user pool, with a set of opinionated defaults.                                                       |
 
 
 

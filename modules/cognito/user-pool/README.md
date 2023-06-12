@@ -1,25 +1,78 @@
 <!-- BEGIN_TF_DOCS -->
+# ☁️ Cognito User Pool
+## Description
+
+This module provides the following capabilities:
+* 🚀 **Lambda configuration**: It supports the addition of lambda triggers.
+* 🔒 **User Pool Management**: This module supports the creation and configuration of AWS Cognito User Pools. You can define attributes, password policies, and more.
+* 🔑 **MFA Configuration**: This module supports the setup of Multi-Factor Authentication (MFA) for your user pool.
+* 📧 **Email and SMS Configuration**: You can configure the email and SMS settings for verification and multi-factor authentication.
+* 🚀 **Schema Attributes**: You can set up custom schema attributes for your user pool.
+* 🎣 **Trigger Events**: You can specify AWS Lambda functions to handle events that occur during user pool operations.
+
+---
+## Example
+Examples of this module's usage are available in the [examples](./examples) folder.
+
+```hcl
+module "main_module" {
+  source     = "../../../../modules/cognito/user-pool"
+  is_enabled = var.is_enabled
+  aws_region = var.aws_region
+
+  // Specific module configuration
+  user_pool_config                     = var.user_pool_config
+  email_verification_config            = var.email_verification_config
+  mfa_configuration_config             = var.mfa_configuration_config
+  sms_verification_config              = var.sms_verification_config
+  admin_create_user_config             = var.admin_create_user_config
+  account_recovery_config              = var.account_recovery_config
+  device_configuration                 = var.device_configuration
+  email_configuration                  = var.email_configuration
+  sms_configuration                    = var.sms_configuration
+  password_policy_config               = var.password_policy_config
+  schema_attributes_config             = var.schema_attributes_config
+  verification_message_template_config = var.verification_message_template_config
+  lambda_config                        = var.lambda_config
+}
+```
+## Recipes
+### Very basic configuration.
+```hcl
+aws_region = "us-east-1"
+is_enabled = true
+
+user_pool_config = {
+  name = "userpool1"
+}
+```
+
+---
+
+## Module's documentation
+(This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_cognito_user_pool.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool) | resource |
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.48.0, < 5.0.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.4.3 |
-
-## Providers
-
-No providers.
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_main_module"></a> [main\_module](#module\_main\_module) | ../../../../modules/cognito/user-pool | n/a |
-
-## Resources
-
-No resources.
 
 ## Inputs
 
@@ -46,6 +99,8 @@ No resources.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_aws_region_for_deploy_this"></a> [aws\_region\_for\_deploy\_this](#output\_aws\_region\_for\_deploy\_this) | The AWS region where the module is deployed. |
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
+| <a name="output_tags_set"></a> [tags\_set](#output\_tags\_set) | The tags set for the module. |
 | <a name="output_user_pool_configuration"></a> [user\_pool\_configuration](#output\_user\_pool\_configuration) | The user pool configuration |
 <!-- END_TF_DOCS -->
