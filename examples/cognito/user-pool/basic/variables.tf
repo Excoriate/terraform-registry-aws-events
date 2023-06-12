@@ -24,14 +24,15 @@ Custom input variables
 */
 variable "user_pool_config" {
   type = object({
-    name                            = string
-    user_pool_name                  = optional(string, null)
-    alias_attributes                = optional(list(string), ["email", "preferred_username"])
-    username_attributes             = optional(list(string), null)
-    deletion_protection_enabled     = optional(bool, false) // maps to deletion_protection attribute.
-    auto_verified_attributes        = optional(list(string), null)
-    is_username_case_sensitive      = optional(bool, true)
-    user_pool_add_ons_security_mode = optional(string, null)
+    name                                          = string
+    user_pool_name                                = optional(string, null)
+    alias_attributes                              = optional(list(string), ["email", "preferred_username"])
+    username_attributes                           = optional(list(string), null)
+    deletion_protection_enabled                   = optional(bool, false) // maps to deletion_protection attribute.
+    auto_verified_attributes                      = optional(list(string), null)
+    is_username_case_sensitive                    = optional(bool, true)
+    user_pool_add_ons_security_mode               = optional(string, null)
+    attributes_require_verification_before_update = optional(list(string), null)
   })
   description = <<EOF
   List of user pool configurations to create. These attributes are used in order

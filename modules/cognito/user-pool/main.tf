@@ -177,4 +177,13 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  // #################################################
+  // User attribute update settings
+  // #################################################
+  dynamic "user_attribute_update_settings" {
+    for_each = each.value["attributes_require_verification_before_update"] == null ? {} : { user_attribute_update_settings = each.value["attributes_require_verification_before_update"] }
+    content {
+      attributes_require_verification_before_update = user_attribute_update_settings.value
+    }
+  }
 }
