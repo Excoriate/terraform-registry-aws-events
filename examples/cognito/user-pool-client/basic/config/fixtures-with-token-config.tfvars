@@ -3,10 +3,11 @@ is_enabled = true
 
 token_config = [
   {
-    name                   = "userpoolclient1"
-    id_token_validity      = 60
-    access_token_validity  = 60
-    refresh_token_validity = 60
+    name                    = "userpoolclient1"
+    id_token_validity       = 60
+    access_token_validity   = 60
+    refresh_token_validity  = 60
+    enable_token_revocation = true
     token_validity_units = {
       id_token      = "minutes"
       access_token  = "minutes"

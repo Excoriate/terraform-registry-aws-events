@@ -17,8 +17,9 @@ module "main_module" {
   ]
   tags = var.tags
 
-  oauth_config = var.oauth_config
-  token_config = var.token_config
+  oauth_config  = var.oauth_config
+  token_config  = var.token_config
+  others_config = var.others_config
 }
 
 resource "aws_cognito_user_pool" "pool" {
