@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.15](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.14...v0.1.15) (2023-06-13)
+
+
+### Features
+
+* add capability for other options ([6b148da](https://github.com/Excoriate/terraform-registry-aws-events/commit/6b148daa8d9771d03ab426f9527d1fac47fbe02c))
+* add identity provider module ([cfe49ca](https://github.com/Excoriate/terraform-registry-aws-events/commit/cfe49ca355322fd67d9547d5799a7bd293e723ae))
+* add minimal version for user pool client ([8ca18cb](https://github.com/Excoriate/terraform-registry-aws-events/commit/8ca18cb9834b2be572f3005d8da07b25c2511ff6))
+* add oauth configuration capability ([c371c8c](https://github.com/Excoriate/terraform-registry-aws-events/commit/c371c8ca6eeb9f229bb7d5cfc1da106747e97e2f))
+* add token validity units for user pool client ([4a98e8e](https://github.com/Excoriate/terraform-registry-aws-events/commit/4a98e8e834c3a0fe6452aaeaf436e7cbfca4a857))
+* add user pool client module ([8862df0](https://github.com/Excoriate/terraform-registry-aws-events/commit/8862df0ea64cdc35386b9cbe54cfc6b35b73e049))
+* add user pool domain module ([cf23090](https://github.com/Excoriate/terraform-registry-aws-events/commit/cf23090748654556ffab3c433f842f70ba9227c3))
+
+
+### Docs
+
+* add missing outputs and updated documentation ([741ad7a](https://github.com/Excoriate/terraform-registry-aws-events/commit/741ad7a0f8814c9e6eb6b6f658835f085e454e00))
+
 ## [0.1.14](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.13...v0.1.14) (2023-06-12)
 
 
