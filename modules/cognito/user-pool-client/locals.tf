@@ -3,7 +3,8 @@ locals {
   is_module_enabled    = !var.is_enabled ? false : var.user_pool_client_config == null ? false : length(var.user_pool_client_config) > 0
 
   // Specific functionalities with feature flags
-  is_oauth_enabled = !local.is_module_enabled ? false : var.oauth_config == null ? false : length(var.oauth_config) > 0
+  is_oauth_config_enabled = !local.is_module_enabled ? false : var.oauth_config == null ? false : length(var.oauth_config) > 0
+  is_token_config_enabled = !local.is_module_enabled ? false : var.token_config == null ? false : length(var.token_config) > 0
 
   // Normalization and mapping.
   // [1.] Core user-pool-client configuration
@@ -17,8 +18,8 @@ locals {
   user_pool_client_create = { for cfg in local.user_pool_client_normalised : cfg["name"] => cfg }
 
   // [2.] OAuth configuration
-  oauth_config = !local.is_oauth_enabled ? null : var.oauth_config
-  oauth_config_normalised = !local.is_oauth_enabled ? [] : [
+  oauth_config = !local.is_oauth_config_enabled ? null : var.oauth_config
+  oauth_config_normalised = !local.is_oauth_config_enabled ? [] : [
     for cfg in local.oauth_config : {
       name                                 = trimspace(cfg["name"])
       allowed_oauth_flows                  = cfg["allowed_oauth_flows"]
@@ -28,4 +29,17 @@ locals {
   }]
 
   oauth_config_create = { for cfg in local.oauth_config_normalised : cfg["name"] => cfg }
+
+  // [3.] Token configuration
+  token_config = !local.is_token_config_enabled ? null : var.token_config
+  token_config_normalised = !local.is_token_config_enabled ? [] : [
+    for cfg in local.token_config : {
+      name                   = trimspace(cfg["name"])
+      id_token_validity      = cfg["id_token_validity"]
+      access_token_validity  = cfg["access_token_validity"]
+      refresh_token_validity = cfg["refresh_token_validity"]
+      token_validity_units   = cfg["token_validity_units"]
+  }]
+
+  token_config_create = { for cfg in local.token_config_normalised : cfg["name"] => cfg }
 }

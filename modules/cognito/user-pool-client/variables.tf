@@ -58,7 +58,11 @@ variable "token_config" {
     id_token_validity      = optional(number, null)
     access_token_validity  = optional(number, null)
     refresh_token_validity = optional(number, null)
-    token_validity_units   = optional(map(string), null)
+    token_validity_units = optional(object({
+      id_token      = optional(string, null)
+      access_token  = optional(string, null)
+      refresh_token = optional(string, null)
+    }), null)
   }))
   description = <<EOF
   Configuration for the user pool client. For more information, see the following link:
