@@ -7,24 +7,24 @@ content: |-
     ## Description
     {{ .Header }}
     This module provides the following capabilities:
-    * 🚀 **Lambda configuration**: It supports the addition of lambda triggers.
-    * 🔒 **User Pool Management**: This module supports the creation and configuration of AWS Cognito User Pools. You can define attributes, password policies, and more.
-    * 🔑 **MFA Configuration**: This module supports the setup of Multi-Factor Authentication (MFA) for your user pool.
-    * 📧 **Email and SMS Configuration**: You can configure the email and SMS settings for verification and multi-factor authentication.
-    * 🚀 **Schema Attributes**: You can set up custom schema attributes for your user pool.
-    * 🎣 **Trigger Events**: You can specify AWS Lambda functions to handle events that occur during user pool operations.
+    * 🚀 **App Client Configuration**: This module supports the creation and configuration of AWS Cognito User Pool Clients. You can set up App Clients with different settings for your user pool.
+    * 🔑 **OAuth Configuration**: You can configure OAuth 2.0 flow, which allows applications to request user authorization.
+    * 💼 **User Pool Client Management**: This module supports the management of multiple User Pool Clients. You can enable or disable clients as needed.
+    * 🔒 **Security Configuration**: This module supports the setup of client secret and token validity settings.
+    * 🚀 **Read and Write Attributes**: You can set up read and write attributes for your User Pool Client.
+    * 📧 **Refresh Token Policy**: This module allows you to establish the refresh token expiration policy.
 
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
 
     ```hcl
-    {{ include "../../../examples/cognito/user-pool/basic/main.tf" }}
+    {{ include "../../../examples/cognito/user-pool-client/basic/main.tf" }}
     ```
     ## Recipes
     ### Very basic configuration.
     ```hcl
-      {{ include "../../../examples/cognito/user-pool/basic/config/fixtures.tfvars" }}
+      {{ include "../../../examples/cognito/user-pool-client/basic/config/fixtures.tfvars" }}
     ```
 
     ---
