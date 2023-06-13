@@ -1,0 +1,55 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+  # ☁️ Cognito User Pool Domain
+  ## Description
+  {{ .Header }}
+  This module provides the following capabilities:
+  * 🚀 **Domain Configuration**: This module supports the creation and configuration of AWS Cognito User Pool Domains. You can set up a domain for your user pool.
+  * 🌐 **Custom Domain**: This module allows you to configure a custom domain for your user pool.
+  * 💼 **Domain Management**: This module supports the management of user pool domains. You can enable or disable domains as needed.
+  * 🔒 **Security Configuration**: This module supports the setup of HTTPS for the user pool domain.
+  * 🔑 **SSL Configuration**: You can configure SSL certificate for your custom domain.
+  * 🌟 **Usability**: This module simplifies the process of domain setup and management for your user pool.
+
+  ---
+  ## Example
+  Examples of this module's usage are available in the [examples](./examples) folder.
+
+  ```hcl
+  {{ include "../../../examples/cognito/user-pool-domain/basic/main.tf" }}
+  ```
+  ## Recipes
+  ### Very basic configuration.
+  ```hcl
+    {{ include "../../../examples/cognito/user-pool-domain/basic/config/fixtures.tfvars" }}
+  ```
+
+  ---
+
+  ## Module's documentation
+  (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Requirements }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+settings:
+  anchor: true
+  color: true

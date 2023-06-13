@@ -46,6 +46,7 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 | `aws-lambda-function`          | Stable ✅ | Create a lambda function, for different use-case.                                                                     |
 | `aws-cognito-user-pool`        | Stable ✅ | Create a cognito user pool, with a set of opinionated defaults.                                                       |
 | `aws-cognito-user-pool-client` | Stable ✅ | Create a cognito user pool client, with a set of opinionated defaults.                                                |
+| `aws-cognito-user-pool-domain` | Stable ✅ | Create a cognito user pool domain, with a set of opinionated defaults.                                                |
 
 
 
