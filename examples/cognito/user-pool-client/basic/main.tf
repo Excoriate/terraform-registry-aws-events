@@ -8,9 +8,17 @@ module "main_module" {
     {
       name         = "userpoolclient1"
       user_pool_id = aws_cognito_user_pool.pool.id
+    },
+    // mobile client
+    {
+      name         = "userpoolclient2"
+      user_pool_id = aws_cognito_user_pool.pool.id
     }
   ]
   tags = var.tags
+
+  oauth_config = var.oauth_config
+  token_config = var.token_config
 }
 
 resource "aws_cognito_user_pool" "pool" {

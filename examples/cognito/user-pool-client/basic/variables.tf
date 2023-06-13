@@ -34,3 +34,37 @@ This configuration supports multiple user pool clients.
 EOF
   default     = null
 }
+
+variable "oauth_config" {
+  type = list(object({
+    name                                 = string
+    allowed_oauth_flows_user_pool_client = optional(bool, false)
+    allowed_oauth_flows                  = optional(list(string), null)
+    allowed_oauth_scopes                 = optional(list(string), null)
+    callback_urls                        = optional(list(string), null)
+  }))
+  description = <<EOF
+  Configuration for the user pool client. For more information, see the following link:
+  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client
+For a detailed description of the parameters, see the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html
+EOF
+  default     = null
+}
+
+variable "token_config" {
+  type = list(object({
+    name                   = string
+    id_token_validity      = optional(number, null)
+    access_token_validity  = optional(number, null)
+    refresh_token_validity = optional(number, null)
+    token_validity_units   = optional(map(string), null)
+  }))
+  description = <<EOF
+  Configuration for the user pool client. For more information, see the following link:
+  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client
+For a detailed description of the parameters, see the following link:
+https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html
+EOF
+  default     = null
+}
