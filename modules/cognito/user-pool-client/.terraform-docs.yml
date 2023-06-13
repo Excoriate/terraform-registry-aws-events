@@ -1,0 +1,55 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # ☁️ Cognito User Pool Client
+    ## Description
+    {{ .Header }}
+    This module provides the following capabilities:
+    * 🚀 **Lambda configuration**: It supports the addition of lambda triggers.
+    * 🔒 **User Pool Management**: This module supports the creation and configuration of AWS Cognito User Pools. You can define attributes, password policies, and more.
+    * 🔑 **MFA Configuration**: This module supports the setup of Multi-Factor Authentication (MFA) for your user pool.
+    * 📧 **Email and SMS Configuration**: You can configure the email and SMS settings for verification and multi-factor authentication.
+    * 🚀 **Schema Attributes**: You can set up custom schema attributes for your user pool.
+    * 🎣 **Trigger Events**: You can specify AWS Lambda functions to handle events that occur during user pool operations.
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/cognito/user-pool/basic/main.tf" }}
+    ```
+    ## Recipes
+    ### Very basic configuration.
+    ```hcl
+      {{ include "../../../examples/cognito/user-pool/basic/config/fixtures.tfvars" }}
+    ```
+
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true
