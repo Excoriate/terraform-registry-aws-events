@@ -1,0 +1,57 @@
+---
+formatter: markdown table
+
+header-from: main.tf
+content: |-
+    # 📧 SES (Simple Email Service) module
+    ## Description
+    {{ .Header }}
+    This module provides the following capabilities:
+    * 🚀 **Identity Provider Configuration**: It allows you to set up an identity provider for a user pool, including the provider name, type, and details such as the access token.
+    * 🔑 **Attribute Mapping**: This module supports the mapping of user pool attributes.
+    * 🎣 **Identity Providers**: You can specify a list of identity providers.
+    * 📬 **SES Domain Identity**: It creates and verifies an SES domain identity.
+    * 📝 **SES Domain DKIM**: It generates and verifies DomainKeys Identified Mail (DKIM) tokens for the SES domain.
+    * 💌 **SES Email Identity**: It creates and verifies an email identity for the SES domain.
+    * 📦 **SES Configuration Set**: It creates a configuration set for the SES domain, which can be used to track bounce and complaint metrics.
+    * 🚚 **SES Mail From Domain**: It configures a custom MAIL FROM domain and behavior for the SES domain.
+
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
+
+    ```hcl
+    {{ include "../../../examples/cognito/identity-provider/basic/main.tf" }}
+    ```
+    ## Recipes
+    ### Very basic configuration.
+    ```hcl
+      {{ include "../../../examples/cognito/identity-provider/basic/config/fixtures.tfvars" }}
+    ```
+
+    ---
+
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Resources }}
+
+    {{ .Requirements }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+output:
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
+settings:
+    anchor: true
+    color: true
