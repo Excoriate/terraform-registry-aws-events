@@ -4,7 +4,8 @@ module "main_module" {
   aws_region = var.aws_region
 
   // Specific module configuration
+  ses_config              = var.ses_config
+  ses_verification_config = var.ses_verification_config
 
-  tags       = var.tags
-  ses_config = var.ses_config
+  tags = var.tags
 }
