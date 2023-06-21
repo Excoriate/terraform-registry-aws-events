@@ -6,6 +6,7 @@ module "main_module" {
   // Specific module configuration
   ses_config              = var.ses_config
   ses_verification_config = var.ses_verification_config
+  ses_validation_config   = var.ses_validation_config
 
   tags = var.tags
 }
