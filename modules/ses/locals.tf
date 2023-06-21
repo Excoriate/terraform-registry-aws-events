@@ -16,6 +16,8 @@ locals {
       emails = cfg["emails"] == null ? [] : [for email in cfg["emails"] : {
         address = trimspace(email["address"])
         enabled = email["enabled"] == null ? true : email["enabled"] // It'll fallback to true if it's not set.
+        domain  = cfg["domain"] == null ? lower(trimspace(cfg["name"])) : lower(trimspace(cfg["domain"]))
+        name    = trimspace(cfg["name"])
       } if email["enabled"]]
   } }
 
@@ -43,4 +45,13 @@ locals {
   } }
 
   ses_validation_config_create = !local.is_validation_config_enabled ? {} : local.ses_validation_config_normalised
+
+  // [4.] Emails identities configuration
+  ses_emails_identities_config = !local.is_module_enabled ? {} : {
+    for cfg in flatten([for c in local.ses_config_create : c["emails"]]) : cfg["address"] => {
+      domain       = cfg["domain"]
+      address      = cfg["address"]
+      full_address = can(regex(format("@%s", cfg["domain"]), cfg["address"])) ? cfg["address"] : format("%s@%s", cfg["address"], cfg["domain"])
+    }
+  }
 }

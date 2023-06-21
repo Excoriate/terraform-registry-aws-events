@@ -82,3 +82,11 @@ resource "aws_route53_record" "dkim_cname" {
   ttl     = "600"
   records = [format("%s.dkim.amazonses.com", [for k, v in local.ses_validation_config_create : aws_ses_domain_dkim.this[k].dkim_tokens][0][count.index])]
 }
+
+##########################################
+# SES Emails
+##########################################
+resource "aws_ses_email_identity" "this" {
+  for_each = local.ses_emails_identities_config
+  email    = each.value["full_address"]
+}

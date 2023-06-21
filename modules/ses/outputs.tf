@@ -37,18 +37,3 @@ output "ses_domain_identity_verification_token" {
   value       = [for domain in aws_ses_domain_identity.this : domain.verification_token][0]
   description = "The SES domain identity verification token"
 }
-
-output "ses_domain_identity_record" {
-  value       = [for domain in aws_route53_record.this : domain.fqdn][0]
-  description = "The SES domain identity verification record"
-}
-
-output "ses_domain_identity_record_name" {
-  value       = [for domain in aws_route53_record.this : domain.name][0]
-  description = "The SES domain identity verification record name"
-}
-
-output "ses_domain_identity_record_type" {
-  value       = [for domain in aws_route53_record.this : domain.type][0]
-  description = "The SES domain identity verification record type"
-}
