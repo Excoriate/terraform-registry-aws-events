@@ -84,9 +84,20 @@ resource "aws_route53_record" "dkim_cname" {
 }
 
 ##########################################
-# SES Emails
+# SES Email Identities
 ##########################################
 resource "aws_ses_email_identity" "this" {
   for_each = local.ses_emails_identities_config
   email    = each.value["full_address"]
+}
+
+##########################################
+# SES Email Templates
+##########################################
+resource "aws_ses_template" "this" {
+  for_each = local.ses_template_config_create
+  name     = each.value["name"]
+  subject  = each.value["subject"]
+  html     = each.value["html"]
+  text     = each.value["text"]
 }

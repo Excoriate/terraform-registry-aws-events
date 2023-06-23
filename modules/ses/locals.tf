@@ -1,8 +1,11 @@
 locals {
-  aws_region_to_deploy           = var.aws_region
-  is_module_enabled              = !var.is_enabled ? false : var.ses_config != null
-  is_verification_config_enabled = !var.is_enabled ? false : var.ses_verification_config != null
-  is_validation_config_enabled   = !var.is_enabled ? false : var.ses_validation_config != null
+  aws_region_to_deploy                = var.aws_region
+  is_module_enabled                   = !var.is_enabled ? false : var.ses_config != null
+  is_verification_config_enabled      = !var.is_enabled ? false : var.ses_verification_config != null
+  is_validation_config_enabled        = !var.is_enabled ? false : var.ses_validation_config != null
+  is_notification_config_enabled      = !var.is_enabled ? false : var.ses_notification_config != null
+  is_template_config_enabled          = !var.is_enabled ? false : var.ses_template_config != null
+  is_event_destination_config_enabled = !var.is_enabled ? false : var.ses_event_destination_config != null
 
   // Normalization and mapping.
   // [1.] Core configuration
@@ -54,4 +57,82 @@ locals {
       full_address = can(regex(format("@%s", cfg["domain"]), cfg["address"])) ? cfg["address"] : format("%s@%s", cfg["address"], cfg["domain"])
     }
   }
+
+  // [5.] Notification configuration
+  ses_notification_config = !local.is_notification_config_enabled ? null : [var.ses_notification_config]
+  ses_notification_config_normalised = !local.is_notification_config_enabled ? {} : {
+    for cfg in local.ses_notification_config : cfg["name"] => {
+      name                     = trimspace(cfg["name"])
+      topic_arn                = cfg["topic_arn"] == null ? null : cfg["topic_arn"]
+      include_original_headers = cfg["include_original_headers"] == null ? false : cfg["include_original_headers"]
+      notification_type        = cfg["notification_type"] == null ? "Bounce" : cfg["notification_type"]
+
+      is_sns_topic_ooo_to_create = cfg["topic_arn"] == null // If the topic_arn is not set, then we'll create a new SNS topic.
+  } }
+
+  ses_notification_config_create = !local.is_notification_config_enabled ? {} : local.ses_notification_config_normalised
+
+  // [6.] Template configuration
+  ses_template_config = !local.is_template_config_enabled ? null : var.ses_template_config
+  ses_template_config_normalised = !local.is_template_config_enabled ? [] : [
+    for cfg in local.ses_template_config : {
+      name    = trimspace(cfg["name"])
+      subject = cfg["subject"]
+      html    = cfg["html"]
+      text    = cfg["text"]
+    }
+  ]
+
+  ses_template_config_create = !local.is_template_config_enabled ? {} : { for cfg in local.ses_template_config_normalised : cfg["name"] => cfg }
+
+  // [7.] Event destination configuration
+  ses_event_destination_config = !local.is_event_destination_config_enabled ? null : var.ses_event_destination_config
+  ses_event_destination_config_all_normalised = !local.is_event_destination_config_enabled ? [] : [
+    for cfg in local.ses_event_destination_config : {
+      name                   = trimspace(cfg["name"])
+      enabled                = cfg["enabled"] == null ? true : cfg["enabled"] // It's enabled by default.
+      matching_types         = cfg["matching_types"] == null ? ["reject", "bounce", "renderingFailure"] : [for cty in cfg["matching_types"] : trimspace(cty)]
+      cloudwatch_destination = cfg["cloudwatch_destination"]
+      kinesis_destination    = cfg["kinesis_destination"]
+      sns_destination        = cfg["sns_destination"]
+    }
+  ]
+
+  ses_event_destination_config_all_create = !local.is_event_destination_config_enabled ? {} : { for cfg in local.ses_event_destination_config_all_normalised : cfg["name"] => cfg }
+
+  // 7.1 CloudWatch destination specific configuration.
+  ses_event_destination_config_cloudwatch_normalised = !local.is_event_destination_config_enabled ? [] : [
+    for cfg in local.ses_event_destination_config : {
+      name                   = trimspace(cfg["name"])
+      enabled                = cfg["enabled"] == null ? true : cfg["enabled"] // It's enabled by default.
+      matching_types         = cfg["matching_types"] == null ? ["reject", "bounce", "renderingFailure"] : [for cty in cfg["matching_types"] : trimspace(cty)]
+      cloudwatch_destination = cfg["cloudwatch_destination"]
+    } if cfg["cloudwatch_destination"] != null && cfg["kinesis_destination"] == null && cfg["sns_destination"] == null
+  ]
+
+  ses_event_destination_config_cloudwatch_create = !local.is_event_destination_config_enabled ? {} : { for cfg in local.ses_event_destination_config_cloudwatch_normalised : cfg["name"] => cfg }
+
+  // 7.2 Kinesis destination specific configuration.
+  ses_event_destination_config_kinesis_normalised = !local.is_event_destination_config_enabled ? [] : [
+    for cfg in local.ses_event_destination_config : {
+      name                = trimspace(cfg["name"])
+      enabled             = cfg["enabled"] == null ? true : cfg["enabled"] // It's enabled by default.
+      matching_types      = cfg["matching_types"] == null ? ["reject", "bounce", "renderingFailure"] : [for cty in cfg["matching_types"] : trimspace(cty)]
+      kinesis_destination = cfg["kinesis_destination"]
+    } if cfg["kinesis_destination"] != null && cfg["cloudwatch_destination"] == null && cfg["sns_destination"] == null
+  ]
+
+  ses_event_destination_config_kinesis_create = !local.is_event_destination_config_enabled ? {} : { for cfg in local.ses_event_destination_config_kinesis_normalised : cfg["name"] => cfg }
+
+  // 7.3 SNS destination specific configuration.
+  ses_event_destination_config_sns_normalised = !local.is_event_destination_config_enabled ? [] : [
+    for cfg in local.ses_event_destination_config : {
+      name            = trimspace(cfg["name"])
+      enabled         = cfg["enabled"] == null ? true : cfg["enabled"] // It's enabled by default.
+      matching_types  = cfg["matching_types"] == null ? ["reject", "bounce", "renderingFailure"] : [for cty in cfg["matching_types"] : trimspace(cty)]
+      sns_destination = cfg["sns_destination"]
+    } if cfg["sns_destination"] != null && cfg["cloudwatch_destination"] == null && cfg["kinesis_destination"] == null
+  ]
+
+  ses_event_destination_config_sns_create = !local.is_event_destination_config_enabled ? {} : { for cfg in local.ses_event_destination_config_sns_normalised : cfg["name"] => cfg }
 }

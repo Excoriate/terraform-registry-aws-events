@@ -15,18 +15,21 @@ content: |-
     * 💌 **SES Email Identity**: It creates and verifies an email identity for the SES domain.
     * 📦 **SES Configuration Set**: It creates a configuration set for the SES domain, which can be used to track bounce and complaint metrics.
     * 🚚 **SES Mail From Domain**: It configures a custom MAIL FROM domain and behavior for the SES domain.
+    * 📨 **SES Event Destinations**: This module can create event destinations for your configuration set. Event destinations define where Amazon SES sends the events that are associated with a configuration set.
+    * 📜 **SES Configuration Sets**: Configuration sets enable you to publish email sending events to Amazon CloudWatch or Amazon Kinesis Firehose.
+    * 📃 **SES Templates**: A template is a set of replacement variables for common pieces of content that you can reuse in multiple email messages.
 
     ---
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
 
     ```hcl
-    {{ include "../../../examples/cognito/identity-provider/basic/main.tf" }}
+    {{ include "../../examples/ses/basic/main.tf" }}
     ```
     ## Recipes
     ### Very basic configuration.
     ```hcl
-      {{ include "../../../examples/cognito/identity-provider/basic/config/fixtures.tfvars" }}
+      {{ include "../../examples/ses/basic/config/fixtures.tfvars" }}
     ```
 
     ---
@@ -44,6 +47,23 @@ content: |-
     {{ .Inputs }}
 
     {{ .Outputs }}
+
+    ---
+    ## Mermaid Diagram
+    ```mermaid
+    graph LR;
+        A[Identity Provider Configuration] -->|Provides| C{SES}
+        B[Attribute Mapping] -->|Maps Attributes| C
+        D[Identity Providers] -->|Provides Identities| C
+        E[SES Domain Identity] -->|Verifies| C
+        F[SES Domain DKIM] -->|Verifies DKIM| C
+        G[SES Email Identity] -->|Verifies Email| C
+        H[SES Configuration Set] -->|Tracks| C
+        I[SES Mail From Domain] -->|Configures MAIL FROM| C
+        J[SES Event Destinations] -->|Defines Events| C
+        K[SES Configuration Sets] -->|Publishes Events| C
+        L[SES Templates] -->|Creates Templates| C
+    ```
 
 output:
     file: README.md

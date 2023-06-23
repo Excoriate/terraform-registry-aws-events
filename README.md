@@ -48,6 +48,7 @@ The documentation is **automatically generated** by [terraform-docs](https://ter
 | `aws-cognito-user-pool-client`  | Stable ✅ | Create a cognito user pool client, with a set of opinionated defaults.                                                |
 | `aws-cognito-user-pool-domain`  | Stable ✅ | Create a cognito user pool domain, with a set of opinionated defaults.                                                |
 | `aws-cognito-identity-provider` | Stable ✅ | Create a cognito identity provider, with a set of opinionated defaults.                                               |
+| `aws-ses`                       | Stable ✅ | Complete SES module, that supports all current available capabilities.                                                |
 
 
 
