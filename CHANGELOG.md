@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.16](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.15...v0.1.16) (2023-06-23)
+
+
+### Features
+
+* add dkim ([7e697fc](https://github.com/Excoriate/terraform-registry-aws-events/commit/7e697fc370c675b87e48cb73eff0bae4ed26a696))
+* add domain identity resource ([0c02977](https://github.com/Excoriate/terraform-registry-aws-events/commit/0c02977c3f16567c6363c9c9a2fbd3dcbd004354))
+* add email identities support ([d7ccf0c](https://github.com/Excoriate/terraform-registry-aws-events/commit/d7ccf0c0acd689ca74382e76d282c68e8bc3a62b))
+* add ses event destionations ([aa93386](https://github.com/Excoriate/terraform-registry-aws-events/commit/aa93386a498d538bb485769f448400f32c2641a7))
+* add verification capability ([e7b41a2](https://github.com/Excoriate/terraform-registry-aws-events/commit/e7b41a253eedfca4c2bb6072153527aef7525e65))
+
 ## [0.1.15](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.14...v0.1.15) (2023-06-13)
 
 
