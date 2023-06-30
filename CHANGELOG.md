@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.17](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.16...v0.1.17) (2023-06-30)
+
+
+### Refactoring
+
+* add ses missing output values ([0e054e2](https://github.com/Excoriate/terraform-registry-aws-events/commit/0e054e2e309e3c0d7fe290be28cdf08e302b2cd2))
+
 ## [0.1.16](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.15...v0.1.16) (2023-06-23)
 
 
