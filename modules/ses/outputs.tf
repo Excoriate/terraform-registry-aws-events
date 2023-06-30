@@ -37,3 +37,18 @@ output "ses_domain_identity_verification_token" {
   value       = [for domain in aws_ses_domain_identity.this : domain.verification_token][0]
   description = "The SES domain identity verification token"
 }
+
+output "ses_configuration_sets" {
+  value       = [for config_set in aws_ses_configuration_set.this : config_set.name]
+  description = "The SES configuration sets"
+}
+
+output "ses_identities_id" {
+  value       = [for identity in aws_ses_domain_identity.this : identity.id]
+  description = "The SES identities ids"
+}
+
+output "ses_mail_from_domain" {
+  value       = [for mail_from in aws_ses_domain_mail_from.this : mail_from.mail_from_domain][0]
+  description = "The SES mail from domain"
+}

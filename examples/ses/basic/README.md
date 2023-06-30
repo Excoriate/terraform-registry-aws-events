@@ -40,7 +40,10 @@ No resources.
 |------|-------------|
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
 | <a name="output_ses_config"></a> [ses\_config](#output\_ses\_config) | The SES configuration passed |
+| <a name="output_ses_configuration_sets"></a> [ses\_configuration\_sets](#output\_ses\_configuration\_sets) | The SES configuration sets |
 | <a name="output_ses_domain_identity"></a> [ses\_domain\_identity](#output\_ses\_domain\_identity) | The SES domain identity |
 | <a name="output_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#output\_ses\_domain\_identity\_arn) | The SES domain identity ARN |
 | <a name="output_ses_domain_identity_verification_token"></a> [ses\_domain\_identity\_verification\_token](#output\_ses\_domain\_identity\_verification\_token) | The SES domain identity verification token |
+| <a name="output_ses_identities_id"></a> [ses\_identities\_id](#output\_ses\_identities\_id) | The SES identities ids |
+| <a name="output_ses_mail_from_domain"></a> [ses\_mail\_from\_domain](#output\_ses\_mail\_from\_domain) | The SES mail from domain |
 <!-- END_TF_DOCS -->
