@@ -24,31 +24,31 @@ output "ses_config" {
 }
 
 output "ses_domain_identity" {
-  value       = [for domain in aws_ses_domain_identity.this : domain.domain][0]
+  value       = length(aws_ses_domain_identity.this) > 0 ? [for domain in aws_ses_domain_identity.this : domain.domain][0] : null
   description = "The SES domain identity"
 }
 
 output "ses_domain_identity_arn" {
-  value       = [for domain in aws_ses_domain_identity.this : domain.arn][0]
+  value       = length(aws_ses_domain_identity.this) > 0 ? [for domain in aws_ses_domain_identity.this : domain.arn][0] : null
   description = "The SES domain identity ARN"
 }
 
 output "ses_domain_identity_verification_token" {
-  value       = [for domain in aws_ses_domain_identity.this : domain.verification_token][0]
+  value       = length(aws_ses_domain_identity.this) > 0 ? [for domain in aws_ses_domain_identity.this : domain.verification_token][0] : null
   description = "The SES domain identity verification token"
 }
 
 output "ses_configuration_sets" {
-  value       = [for config_set in aws_ses_configuration_set.this : config_set.name]
+  value       = length(aws_ses_configuration_set.this) > 0 ? [for configuration_set in aws_ses_configuration_set.this : configuration_set.name] : null
   description = "The SES configuration sets"
 }
 
 output "ses_identities_id" {
-  value       = [for identity in aws_ses_domain_identity.this : identity.id]
+  value       = length(aws_ses_domain_identity.this) > 0 ? [for domain in aws_ses_domain_identity.this : domain.id] : null
   description = "The SES identities ids"
 }
 
 output "ses_mail_from_domain" {
-  value       = [for mail_from in aws_ses_domain_mail_from.this : mail_from.mail_from_domain][0]
+  value       = length([for mail_from in aws_ses_domain_mail_from.this : mail_from.mail_from_domain]) > 0 ? [for mail_from in aws_ses_domain_mail_from.this : mail_from.mail_from_domain][0] : null
   description = "The SES mail from domain"
 }
