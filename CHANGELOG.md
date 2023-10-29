@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.18](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.17...v0.1.18) (2023-10-29)
+
+
+### Bug Fixes
+
+* ses outputs ([9d24f5d](https://github.com/Excoriate/terraform-registry-aws-events/commit/9d24f5d003774531f743a264e36a1c7f6df95b12))
+
 ## [0.1.17](https://github.com/Excoriate/terraform-registry-aws-events/compare/v0.1.16...v0.1.17) (2023-06-30)
 
 
