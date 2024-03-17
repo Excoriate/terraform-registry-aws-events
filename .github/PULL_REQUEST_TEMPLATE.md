@@ -1,21 +1,22 @@
-<!--
-Thanks for creating this pull request 🤗
+## 🎯 What
+Provide a concise description of the changes:
+* ❓ What changes have you made? (High-level overview)
+* 🎉 What does it mean to the user? (In plain English)
 
-Please make sure that the pull request is limited to one type (docs, feature, etc.) and keep it as small as possible. You can open multiple prs instead of opening a huge one.
--->
+Example:
+* 🚀 Upgraded Terraform AWS provider to v3.0.0.
+* 🎉 This means users can now use new features and improvements from the latest AWS Provider.
 
-<!-- If this pull request closes an issue, please mention the issue number below -->
-Closes # <!-- Issue # here -->
+## 🤔 Why
+Explain why the changes are necessary:
+* 💡 Why were these changes made?
+* 🎯 What's the benefit?
 
-## 📑 Description
-<!-- Add a brief description of the pr -->
+Example:
+* 💡 We made this upgrade to take advantage of performance improvements and new features in the latest version.
+* 🎯 This will allow us to provision infrastructure more efficiently, and utilize new AWS services and features.
 
-## ✅ Checks
-<!-- Make sure your pr passes the CI checks and do check the following fields as needed - -->
-- [ ] My pull request adheres to the code style of this project
-- [ ] My code requires changes to the documentation
-- [ ] I have updated the documentation as required
-- [ ] All the tests have passed
-
-## ℹ Additional Information
-<!-- Any additional information like breaking changes, dependencies added, screenshots, comparisons between new and old behavior, etc. -->
+## 📚 References
+Link any supporting context or documentation:
+* 🔗 Github issues, documentation, helpful links.
+* ✅ Use `closes #123`, if this PR closes a GitHub issue `#123`
