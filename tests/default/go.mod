@@ -1,4 +1,4 @@
-module github.com/excoriate/tests/default
+module github.com/excoriate/terraform-registry-aws-events/tests/default
 
 go 1.21.0
 
