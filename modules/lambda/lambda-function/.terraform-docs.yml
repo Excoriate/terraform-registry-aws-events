@@ -25,25 +25,25 @@ content: |-
     ## Recipes
     ### Very basic configuration.
     ```hcl
-      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures.tfvars" }}
+      {{ include "../../../examples/lambda/lambda-function/basic/fixtures/fixtures.tfvars" }}
     ```
     ### Advanced configuration
     ```hcl
-      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-advanced.tfvars" }}
+      {{ include "../../../examples/lambda/lambda-function/basic/fixtures/fixtures-advanced.tfvars" }}
     ```
 
     ### Archive directory
     ```hcl
-      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-dir.tfvars" }}
+      {{ include "../../../examples/lambda/lambda-function/basic/fixtures/fixtures-from-archive-dir.tfvars" }}
     ```
     Also, it supports a managed archive with excluded files
     ```hcl
-      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-dir-excluded.tfvars" }}
+      {{ include "../../../examples/lambda/lambda-function/basic/fixtures/fixtures-from-archive-dir-excluded.tfvars" }}
     ```
 
     ### Create an archive from a file
     ```hcl
-      {{ include "../../../examples/lambda/lambda-function/basic/config/fixtures-from-archive-file.tfvars" }}
+      {{ include "../../../examples/lambda/lambda-function/basic/fixtures/fixtures-from-archive-file.tfvars" }}
     ```
 
     ### Use a DockerFile
@@ -51,7 +51,7 @@ content: |-
       {{ include "../../../examples/lambda/lambda-function/from_docker/main.tf" }}
     ```
     ```hcl
-      {{ include "../../../examples/lambda/lambda-function/from_docker/config/fixtures.tfvars" }}
+      {{ include "../../../examples/lambda/lambda-function/from_docker/fixtures/fixtures.tfvars" }}
     ```
 
     For other examples, please refer to the [examples](../../../examples) folder.

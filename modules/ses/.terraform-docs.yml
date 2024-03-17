@@ -29,7 +29,7 @@ content: |-
     ## Recipes
     ### Very basic configuration.
     ```hcl
-      {{ include "../../examples/ses/basic/config/fixtures.tfvars" }}
+      {{ include "../../examples/ses/basic/fixtures/fixtures.tfvars" }}
     ```
 
     ---

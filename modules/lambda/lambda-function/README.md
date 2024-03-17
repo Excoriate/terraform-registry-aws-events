@@ -50,7 +50,7 @@ data "archive_file" "source_zip_file" {
 ## Recipes
 ### Very basic configuration.
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 lambda_config = [
@@ -87,7 +87,7 @@ lambda_host_config = [
 ```
 ### Advanced configuration
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 lambda_config = [
@@ -138,7 +138,7 @@ lambda_alias_config = [
 
 ### Archive directory
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 lambda_config = [
@@ -187,7 +187,7 @@ lambda_archive_config = [
 ```
 Also, it supports a managed archive with excluded files
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 lambda_config = [
@@ -252,7 +252,7 @@ lambda_archive_config = [
 
 ### Create an archive from a file
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 lambda_config = [
@@ -302,7 +302,7 @@ lambda_archive_config = [
 
 ### Use a DockerFile
 ```hcl
-module "main_module" {
+  module "main_module" {
   source                      = "../../../../modules/lambda/lambda-function"
   is_enabled                  = var.is_enabled
   aws_region                  = var.aws_region
@@ -401,7 +401,7 @@ resource "null_resource" "docker_push" {
 }
 ```
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 lambda_config = [
@@ -672,7 +672,7 @@ output "lambda_docker_source_code_hash" {
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | 2.3.0 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.48.0, < 5.0.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.4.0 |
 
 ## Modules
@@ -759,7 +759,7 @@ No modules.
 | <a name="input_lambda_host_config"></a> [lambda\_host\_config](#input\_lambda\_host\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- environment\_variables: A map of environment variables to be applied to the lambda function.<br>- ephemeral\_storage: The amount of ephemeral storage to be applied to the lambda function.<br>- file\_system\_config: A list of file system configurations to be applied to the lambda function. | <pre>list(object({<br>    name                  = string<br>    environment_variables = optional(map(string), {})<br>    ephemeral_storage     = optional(number, null)<br>    file_system_config = optional(list(object({<br>      local_mount_path = string<br>      arn              = string<br>    })), [])<br>  }))</pre> | `null` | no |
 | <a name="input_lambda_image_config"></a> [lambda\_image\_config](#input\_lambda\_image\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- function\_name: The name of the lambda function. If not passed, the 'name' attribute will be used.<br>- image\_uri: The URI of a container image in the Amazon ECR registry.<br>- ecr\_arn: The ARN of the Amazon ECR registry that contains the image.<br>- image\_config: The configuration of the container image.<br>  - command: The command that is passed to the container.<br>  - entry\_point: The entry point that is passed to the container.<br>  - working\_directory: The working directory that is passed to the container. | <pre>list(object({<br>    name          = string<br>    function_name = optional(string, null)<br>    image_uri     = string<br>    ecr_arn       = optional(string, null)<br>    image_config = optional(list(object({<br>      command           = optional(list(string), [])<br>      entry_point       = optional(list(string), [])<br>      working_directory = optional(string, null)<br>    })), [])<br>  }))</pre> | `null` | no |
 | <a name="input_lambda_network_config"></a> [lambda\_network\_config](#input\_lambda\_network\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- security\_group\_ids: A list of security group IDs to be applied to the lambda function.<br>- subnet\_ids: A list of subnet IDs to be applied to the lambda function. | <pre>list(object({<br>    name               = string<br>    security_group_ids = optional(list(string), [])<br>    subnet_ids         = optional(list(string), [])<br>  }))</pre> | `null` | no |
-| <a name="input_lambda_observability_config"></a> [lambda\_observability\_config](#input\_lambda\_observability\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- logs\_enabled: A boolean flag that can be used to enable/disable the logging of the lambda function.<br>- logs\_retention\_in\_days: The number of days to retain the logs of the lambda function.<br>- tracing\_enabled: A boolean flag that can be used to enable/disable the tracing of the lambda function.<br>- tracing\_mode: The tracing mode of the lambda function. The supported values are 'Active' and 'PassThrough'. | <pre>list(object({<br>    name                   = string<br>    logs_enabled           = optional(bool, false)<br>    logs_retention_in_days = optional(number, 0)<br>    tracing_enabled        = optional(bool, false)<br>    tracing_mode           = optional(string, "PassThrough")<br>  }))</pre> | `null` | no |
+| <a name="input_lambda_observability_config"></a> [lambda\_observability\_config](#input\_lambda\_observability\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- function\_name: The name of the lambda function. If not passed, the 'name' attribute will be used.<br>- logs\_enabled: A boolean flag that can be used to enable/disable the logging of the lambda function.<br>- logs\_retention\_in\_days: The number of days to retain the logs of the lambda function.<br>- tracing\_enabled: A boolean flag that can be used to enable/disable the tracing of the lambda function.<br>- tracing\_mode: The tracing mode of the lambda function. The supported values are 'Active' and 'PassThrough'. | <pre>list(object({<br>    name                   = string<br>    function_name          = optional(string, null)<br>    logs_enabled           = optional(bool, false)<br>    logs_retention_in_days = optional(number, 0)<br>    tracing_enabled        = optional(bool, false)<br>    tracing_mode           = optional(string, "PassThrough")<br>  }))</pre> | `null` | no |
 | <a name="input_lambda_permissions_config"></a> [lambda\_permissions\_config](#input\_lambda\_permissions\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- permissions\_boundary: The permissions boundary to be applied to the lambda function.<br>- trusted\_principals: A list of trusted principals to be applied to the lambda function. | <pre>list(object({<br>    name                 = string<br>    permissions_boundary = optional(string, null)<br>    trusted_principals   = optional(list(string), [])<br>  }))</pre> | `null` | no |
 | <a name="input_lambda_s3_from_existing_config"></a> [lambda\_s3\_from\_existing\_config](#input\_lambda\_s3\_from\_existing\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- function\_name: The name of the lambda function. If not passed, the 'name' attribute will be used.<br>- s3\_bucket: The name of the bucket where the zip file containing the source code of the lambda function is located.<br>- s3\_key: The path of the zip file containing the source code of the lambda function.<br>- s3\_object\_version: The version of the zip file containing the source code of the lambda function.<br>- ignore\_version\_changes: This boolean flag can be used to enable/disable the update of the lambda function when the<br>version of the zip file changes. | <pre>list(object({<br>    name                   = string<br>    function_name          = optional(string, null)<br>    s3_bucket              = string<br>    s3_key                 = string<br>    s3_object_version      = optional(string, null)<br>    ignore_version_changes = optional(bool, false)<br>  }))</pre> | `null` | no |
 | <a name="input_lambda_s3_from_existing_new_file_config"></a> [lambda\_s3\_from\_existing\_new\_file\_config](#input\_lambda\_s3\_from\_existing\_new\_file\_config) | A list of objects that contains the configuration for AWS Lambda function<br>The currently supported attributes are:<br>- name: The name of the lambda function. It's usually used as a terraform identifier, however, if the 'function name'<br>isn't passed, it will be used as the function name.<br>- function\_name: The name of the lambda function. If not passed, the 'name' attribute will be used.<br>- s3\_bucket: The name of the bucket where the zip file containing the source code of the lambda function is located.<br>- source\_zip\_file: The path of the zip file containing the source code of the lambda function.<br>- compress\_from\_file: The path of the file to be compressed.<br>- compress\_from\_dir: The path of the directory to be compressed.<br>- ignore\_version\_changes: This boolean flag can be used to enable/disable the update of the lambda function when the<br>version of the zip file changes.<br>- excluded\_files: A list of files to be excluded from the deployment package. | <pre>list(object({<br>    name                   = string<br>    function_name          = optional(string, null)<br>    s3_bucket              = string<br>    source_zip_file        = optional(string, null)<br>    compress_from_file     = optional(string, null)<br>    compress_from_dir      = optional(string, null)<br>    ignore_version_changes = optional(bool, false)<br>    excluded_files         = optional(list(string), [])<br>  }))</pre> | `null` | no |

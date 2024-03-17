@@ -39,7 +39,7 @@ module "main_module" {
 ## Recipes
 ### Very basic configuration.
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 user_pool_config = {

@@ -2,6 +2,11 @@
 # ☁️ Event bridge permissions
 ## Description
 
+------------------------------------
+Permissions passed through existing IAM
+policies
+------------------------------------
+
 This is a custom module that bring out-of-the-fox permissions for common use-cases for eventbridge. It's just an abstraction that takes care of creating IAM roles, and a set of permissions for eventbridge.
 * 🚀 **IAM role**: IAM role that will be created and attached to the eventbridge rule.
 * 🚀 **IAM policy**: IAM policy that will be created and attached to the IAM role.
@@ -175,7 +180,7 @@ output "event_bridge_policy_doc" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.63.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 
 ## Modules
 

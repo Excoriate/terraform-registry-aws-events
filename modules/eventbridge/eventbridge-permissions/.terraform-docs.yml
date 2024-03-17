@@ -22,22 +22,22 @@ content: |-
 
     Simple example of a basic implementation.
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/config/fixtures.tfvars" }}
+    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/fixtures/fixtures.tfvars" }}
     ```
 
     Example where lambda permissions are set, in order to invoke an AWS Lambda function.
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/config/fixtures-permissions-lambda.tfvars" }}
+    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/fixtures/fixtures-permissions-lambda.tfvars" }}
     ```
 
     Example where custom IAM policy documents are passed.
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/config/fixtures-custom-policies.tfvars" }}
+    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/fixtures/fixtures-custom-policies.tfvars" }}
     ```
 
     Example where custom policy ARNs are passed
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/config/fixtures-attach-policies-arns.tfvars" }}
+    {{ include "../../../examples/eventbridge/eventbridge-permissions/basic/fixtures/fixtures-attach-policies-arns.tfvars" }}
     ```
 
     For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:

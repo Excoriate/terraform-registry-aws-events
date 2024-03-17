@@ -20,25 +20,25 @@ module "main_module" {
   // Specific module configuration
   identity_provider_config = [
     {
-      name         = "userpooldomain1"
-      user_pool_id = aws_cognito_user_pool.pool.id
+      name          = "userpooldomain1"
+      user_pool_id  = aws_cognito_user_pool.pool.id
       provider_name = "LoginWithAmazon"
       provider_type = "LoginWithAmazon"
       provider_details = {
-        client_id     = "client_id"
-        client_secret = "client_secret"
-        authorize_scopes = "email, profile, openid"  # Added authorize_scopes
+        client_id        = "client_id"
+        client_secret    = "client_secret"
+        authorize_scopes = "email, profile, openid" # Added authorize_scopes
       }
     },
     {
-      name         = "userpooldomain2"
-      user_pool_id = aws_cognito_user_pool.pool2.id
+      name          = "userpooldomain2"
+      user_pool_id  = aws_cognito_user_pool.pool2.id
       provider_name = "Google"
       provider_type = "Google"
       provider_details = {
-        client_id     = "client_id"
-        client_secret = "client_secret"
-        authorize_scopes = "email, profile, openid"  # Added authorize_scopes
+        client_id        = "client_id"
+        client_secret    = "client_secret"
+        authorize_scopes = "email, profile, openid" # Added authorize_scopes
       }
     }
   ]
@@ -59,7 +59,7 @@ resource "aws_cognito_user_pool" "pool2" {
 ## Recipes
 ### Very basic configuration.
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 ```
 
@@ -95,7 +95,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to deploy the resources | `string` | n/a | yes |
-| <a name="input_identity_provider_config"></a> [identity\_provider\_config](#input\_identity\_provider\_config) | List of identity provider configurations to create. The required arguments are described in the<br>  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_identity_provider<br>These are:<br>  - name: Friendly identifier for the terraform resource to be created.<br>  - user\_pool\_id: The user pool ID.<br>  - provider\_name: The identity provider name. It can be a string with the following values: "Facebook", "Google",<br>    "LoginWithAmazon", "SignInWithApple", "OIDC", "SAML".<br>  - provider\_type: The identity provider type. It refers to the type of third party identity provider.<br>    "SAML" for SAML providers, "Facebook" for Facebook login, "Google" for Google login, and "LoginWithAmazon" for<br>    Login with Amazon.<br>  - provider\_details: The identity provider details, such as MetadataURL and MetadataFile. | <pre>list(object({<br>    name          = string<br>    user_pool_id  = string<br>    provider_name = string<br>    provider_type = string<br>    provider_details = map(string)<br>  }))</pre> | n/a | yes |
+| <a name="input_identity_provider_config"></a> [identity\_provider\_config](#input\_identity\_provider\_config) | List of identity provider configurations to create. The required arguments are described in the<br>  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_identity_provider<br>These are:<br>  - name: Friendly identifier for the terraform resource to be created.<br>  - user\_pool\_id: The user pool ID.<br>  - provider\_name: The identity provider name. It can be a string with the following values: "Facebook", "Google",<br>    "LoginWithAmazon", "SignInWithApple", "OIDC", "SAML".<br>  - provider\_type: The identity provider type. It refers to the type of third party identity provider.<br>    "SAML" for SAML providers, "Facebook" for Facebook login, "Google" for Google login, and "LoginWithAmazon" for<br>    Login with Amazon.<br>  - provider\_details: The identity provider details, such as MetadataURL and MetadataFile. | <pre>list(object({<br>    name             = string<br>    user_pool_id     = string<br>    provider_name    = string<br>    provider_type    = string<br>    provider_details = map(string)<br>  }))</pre> | n/a | yes |
 | <a name="input_identity_provider_optionals_config"></a> [identity\_provider\_optionals\_config](#input\_identity\_provider\_optionals\_config) | List of identity provider configurations to create. The required arguments are described in the<br>  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_identity_provider<br>These are:<br>  - name: Friendly identifier for the terraform resource to be created.<br>  - attribute\_mapping: A mapping of identity provider attributes to standard and custom user pool attributes.<br>  - idp\_identifiers: A list of identity provider identifiers. | <pre>list(object({<br>    name              = string<br>    attribute_mapping = optional(map(string), null)<br>    idp_identifiers   = optional(list(string), null)<br>  }))</pre> | `null` | no |
 | <a name="input_is_enabled"></a> [is\_enabled](#input\_is\_enabled) | Whether this module will be created or not. It is useful, for stack-composite<br>modules that conditionally includes resources provided by this module.. | `bool` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources. | `map(string)` | `{}` | no |

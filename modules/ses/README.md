@@ -39,7 +39,7 @@ module "main_module" {
 ## Recipes
 ### Very basic configuration.
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 
 ses_config = {
@@ -56,7 +56,7 @@ ses_config = {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.23.1 |
 
 ## Modules
 
@@ -91,8 +91,8 @@ No modules.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.48.0, < 5.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.23.1 |
 
 ## Inputs
 
@@ -115,25 +115,28 @@ No modules.
 | <a name="output_aws_region_for_deploy_this"></a> [aws\_region\_for\_deploy\_this](#output\_aws\_region\_for\_deploy\_this) | The AWS region where the module is deployed. |
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
 | <a name="output_ses_config"></a> [ses\_config](#output\_ses\_config) | The SES configuration passed |
+| <a name="output_ses_configuration_sets"></a> [ses\_configuration\_sets](#output\_ses\_configuration\_sets) | The SES configuration sets |
 | <a name="output_ses_domain_identity"></a> [ses\_domain\_identity](#output\_ses\_domain\_identity) | The SES domain identity |
 | <a name="output_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#output\_ses\_domain\_identity\_arn) | The SES domain identity ARN |
 | <a name="output_ses_domain_identity_verification_token"></a> [ses\_domain\_identity\_verification\_token](#output\_ses\_domain\_identity\_verification\_token) | The SES domain identity verification token |
+| <a name="output_ses_identities_id"></a> [ses\_identities\_id](#output\_ses\_identities\_id) | The SES identities ids |
+| <a name="output_ses_mail_from_domain"></a> [ses\_mail\_from\_domain](#output\_ses\_mail\_from\_domain) | The SES mail from domain |
 | <a name="output_tags_set"></a> [tags\_set](#output\_tags\_set) | The tags set for the module. |
 
 ---
 ## Mermaid Diagram
 ```mermaid
 graph LR;
-A[Identity Provider Configuration] -->|Provides| C{SES}
-B[Attribute Mapping] -->|Maps Attributes| C
-D[Identity Providers] -->|Provides Identities| C
-E[SES Domain Identity] -->|Verifies| C
-F[SES Domain DKIM] -->|Verifies DKIM| C
-G[SES Email Identity] -->|Verifies Email| C
-H[SES Configuration Set] -->|Tracks| C
-I[SES Mail From Domain] -->|Configures MAIL FROM| C
-J[SES Event Destinations] -->|Defines Events| C
-K[SES Configuration Sets] -->|Publishes Events| C
-L[SES Templates] -->|Creates Templates| C
+    A[Identity Provider Configuration] -->|Provides| C{SES}
+    B[Attribute Mapping] -->|Maps Attributes| C
+    D[Identity Providers] -->|Provides Identities| C
+    E[SES Domain Identity] -->|Verifies| C
+    F[SES Domain DKIM] -->|Verifies DKIM| C
+    G[SES Email Identity] -->|Verifies Email| C
+    H[SES Configuration Set] -->|Tracks| C
+    I[SES Mail From Domain] -->|Configures MAIL FROM| C
+    J[SES Event Destinations] -->|Defines Events| C
+    K[SES Configuration Sets] -->|Publishes Events| C
+    L[SES Templates] -->|Creates Templates| C
 ```
 <!-- END_TF_DOCS -->

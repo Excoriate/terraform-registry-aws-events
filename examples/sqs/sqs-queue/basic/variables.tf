@@ -30,8 +30,8 @@ variable "queue" {
     content_based_deduplication       = optional(bool, false) # Relevant only if fifo_queue is true
     kms_master_key_id                 = optional(string)
     kms_data_key_reuse_period_seconds = optional(number, 300)
-    deduplication_scope               = optional(string, "queue")    # Valid values are "queue" and "messageGroup"
-    fifo_throughput_limit             = optional(string, "perQueue") # Valid values are "perQueue" and "perMessageGroupId"
+    deduplication_scope               = optional(string, null) # Valid values are "queue" and "messageGroup"
+    fifo_throughput_limit             = optional(string, null) # Valid values are "perQueue" and "perMessageGroupId"
   })
   default     = null
   description = <<-DESC
@@ -73,16 +73,20 @@ variable "queue" {
 
 variable "dead_letter_queue" {
   type = object({
-    name                        = optional(string)
-    max_receive_count           = optional(number, 5)
-    visibility_timeout_seconds  = optional(number, 30)
-    message_retention_seconds   = optional(number, 345600)
-    max_message_size            = optional(number, 262144)
-    delay_seconds               = optional(number, 0)
-    receive_wait_time_seconds   = optional(number, 0)
-    policy                      = optional(string)
-    fifo_queue                  = optional(bool, false)
-    content_based_deduplication = optional(bool, false) # Relevant only if fifo_queue is true
+    name                              = optional(string)
+    max_receive_count                 = optional(number, 5)
+    visibility_timeout_seconds        = optional(number, 30)
+    message_retention_seconds         = optional(number, 345600)
+    max_message_size                  = optional(number, 262144)
+    delay_seconds                     = optional(number, 0)
+    receive_wait_time_seconds         = optional(number, 0)
+    policy                            = optional(string)
+    fifo_queue                        = optional(bool, false)
+    content_based_deduplication       = optional(bool, false) # Relevant only if fifo_queue is true
+    kms_master_key_id                 = optional(string)
+    kms_data_key_reuse_period_seconds = optional(number, 300)
+    deduplication_scope               = optional(string, null) # Valid values are "queue" and "messageGroup"
+    fifo_throughput_limit             = optional(string, null) # Valid values are "perQueue" and "perMessageGroupId"
   })
   default     = null
   description = <<-DESC
@@ -91,16 +95,58 @@ variable "dead_letter_queue" {
 
     - 'name' (Optional): The name of the SQS dead letter queue. If not provided, a name is generated based on the main queue's name with a '-dlq' suffix.
     - 'max_receive_count' (Optional, Default 5): The number of times a message is delivered to the source queue before being moved to the dead letter queue.
-    - 'visibility_timeout_seconds', 'message_retention_seconds', 'max_message_size', 'delay_seconds', 'receive_wait_time_seconds', 'policy', 'fifo_queue', 'content_based_deduplication', 'tags': Same as described for the main queue variable.
+    - 'visibility_timeout_seconds', 'message_retention_seconds', 'max_message_size', 'delay_seconds', 'receive_wait_time_seconds', 'policy', 'fifo_queue', 'content_based_deduplication', 'kms_master_key_id', 'kms_data_key_reuse_period_seconds', 'deduplication_scope', 'fifo_throughput_limit': Configurations for the dead letter queue, with defaults where applicable.
 
     Example:
     ```
     {
-      name                      = "my-application-queue-dlq.fifo"
-      fifo_queue                = true
-      content_based_deduplication = true
-      max_receive_count         = 3
+      name                              = "my-application-queue-dlq.fifo"
+      fifo_queue                        = true
+      content_based_deduplication       = true
+      max_receive_count                 = 3
+      visibility_timeout_seconds        = 45
+      message_retention_seconds         = 86400
+      max_message_size                  = 2048
+      delay_seconds                     = 10
+      receive_wait_time_seconds         = 20
+      kms_master_key_id                 = "alias/aws/sqs"
+      kms_data_key_reuse_period_seconds = 600
     }
     ```
   DESC
+}
+variable "queue_policies" {
+  description = <<-DESC
+  A list of policy objects to apply to the SQS queues. Each policy allows you to specify
+  actions, principals, and optionally conditions to create more granular access controls.
+
+  - `actions`: A list of actions the policy allows or denies.
+  - `principals`: A list of principal IDs to which the policy will apply.
+  - `conditions`: (Optional) Conditions for when the policy is in effect.
+
+  Example usage:
+  [
+    {
+      actions = ["sqs:SendMessage", "sqs:ReceiveMessage"]
+      principals = { type = "AWS", identifiers = ["arn:aws:iam::123456789012:user/ExampleUser"] }
+      conditions = [
+        {
+          test = "ArnEquals"
+          variable = "aws:SourceArn"
+          values = ["arn:aws:sns:us-east-1:123456789012:my-sns-topic"]
+        }
+      ]
+    }
+  ]
+  DESC
+  type = list(object({
+    actions    = list(string)
+    principals = object({ type = string, identifiers = list(string) })
+    conditions = optional(list(object({
+      test     = string
+      variable = string
+      values   = list(string)
+    })))
+  }))
+  default = []
 }

@@ -24,7 +24,7 @@ content: |-
     ## Recipes
     ### Very basic configuration.
     ```hcl
-      {{ include "../../../examples/cognito/user-pool-domain/basic/config/fixtures.tfvars" }}
+      {{ include "../../../examples/cognito/user-pool-domain/basic/fixtures/fixtures.tfvars" }}
     ```
 
     ---

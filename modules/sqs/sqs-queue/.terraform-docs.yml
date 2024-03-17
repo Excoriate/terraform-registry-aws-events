@@ -3,7 +3,7 @@ formatter: markdown table
 
 header-from: main.tf
 content: |-
-    # ☁️ SQS Queue
+    # ☁️ SQS queue
     ## Description
     {{ .Header }}
     This module creates an event bridge rule, with the following capabilities:
@@ -15,22 +15,22 @@ content: |-
     Examples of this module's usage are available in the [examples](./examples) folder.
 
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/main.tf" }}
+    {{ include "../../../examples/sqs/sqs-queue/basic/main.tf" }}
     ```
 
     Simple example of a basic implementation.
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures.tfvars" }}
+    {{ include "../../../examples/sqs/sqs-queue/basic/fixtures/fixtures.tfvars" }}
     ```
 
     Example where multiple event rules are created at once.
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures-multiple.tfvars" }}
+    {{ include "../../../examples/sqs/sqs-queue/basic/fixtures/fixtures-with-dlq-simple.tfvars" }}
     ```
 
     Example where an event pattern is passed.
     ```hcl
-    {{ include "../../../examples/eventbridge/eventbridge-rule/basic/config/fixtures-event-patterns.tfvars" }}
+    {{ include "../../../examples/sqs/sqs-queue/basic/fixtures/fixtures-with-fifo.tfvars" }}
     ```
 
     For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:

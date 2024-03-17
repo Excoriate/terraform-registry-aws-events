@@ -46,7 +46,7 @@ resource "aws_cognito_user_pool" "pool" {
 ## Recipes
 ### Very basic configuration.
 ```hcl
-aws_region = "us-east-1"
+  aws_region = "us-east-1"
 is_enabled = true
 ```
 

@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# ☁️ Event bridge rule
+# ☁️ Event bridge target
 ## Description
 
 This module creates an event bridge rule, with the following capabilities:
@@ -12,11 +12,13 @@ Examples of this module's usage are available in the [examples](./examples) fold
 
 ```hcl
 module "main_module" {
-  source             = "../../../../modules/eventbridge/eventbridge-rule"
-  is_enabled         = var.is_enabled
-  rule_config        = var.rule_config
-  aws_region         = var.aws_region
-  rule_event_pattern = var.rule_event_pattern
+  source               = "../../../../modules/eventbridge/eventbridge-rule"
+  is_enabled           = var.is_enabled
+  rule_config          = var.rule_config
+  aws_region           = var.aws_region
+  rule_event_pattern   = var.rule_event_pattern
+  trusted_entities     = var.trusted_entities
+  permissions_boundary = var.permissions_boundary
 }
 ```
 
@@ -113,30 +115,6 @@ output "tags_set" {
 Custom outputs
 -------------------------------------
 */
-output "event_rule_id" {
-  value       = [for r in aws_cloudwatch_event_rule.this : r.id]
-  description = "The ID of the CloudWatch Event Rule."
-}
-
-output "event_rule_arn" {
-  value       = [for r in aws_cloudwatch_event_rule.this : r.arn]
-  description = "The ARN of the CloudWatch Event Rule."
-}
-
-output "event_rule_name" {
-  value       = [for r in aws_cloudwatch_event_rule.this : r.name]
-  description = "The name of the CloudWatch Event Rule."
-}
-
-output "event_rule_description" {
-  value       = [for r in aws_cloudwatch_event_rule.this : r.description]
-  description = "The description of the CloudWatch Event Rule."
-}
-
-output "event_rule_event_pattern" {
-  value       = [for r in aws_cloudwatch_event_rule.this : r.event_pattern]
-  description = "The event pattern of the CloudWatch Event Rule."
-}
 ```
 ---
 
@@ -144,9 +122,7 @@ output "event_rule_event_pattern" {
 (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.63.0 |
+No providers.
 
 ## Modules
 
@@ -154,9 +130,7 @@ No modules.
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_cloudwatch_event_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
+No resources.
 
 ## Requirements
 
@@ -171,20 +145,14 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to deploy the resources | `string` | n/a | yes |
 | <a name="input_is_enabled"></a> [is\_enabled](#input\_is\_enabled) | Whether this module will be created or not. It is useful, for stack-composite<br>modules that conditionally includes resources provided by this module.. | `bool` | n/a | yes |
-| <a name="input_rule_config"></a> [rule\_config](#input\_rule\_config) | A list of objects that contains the configuration for each rule.<br> The following keys are supported:<br>  - name: (Required) The name of the rule.<br>  - is\_enabled: (Optional) Indicates whether the rule is enabled or disabled.<br>  - description: (Optional) A description of the rule.<br>  - event\_bus\_name: (Optional) The name of the event bus associated with the rule.<br>  - schedule\_expression: (Optional) The scheduling expression. For example, cron(0 20 * * ? *) or rate(5 minutes). | <pre>list(object({<br>    // General settings<br>    name                = string<br>    is_enabled          = optional(bool, true)<br>    description         = optional(string, null)<br>    event_bus_name      = optional(string, null)<br>    schedule_expression = optional(string, null)<br>  }))</pre> | `null` | no |
-| <a name="input_rule_event_pattern"></a> [rule\_event\_pattern](#input\_rule\_event\_pattern) | The event pattern of the rule. | <pre>list(object({<br>    name        = string<br>    rule_name   = optional(string, null)<br>    source      = optional(list(string), null)<br>    account     = optional(list(string), null)<br>    region      = optional(list(string), null)<br>    detail-type = optional(list(string), null)<br>    resources   = optional(list(string), null)<br>    detail      = optional(map(any), {})<br>  }))</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources. | `map(string)` | `{}` | no |
+| <a name="input_target_lambda_config"></a> [target\_lambda\_config](#input\_target\_lambda\_config) | n/a | <pre>list(object({<br>    // General settings<br>    name = string<br>  }))</pre> | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_aws_region_for_deploy_this"></a> [aws\_region\_for\_deploy\_this](#output\_aws\_region\_for\_deploy\_this) | The AWS region where the module is deployed. |
-| <a name="output_event_rule_arn"></a> [event\_rule\_arn](#output\_event\_rule\_arn) | The ARN of the CloudWatch Event Rule. |
-| <a name="output_event_rule_description"></a> [event\_rule\_description](#output\_event\_rule\_description) | The description of the CloudWatch Event Rule. |
-| <a name="output_event_rule_event_pattern"></a> [event\_rule\_event\_pattern](#output\_event\_rule\_event\_pattern) | The event pattern of the CloudWatch Event Rule. |
-| <a name="output_event_rule_id"></a> [event\_rule\_id](#output\_event\_rule\_id) | The ID of the CloudWatch Event Rule. |
-| <a name="output_event_rule_name"></a> [event\_rule\_name](#output\_event\_rule\_name) | The name of the CloudWatch Event Rule. |
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
 | <a name="output_tags_set"></a> [tags\_set](#output\_tags\_set) | The tags set for the module. |
 <!-- END_TF_DOCS -->

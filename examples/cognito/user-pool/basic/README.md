@@ -47,5 +47,19 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_is_enabled"></a> [is\_enabled](#output\_is\_enabled) | Whether the module is enabled or not. |
+| <a name="output_user_pool_account_recovery_setting"></a> [user\_pool\_account\_recovery\_setting](#output\_user\_pool\_account\_recovery\_setting) | The user pool account recovery setting |
+| <a name="output_user_pool_admin_create_user_config"></a> [user\_pool\_admin\_create\_user\_config](#output\_user\_pool\_admin\_create\_user\_config) | The user pool admin create user config |
+| <a name="output_user_pool_arn"></a> [user\_pool\_arn](#output\_user\_pool\_arn) | The user pool arn |
 | <a name="output_user_pool_configuration"></a> [user\_pool\_configuration](#output\_user\_pool\_configuration) | The user pool configuration |
+| <a name="output_user_pool_domain"></a> [user\_pool\_domain](#output\_user\_pool\_domain) | The user pool domain |
+| <a name="output_user_pool_email_configuration"></a> [user\_pool\_email\_configuration](#output\_user\_pool\_email\_configuration) | The user pool email configuration |
+| <a name="output_user_pool_id"></a> [user\_pool\_id](#output\_user\_pool\_id) | The user pool id |
+| <a name="output_user_pool_lambda_config"></a> [user\_pool\_lambda\_config](#output\_user\_pool\_lambda\_config) | The user pool lambda config |
+| <a name="output_user_pool_mfa_configuration"></a> [user\_pool\_mfa\_configuration](#output\_user\_pool\_mfa\_configuration) | The user pool mfa configuration |
+| <a name="output_user_pool_password_policy"></a> [user\_pool\_password\_policy](#output\_user\_pool\_password\_policy) | The user pool password policy |
+| <a name="output_user_pool_schema"></a> [user\_pool\_schema](#output\_user\_pool\_schema) | The user pool schema |
+| <a name="output_user_pool_sms_configuration"></a> [user\_pool\_sms\_configuration](#output\_user\_pool\_sms\_configuration) | The user pool sms configuration |
+| <a name="output_user_pool_user_pool_add_ons"></a> [user\_pool\_user\_pool\_add\_ons](#output\_user\_pool\_user\_pool\_add\_ons) | The user pool user pool add ons |
+| <a name="output_user_pool_username_configuration"></a> [user\_pool\_username\_configuration](#output\_user\_pool\_username\_configuration) | The user pool username configuration |
+| <a name="output_user_pool_verification_message_template"></a> [user\_pool\_verification\_message\_template](#output\_user\_pool\_verification\_message\_template) | The user pool verification message template |
 <!-- END_TF_DOCS -->
