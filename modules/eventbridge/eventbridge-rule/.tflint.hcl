@@ -1,12 +1,11 @@
 config {
   module = true
-  force = false
+  force  = false
 }
 
 plugin "aws" {
   enabled = true
-  deep_check = true
-  version = "0.27.0"
+  version = "0.30.0"
   source  = "github.com/terraform-linters/tflint-ruleset-aws"
 }
 
@@ -15,6 +14,12 @@ plugin "terraform" {
   preset  = "recommended"
 }
 
-rule "terraform_module_pinned_source" {
+rule "terraform_documented_variables" {
+  enabled = true
+}
+rule "terraform_documented_outputs" {
+  enabled = true
+}
+rule "terraform_unused_required_providers" {
   enabled = true
 }

@@ -78,7 +78,6 @@ variable "topic_publisher_permissions" {
   DESC
 }
 
-
 variable "sns_topic_policy_custom" {
   type        = string
   default     = null

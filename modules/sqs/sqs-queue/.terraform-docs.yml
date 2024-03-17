@@ -3,7 +3,7 @@ formatter: markdown table
 
 header-from: main.tf
 content: |-
-    # ☁️ SNS topic
+    # ☁️ SQS Queue
     ## Description
     {{ .Header }}
     This module creates an event bridge rule, with the following capabilities:
