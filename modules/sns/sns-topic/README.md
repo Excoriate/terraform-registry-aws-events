@@ -3,8 +3,9 @@
 ## Description
 
 This module creates an event bridge rule, with the following capabilities:
-* 🚀 **Event bridge rule**: Event bridge rule with the specified name.
-* 🚀 **Event pattern**: Event pattern to filter the events that will trigger the rule.
+* 🚀 **SNS topic**: SNS topic with the specified name.
+* 🚀 **SNS topic policy**: SNS topic policy to control access to the topic.
+For more information about these resources, please visit the [AWS documentation](https://docs.aws.amazon.com/sns/latest/dg/welcome.html), and also the terraform specific documentation [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic).
 
 ---
 ## Example
@@ -66,7 +67,7 @@ EOP
 }
 ```
 
-Example where multiple event rules are created at once.
+An example that shows how to create a topic with a custom policy.
 ```hcl
 is_enabled = true
 
@@ -124,7 +125,7 @@ sns_topic_policy_custom = <<EOP
 EOP
 ```
 
-Example where an event pattern is passed.
+It's also possible to pass a list of AWS services that can publish to the topic.
 ```hcl
 is_enabled = true
 

@@ -2,9 +2,11 @@
 # ☁️ SQS queue
 ## Description
 
-This module creates an event bridge rule, with the following capabilities:
-* 🚀 **Event bridge rule**: Event bridge rule with the specified name.
-* 🚀 **Event pattern**: Event pattern to filter the events that will trigger the rule.
+This module provides the following capabilities:
+* 🚀 **SQS queue**: SQS queue with the specified name.
+* 🚀 **Dead-letter queue**: Dead-letter queue to store messages that can't be delivered.
+It also supports the creation of [FIFO queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html) and [Standard queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html).
+For more information about these resources, please visit the [AWS documentation](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html), and also the terraform specific documentation [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue).
 
 ---
 ## Example
@@ -46,7 +48,7 @@ queue = {
 }
 ```
 
-Example where multiple event rules are created at once.
+A queue with a dead-letter queue.
 ```hcl
 is_enabled = true
 
@@ -83,7 +85,7 @@ dead_letter_queue = {
 }
 ```
 
-Example where an event pattern is passed.
+A FIFO queue.
 ```hcl
 is_enabled = true
 
@@ -107,6 +109,51 @@ queue = {
   fifo_throughput_limit             = "perMessageGroupId" # 'perQueue' or 'perMessageGroupId' are valid
 }
 ```
+
+A queue with policies attached
+```hcl
+is_enabled = true
+
+tags = {
+  Environment = "Development"
+  Project     = "SQS Module Integration"
+}
+
+queue = {
+  name                              = "simple-queue-example-with-pol"
+  visibility_timeout_seconds        = 45
+  message_retention_seconds         = 86400
+  max_message_size                  = 2048
+  delay_seconds                     = 5
+  receive_wait_time_seconds         = 10
+  fifo_queue                        = false
+  content_based_deduplication       = false
+  kms_master_key_id                 = null
+  kms_data_key_reuse_period_seconds = null
+  deduplication_scope               = null
+  fifo_throughput_limit             = null
+}
+
+queue_policies = [
+  {
+    actions    = ["sqs:SendMessage", "sqs:ReceiveMessage"]
+    principals = { type = "AWS", identifiers = ["*"] }
+    conditions = []
+  },
+  {
+    actions    = ["sqs:DeleteMessage", "sqs:GetQueueAttributes"]
+    principals = { type = "AWS", identifiers = ["*"] }
+    conditions = [
+      {
+        test     = "Bool"
+        variable = "aws:SecureTransport"
+        values   = ["true"]
+      }
+    ]
+  }
+]
+```
+
 
 For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
 ```hcl
