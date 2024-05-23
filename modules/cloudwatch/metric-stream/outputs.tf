@@ -8,22 +8,32 @@ output "tags_set" {
   description = "The tags set for the module."
 }
 
-output "sqs_queue_url" {
-  value       = local.is_queue_enabled ? join("", aws_sqs_queue.this.*.url) : ""
-  description = "The URL of the SQS queue."
+output "cloudwatch_metric_stream_id" {
+  value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.id) : ""
+  description = "The ID of the CloudWatch Metric Stream."
 }
 
-output "sqs_queue_arn" {
-  value       = local.is_queue_enabled ? join("", aws_sqs_queue.this.*.arn) : ""
-  description = "The ARN of the SQS queue."
+output "cloudwatch_metric_stream_arn" {
+  value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.arn) : ""
+  description = "The ARN of the CloudWatch Metric Stream."
 }
 
-output "dlq_sqs_queue_url" {
-  value       = local.is_dlq_enabled ? join("", aws_sqs_queue.dlq.*.url) : ""
-  description = "The URL of the Dead Letter SQS queue."
+output "cloudwatch_metric_stream_name" {
+  value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.name) : ""
+  description = "The name of the CloudWatch Metric Stream."
 }
 
-output "dlq_sqs_queue_arn" {
-  value       = local.is_dlq_enabled ? join("", aws_sqs_queue.dlq.*.arn) : ""
-  description = "The ARN of the Dead Letter SQS queue."
+output "cloudwatch_metric_stream_firehose_arn" {
+  value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.firehose_arn) : ""
+  description = "The ARN of the Kinesis Firehose delivery stream used by the CloudWatch Metric Stream."
+}
+
+output "cloudwatch_metric_stream_role_arn" {
+  value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.role_arn) : ""
+  description = "The ARN of the IAM role used by the CloudWatch Metric Stream."
+}
+
+output "cloudwatch_metric_stream_output_format" {
+  value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.output_format) : ""
+  description = "The output format of the CloudWatch Metric Stream."
 }

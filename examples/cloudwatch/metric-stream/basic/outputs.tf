@@ -8,22 +8,32 @@ output "tags_set" {
   description = "The tags set for the module."
 }
 
-output "sqs_queue_url" {
-  value       = module.main_module.sqs_queue_url
-  description = "The URL of the SQS queue."
+output "cloudwatch_metric_stream_id" {
+  value       = module.main_module.cloudwatch_metric_stream_id
+  description = "The ID of the CloudWatch Metric Stream."
 }
 
-output "sqs_queue_arn" {
-  value       = module.main_module.sqs_queue_arn
-  description = "The ARN of the SQS queue."
+output "cloudwatch_metric_stream_arn" {
+  value       = module.main_module.cloudwatch_metric_stream_arn
+  description = "The ARN of the CloudWatch Metric Stream."
 }
 
-output "dlq_sqs_queue_url" {
-  value       = module.main_module.dlq_sqs_queue_url
-  description = "The URL of the Dead Letter SQS queue."
+output "cloudwatch_metric_stream_name" {
+  value       = module.main_module.cloudwatch_metric_stream_name
+  description = "The name of the CloudWatch Metric Stream."
 }
 
-output "dlq_sqs_queue_arn" {
-  value       = module.main_module.dlq_sqs_queue_arn
-  description = "The ARN of the Dead Letter SQS queue."
+output "cloudwatch_metric_stream_firehose_arn" {
+  value       = module.main_module.cloudwatch_metric_stream_firehose_arn
+  description = "The ARN of the Kinesis Firehose delivery stream used by the CloudWatch Metric Stream."
+}
+
+output "cloudwatch_metric_stream_role_arn" {
+  value       = module.main_module.cloudwatch_metric_stream_role_arn
+  description = "The ARN of the IAM role used by the CloudWatch Metric Stream."
+}
+
+output "cloudwatch_metric_stream_output_format" {
+  value       = module.main_module.cloudwatch_metric_stream_output_format
+  description = "The output format of the CloudWatch Metric Stream."
 }

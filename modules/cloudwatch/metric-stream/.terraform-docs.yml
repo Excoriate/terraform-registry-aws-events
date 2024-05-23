@@ -3,57 +3,57 @@ formatter: markdown table
 
 header-from: main.tf
 content: |-
-  # ☁️ CloudWatch Metric Stream
-  ## Description
-  {{ .Header }}
-  This module provides the following capabilities:
-  * 🚀 **CloudWatch Metric Stream**: Streams CloudWatch metrics in near real-time to a specified destination such as Amazon S3, Amazon Redshift, or third-party service providers.
-  * 🔧 **Custom Setup with Kinesis Firehose**: Customize the stream to various destinations with detailed configuration options.
-  * 📊 **Statistics**: Stream additional statistics beyond the default ones for detailed monitoring and analysis.
-  * 🔄 **Cross-Account Metrics**: Optionally include metrics from linked accounts.
+    # ☁️ CloudWatch Metric Stream
+    ## Description
+    {{ .Header }}
+    This module provides the following capabilities:
+    * 🚀 **CloudWatch Metric Stream**: Streams CloudWatch metrics in near real-time to a specified destination such as Amazon S3, Amazon Redshift, or third-party service providers.
+    * 🔧 **Custom Setup with Kinesis Firehose**: Customize the stream to various destinations with detailed configuration options.
+    * 📊 **Statistics**: Stream additional statistics beyond the default ones for detailed monitoring and analysis.
+    * 🔄 **Cross-Account Metrics**: Optionally include metrics from linked accounts.
 
-  It supports various output formats, including JSON and OpenTelemetry. For more information about these resources, please visit the [AWS CloudWatch Metric Stream Documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Metric-Streams.html), and the terraform specific documentation [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_stream).
+    It supports various output formats, including JSON and OpenTelemetry. For more information about these resources, please visit the [AWS CloudWatch Metric Stream Documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Metric-Streams.html), and the terraform specific documentation [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_stream).
 
-  ---
-  ## Example
-  Examples of this module's usage are available in the [examples](./examples) folder.
+    ---
+    ## Example
+    Examples of this module's usage are available in the [examples](./examples) folder.
 
-  ```hcl
-  {{ include "../../../examples/cloudwatch/metric-stream/basic/main.tf" }}
-  ```
+    ```hcl
+    {{ include "../../../examples/cloudwatch/metric-stream/basic/main.tf" }}
+    ```
 
-  Simple example of a basic implementation.
-  ```hcl
-  {{ include "../../../examples/cloudwatch/metric-stream/basic/fixtures/fixtures.tfvars" }}
-  ```
+    Simple example of a basic implementation.
+    ```hcl
+    {{ include "../../../examples/cloudwatch/metric-stream/basic/fixtures/fixtures.tfvars" }}
+    ```
 
-  For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
-  ```hcl
-  {{ include "outputs.tf" }}
-  ```
-  ---
+    For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
+    ```hcl
+    {{ include "outputs.tf" }}
+    ```
+    ---
 
-  ## Module's documentation
-  (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
-  {{ .Providers }}
+    ## Module's documentation
+    (This documentation is auto-generated using [terraform-docs](https://terraform-docs.io))
+    {{ .Providers }}
 
-  {{ .Modules }}
+    {{ .Modules }}
 
-  {{ .Resources }}
+    {{ .Resources }}
 
-  {{ .Requirements }}
+    {{ .Requirements }}
 
-  {{ .Inputs }}
+    {{ .Inputs }}
 
-  {{ .Outputs }}
+    {{ .Outputs }}
 
 output:
-  file: README.md
-  mode: inject
-  template: |-
-    <!-- BEGIN_TF_DOCS -->
-    {{ .Content }}
-    <!-- END_TF_DOCS -->
+    file: README.md
+    mode: inject
+    template: |-
+        <!-- BEGIN_TF_DOCS -->
+        {{ .Content }}
+        <!-- END_TF_DOCS -->
 settings:
-  anchor: true
-  color: true
+    anchor: true
+    color: true

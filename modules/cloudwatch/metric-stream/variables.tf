@@ -100,3 +100,31 @@ variable "stream" {
     EOF
   }
 }
+
+variable "additional_statistics" {
+  type = list(object({
+    namespace    = string
+    metric_names = list(string)
+    statistics   = list(string)
+  }))
+  description = <<-DESC
+    A list of additional statistics to stream for specific metrics. Each object allows you to specify:
+    - 'namespace': The namespace of the metric.
+    - 'metric_names': A list of metric names within the namespace.
+    - 'statistics': A list of additional statistics to stream for those metrics.
+
+    Example:
+    ```
+    [
+      {
+        namespace    = "AWS/EC2"
+        metric_names = ["CPUUtilization"]
+        statistics   = ["p95", "p99"]
+      }
+    ]
+    ```
+
+    For more details, see the [AWS CloudWatch Metric Stream documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_stream#additional-statistics).
+  DESC
+  default     = []
+}
