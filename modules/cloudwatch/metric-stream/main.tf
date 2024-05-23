@@ -6,7 +6,7 @@ locals {
   # These validations are used to ensure the input variables are correctly formatted and meet the required criteria.
   # 1. `include_filter cannot be passed along with `exclude_filter`.
 
-  is_include_exclude_filters_invalid = !local.is_stream_enabled ? false : length(var.include_filters) == 0 ? false : local.is_include_filters_enabled && local.is_exclude_filters_enabled
+  is_include_exclude_filters_invalid = !local.is_stream_enabled ? false : local.is_include_filters_enabled && local.is_exclude_filters_enabled
 }
 
 resource "aws_cloudwatch_metric_stream" "this" {

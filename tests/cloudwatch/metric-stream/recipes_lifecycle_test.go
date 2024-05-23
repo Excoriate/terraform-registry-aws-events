@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRecipeBasicRo(t *testing.T) {
+func TestRecipeBasicLifecycle(t *testing.T) {
 	t.Parallel()
 	workdir := filepath.Join(recipeDir, "basic")
 	tfVars, tfVarErr := tfvars.GetTFVarsFromWorkdir(filepath.Join(workdir, fixtureDir))
@@ -20,11 +20,11 @@ func TestRecipeBasicRo(t *testing.T) {
 		s, err := scenario.NewWithOptions(t, workdir, scenario.WithVarFiles(workdir, filepath.Join(fixtureDir, tfVar)), scenario.WithParallel())
 		assert.NoErrorf(t, err, "Failed to create scenario: %s", err)
 
-		s.Stg.PlanStage(t, s.GetTerraformOptions())
+		s.Stg.ApplyStage(t, s.GetTerraformOptions())
 	}
 }
 
-func TestRecipesAdvancedRo(t *testing.T) {
+func TestRecipesAdvancedLifecycle(t *testing.T) {
 	t.Parallel()
 	workdir := filepath.Join(recipeDir, "advanced")
 	tfVars, tfVarErr := tfvars.GetTFVarsFromWorkdir(filepath.Join(workdir, fixtureDir))
@@ -34,6 +34,6 @@ func TestRecipesAdvancedRo(t *testing.T) {
 		s, err := scenario.NewWithOptions(t, workdir, scenario.WithVarFiles(workdir, filepath.Join(fixtureDir, tfVar)), scenario.WithParallel())
 		assert.NoErrorf(t, err, "Failed to create scenario: %s", err)
 
-		s.Stg.PlanStage(t, s.GetTerraformOptions())
+		s.Stg.ApplyStage(t, s.GetTerraformOptions())
 	}
 }
