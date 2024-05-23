@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "metric_stream_to_firehose" {
   }
 }
 resource "aws_iam_role_policy" "metric_stream_to_firehose" {
-  name   = "metric_stream_to_firehose_policy_basic"
+  name   = "metric_stream_firehose_${random_id.bucket_suffix.hex}"
   role   = aws_iam_role.metric_stream_to_firehose.id
   policy = data.aws_iam_policy_document.metric_stream_to_firehose.json
 }
@@ -115,7 +115,7 @@ data "aws_iam_policy_document" "firehose_to_s3" {
 }
 
 resource "aws_iam_role_policy" "firehose_to_s3" {
-  name   = "firehose_to_s3_policy_basic"
+  name   = "firehose_to_s3_pol_${random_id.bucket_suffix.hex}"
   role   = aws_iam_role.firehose_to_s3.id
   policy = data.aws_iam_policy_document.firehose_to_s3.json
 }
@@ -211,7 +211,7 @@ data "aws_iam_policy_document" "streams_assume_role" {
 }
 
 resource "aws_iam_role" "metric_stream_to_firehose" {
-  name               = "metric_stream_to_firehose_role_advanced"
+  name               = "metric_stream_firehose_${random_id.bucket_suffix.hex}"
   assume_role_policy = data.aws_iam_policy_document.streams_assume_role.json
 }
 

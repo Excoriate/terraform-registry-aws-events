@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "streams_assume_role" {
 }
 
 resource "aws_iam_role" "metric_stream_to_firehose" {
-  name               = "metric_stream_to_firehose_role_advanced"
+  name               = "metric_stream_firehose_${random_id.bucket_suffix.hex}"
   assume_role_policy = data.aws_iam_policy_document.streams_assume_role.json
 }
 
