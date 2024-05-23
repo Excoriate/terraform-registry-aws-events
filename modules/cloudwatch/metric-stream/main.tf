@@ -14,7 +14,6 @@ resource "aws_cloudwatch_metric_stream" "this" {
   # If the options are not set correctly, the user will get an error at 'Plan' time and will be able to fix it before applying the changes.
   #
   ##########################################
-
   lifecycle {
     precondition {
       condition     = contains(["json", "opentelemetry1.0", "opentelemetry0.7"], local.output_format)
@@ -53,18 +52,18 @@ resource "aws_cloudwatch_metric_stream" "this" {
     }
   }
 
-  include_linked_accounts_metrics = local.include_linked_accounts_metrics
-
   dynamic "statistics_configuration" {
-    for_each = local.additional_statistics
+    for_each = local.statistics_configurations
     content {
-      additional_statistics = statistics_configuration.value["statistics"]
+      additional_statistics = statistics_configuration.value["additional_statistics"]
       include_metric {
-        metric_name = statistics_configuration.value["metric_names"][0]
+        metric_name = statistics_configuration.value["metric_name"]
         namespace   = statistics_configuration.value["namespace"]
       }
     }
   }
+
+  include_linked_accounts_metrics = local.include_linked_accounts_metrics
 
   tags = merge(var.tags, lookup(var.stream, "tags", {}))
 }
