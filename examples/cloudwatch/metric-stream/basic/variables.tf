@@ -59,7 +59,6 @@ variable "stream" {
     role_arn                        = string
     output_format                   = string
     include_linked_accounts_metrics = optional(bool, false)
-    tags                            = optional(map(string), {})
   })
   description = <<-DESC
     An object representing an AWS CloudWatch Metric Stream. Each object allows you to specify:
@@ -79,10 +78,6 @@ variable "stream" {
       role_arn                    = "arn:aws:iam::123456789012:role/my-metric-stream-role"
       output_format               = "json"
       include_linked_accounts_metrics = true
-      tags = {
-        Environment = "production"
-        Project     = "metrics-stream"
-      }
     }
     ```
 

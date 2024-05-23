@@ -72,16 +72,6 @@ locals {
     }
   ]
 
-  # 🧹 `additional_statistics`: Normalizes each additional statistic by trimming whitespace from namespace, metric names, and statistics.
-  # Ensures clean and correctly formatted configuration values.
-  additional_statistics = !local.is_statistics_configuration_enabled ? [] : [
-    for config in var.statistics_configurations.additional_statistics : {
-      namespace    = trimspace(config.namespace)                         # 🧹 Trims whitespace from namespace.
-      metric_names = [for name in config.metric_names : trimspace(name)] # 🧹 Trims whitespace from each metric name.
-      statistics   = [for stat in config.statistics : trimspace(stat)]   # 🧹 Trims whitespace from each statistic.
-    }
-  ]
-
   # 🧹 `include_linked_accounts_metrics`: Uses the provided value or defaults to false.
   # Ensures a boolean value is always available.
   include_linked_accounts_metrics = local.is_stream_enabled ? var.stream.include_linked_accounts_metrics : false

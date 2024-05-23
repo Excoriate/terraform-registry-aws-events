@@ -1,3 +1,14 @@
+locals {
+  ###################################
+  # Validations 🛑
+  # ----------------------------------------------------
+  #
+  # These validations are used to ensure the input variables are correctly formatted and meet the required criteria.
+  # 1. `include_filter cannot be passed along with `exclude_filter`.
+
+  is_include_exclude_filters_invalid = !local.is_stream_enabled ? false : length(var.include_filters) == 0 ? false : local.is_include_filters_enabled && local.is_exclude_filters_enabled
+}
+
 resource "aws_cloudwatch_metric_stream" "this" {
   for_each = local.is_stream_enabled ? { "create" = true } : {}
 
@@ -34,6 +45,17 @@ resource "aws_cloudwatch_metric_stream" "this" {
       condition     = length(local.stream_name) <= 255 && length(local.stream_name) > 0
       error_message = "Invalid 'name'. Must be between 1 and 255 characters."
     }
+
+    precondition {
+      condition     = !local.is_include_exclude_filters_invalid
+      error_message = <<-EOF
+              The 'include_filters' and 'exclude_filters' input variables cannot be used simultaneously.
+        Please provide either 'include_filters' or 'exclude_filters', but not both.
+        Refer to the AWS CloudWatch Metric Stream documentation for more details:
+        - Include filters: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_stream#include_filter
+        - Exclude filters: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_stream#exclude_filter
+      EOF
+    }
   }
 
   dynamic "include_filter" {
@@ -65,5 +87,5 @@ resource "aws_cloudwatch_metric_stream" "this" {
 
   include_linked_accounts_metrics = local.include_linked_accounts_metrics
 
-  tags = merge(var.tags, lookup(var.stream, "tags", {}))
+  tags = var.tags
 }
