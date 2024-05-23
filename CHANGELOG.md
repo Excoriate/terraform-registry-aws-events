@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/Excoriate/terraform-registry-aws-events/compare/v1.1.0...v1.2.0) (2024-05-23)
+
+
+### Features
+
+* Update resource names with random_id in cloudwatch module ([#40](https://github.com/Excoriate/terraform-registry-aws-events/issues/40)) ([62888ce](https://github.com/Excoriate/terraform-registry-aws-events/commit/62888ceac697d4a28235e9e33fc2eeaaa73d66df))
+* Updated AWS IAM role names with random suffix ([#39](https://github.com/Excoriate/terraform-registry-aws-events/issues/39)) ([eae964c](https://github.com/Excoriate/terraform-registry-aws-events/commit/eae964c09a9e794ae5b7a3437a1799cf9bd04170))
+
 ## [1.1.0](https://github.com/Excoriate/terraform-registry-aws-events/compare/v1.0.0...v1.1.0) (2024-05-23)
 
 
