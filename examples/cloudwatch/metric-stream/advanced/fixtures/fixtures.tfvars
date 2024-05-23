@@ -1,4 +1,4 @@
-is_enabled = false
+is_enabled = true
 
 tags = {
   Environment = "Development"
