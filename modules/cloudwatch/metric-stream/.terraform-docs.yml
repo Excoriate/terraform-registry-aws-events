@@ -18,13 +18,15 @@ content: |-
     ## Example
     Examples of this module's usage are available in the [examples](./examples) folder.
 
+    ### Recipe 1: Basic
+
     ```hcl
     {{ include "../../../examples/cloudwatch/metric-stream/basic/main.tf" }}
     ```
+    ### Advanced Example: Custom Setup with Kinesis Firehose
 
-    Simple example of a basic implementation.
     ```hcl
-    {{ include "../../../examples/cloudwatch/metric-stream/basic/fixtures/fixtures.tfvars" }}
+    {{ include "../../../examples/cloudwatch/metric-stream/advanced/main.tf" }}
     ```
 
     For module composition, It's recommended to take a look at the module's `outputs` to understand what's available:
