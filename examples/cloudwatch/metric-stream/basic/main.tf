@@ -3,7 +3,7 @@ module "main_module" {
   is_enabled = var.is_enabled
   tags       = var.tags
   stream = {
-    name          = "metric-stream-basic"
+    name          = "metric-stream-basic-${random_id.bucket_suffix.hex}"
     firehose_arn  = aws_kinesis_firehose_delivery_stream.s3_stream.arn
     role_arn      = aws_iam_role.metric_stream_to_firehose.arn
     output_format = "json"
@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "streams_assume_role" {
 }
 
 resource "aws_iam_role" "metric_stream_to_firehose" {
-  name               = "metric_stream_to_firehose_role_basic"
+  name               = "metric_stream_to_firehose_basic_${random_id.bucket_suffix.hex}"
   assume_role_policy = data.aws_iam_policy_document.streams_assume_role.json
 }
 
