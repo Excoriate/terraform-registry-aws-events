@@ -8,6 +8,11 @@ output "tags_set" {
   description = "The tags set for the module."
 }
 
+output "feature_flags" {
+  value       = module.main_module.feature_flags
+  description = "The feature flags for the module."
+}
+
 output "cloudwatch_metric_stream_id" {
   value       = module.main_module.cloudwatch_metric_stream_id
   description = "The ID of the CloudWatch Metric Stream."

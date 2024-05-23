@@ -8,6 +8,15 @@ output "tags_set" {
   description = "The tags set for the module."
 }
 
+output "feature_flags" {
+  value = {
+    is_stream_enabled                   = local.is_stream_enabled
+    is_statistics_configuration_enabled = local.is_statistics_configuration_enabled
+    is_include_filters_enabled          = local.is_include_filters_enabled
+    is_exclude_filters_enabled          = local.is_exclude_filters_enabled
+  }
+}
+
 output "cloudwatch_metric_stream_id" {
   value       = local.is_stream_enabled ? join("", aws_cloudwatch_metric_stream.this.*.id) : ""
   description = "The ID of the CloudWatch Metric Stream."
