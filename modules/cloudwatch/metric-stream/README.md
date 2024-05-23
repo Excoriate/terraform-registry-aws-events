@@ -16,10 +16,11 @@ Examples of this module's usage are available in the [examples](./examples) fold
 
 ```hcl
 module "main_module" {
-  source     = "../../../../modules/cloudwatch/metric-stream"
-  is_enabled = var.is_enabled
-  tags       = var.tags
-  stream     = var.stream
+  source                = "../../../../modules/cloudwatch/metric-stream"
+  is_enabled            = var.is_enabled
+  tags                  = var.tags
+  stream                = var.stream
+  additional_statistics = var.additional_statistics
 }
 ```
 
@@ -83,7 +84,7 @@ output "cloudwatch_metric_stream_output_format" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.41.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.41.0 |
 
 ## Modules
 
