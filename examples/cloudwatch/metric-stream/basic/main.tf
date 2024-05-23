@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "streams_assume_role" {
 }
 
 resource "aws_iam_role" "metric_stream_to_firehose" {
-  name               = "metric_stream_to_firehose_role"
+  name               = "metric_stream_to_firehose_role_basic"
   assume_role_policy = data.aws_iam_policy_document.streams_assume_role.json
 }
 
